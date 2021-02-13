@@ -11,15 +11,15 @@ class ViewController: UIViewController {
 
     var stateViewController: String = "" // Состояние ViewController
     
-    
     //MARK: - LoadView
     //Этот метод вызывается при создании View
     override func loadView() {
         super.loadView()
         
-        self.stateViewController = #function
-        print("The start of the method \(#function)")
-        
+        if showLog {
+            self.stateViewController = #function
+            print("The start of the method \(#function)")
+        }
     }
     
     //MARK: - LoadDidView
@@ -27,8 +27,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if showLog {
         print("ViewController moved from \(stateViewController) to \(#function):  \(#function) ")
         self.stateViewController = #function
+        }
+        
     }
     
     //MARK: - viewWillAppear
@@ -36,17 +39,23 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        if showLog {
         print("ViewController moved from \(stateViewController) to \(#function):  \(#function) ")
         self.stateViewController = #function
+        }
+        
     }
     
     //MARK: - viewDidAppear
     //Этот метод вызывается после загрузки View на экране.
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
+        if showLog {
         print("ViewController moved from \(stateViewController) to \(#function):  \(#function) ")
         self.stateViewController = #function
+        }
+        
     }
     
     //MARK: - viewWillLayoutSubviews
@@ -54,8 +63,10 @@ class ViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
+        if showLog {
         print("ViewController moved from \(stateViewController) to \(#function):  \(#function) ")
         self.stateViewController = #function
+        }
         
     }
     
@@ -64,8 +75,10 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
+        if showLog {
         print("ViewController moved from \(stateViewController) to \(#function):  \(#function) ")
         self.stateViewController = #function
+        }
         
     }
     
@@ -74,8 +87,10 @@ class ViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        if showLog {
         print("ViewController moved from \(stateViewController) to \(#function):  \(#function) ")
         self.stateViewController = #function
+        }
         
     }
     
@@ -84,9 +99,10 @@ class ViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
+        if showLog {
         print("ViewController moved from \(stateViewController) to \(#function):  \(#function) ")
         self.stateViewController = #function
-        
+        }
         
     }
     
