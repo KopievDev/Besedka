@@ -16,7 +16,7 @@ class ViewController: UIViewController {
         print("init coder")
 
     }
-
+  
     
     //MARK: - LoadView
     //Этот метод вызывается при создании View

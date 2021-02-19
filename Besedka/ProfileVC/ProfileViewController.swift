@@ -26,11 +26,28 @@ class ProfileViewController: UIViewController {
     //MARK: - Variables
     
     let tapGesture = UITapGestureRecognizer()
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        print("init coder")
+    //    print(self.avatarImageView.frame ) - Данное вью еще не инициализировано, поэтому приложение упадет при попытки вывести её фрэйм
 
+
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(self.avatarImageView.frame) // (67.5, 50.0, 240.0, 240.0) На данном этапе выводит фрейм не загруженной вьюшки - без констрейтов  (Как мы задали для iphone se) - В этом методе координаты не изменятся
+
         setupDesign()
         
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print(self.avatarImageView.frame) //(87.0, 98.0, 240.0, 240.0) - А тут выводит фрейм подогнанный под экран с помощью констрейтов (iphone 11) ... на разных экранах будут разные координаты
+
+
     }
     //MARK: - Methods
     private func setupDesign(){
