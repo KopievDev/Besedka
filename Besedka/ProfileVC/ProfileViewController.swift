@@ -14,41 +14,78 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var editButton: UIButton!
-    @IBOutlet weak var shortName: UILabel! {
-        didSet {
-            shortName.text =  "\(self.nameLabel.text?.split(separator: " ")[0].first ?? "N")\(self.nameLabel.text?.split(separator: " ")[1].first ?? "N")".uppercased()
-        }
-    }
+    @IBOutlet weak var shortName: UILabel!
     
+    
+    //MARK: - IBAction
     @IBAction func editButtonPressed(_ sender: Any) {
         
+        // +++++ Лишний код - начало +++++
+        let alertController = UIAlertController(title: "Настойка профиля", message: "Введите свои данные:", preferredStyle: .alert)
+        let apply = UIAlertAction(title: "Применить", style: .default, handler: {_ in
+            let text = alertController.textFields?[0].text ?? ""
+            if text.split(separator: " ").count >= 2 {
+                
+                self.nameLabel.text = text
+                self.shortName.text = "\(text.split(separator: " ")[0].first ?? "N")\(text.split(separator: " ")[1].first ?? "N")".uppercased()
+            }else {
+                self.nameLabel.text = "No Name"
+                self.shortName.text =  "\(self.nameLabel.text?.split(separator: " ")[0].first ?? "N")\(self.nameLabel.text?.split(separator: " ")[1].first ?? "N")".uppercased()
+            }
+            let descText = alertController.textFields?[1].text ?? ""
+            if descText.count >= 1 {
+                self.descriptionLabel.text = descText
+            }else{
+                self.descriptionLabel.text = "Opps..."
+
+            }
+        })
+        let cancel = UIAlertAction(title: "Отменить", style: .cancel)
+        
+        alertController.addAction(apply)
+        alertController.addAction(cancel)
+        alertController.addTextField{ (textField) in
+            textField.placeholder = self.nameLabel.text ?? "Введите имя и фамилию"
+        }
+        alertController.addTextField{ (textField) in
+            textField.placeholder = self.descriptionLabel.text ?? "Введите информацию о себе"
+        }
+        
+        present(alertController, animated: true)
+        // +++++ Лишний код - конец +++++
     }
+    
     //MARK: - Variables
     
     let tapGesture = UITapGestureRecognizer()
     
+    //MARK: - Init
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        print("init coder")
-    //    print(self.avatarImageView.frame ) - Данное вью еще не инициализировано, поэтому приложение упадет при попытки вывести её фрэйм
-
-
+        print("init...")
+        guard let frame = self.editButton?.frame else { return } // frame = nil
+        print("Frame button - \(frame)")
+        //print(self.editButton.frame) - Данное представление еще не инициализировано, поэтому приложение упадет при попытки вывести её фрэйм
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print(self.avatarImageView.frame) // (67.5, 50.0, 240.0, 240.0) На данном этапе выводит фрейм не загруженной вьюшки - без констрейтов  (Как мы задали для iphone se) - В этом методе координаты не изменятся
-
-        setupDesign()
-        
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
     }
     
+    //MARK: - viewDidLoad
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print(self.editButton.frame) // (57.5, 587.0, 260.0, 50.0) На данном этапе выводит фрейм не загруженной кнопки - без применения констрейтов  (Как мы задали для iphone se) - В этом методе координаты не изменятся
+        setupDesign()
+    }
+    
+    //MARK: - viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print(self.avatarImageView.frame) //(87.0, 98.0, 240.0, 240.0) - А тут выводит фрейм подогнанный под экран с помощью констрейтов (iphone 11) ... на разных экранах будут разные координаты
-
-
+        print(self.editButton.frame) //(84.0, 812.0, 260.0, 50.0) - А тут выводит фрейм подогнанный под экран с помощью констрейтов (iphone 11) ... на разных экранах будут разные координаты
     }
+    
     //MARK: - Methods
     private func setupDesign(){
         // Setup imageView
@@ -61,16 +98,23 @@ class ProfileViewController: UIViewController {
         self.avatarImageView.clipsToBounds = true
         self.tapGesture.addTarget(self, action: #selector(selectPhoto(_:)))
         self.avatarImageView.addGestureRecognizer(tapGesture)
+        
+        //Setup label
+        self.descriptionLabel.lineBreakMode = .byWordWrapping
         //Setup Button
         self.editButton.layer.cornerRadius = 15
-        
-        
+        //Get short name from name
+        if let name = self.nameLabel.text{
+            self.shortName.text = "\(name.split(separator: " ")[0].first ?? "n")\(name.split(separator: " ")[1].first ?? "n")".uppercased()
+        }
+
     }
     
+    // Обработка тапа по картинке - вызываем actionSheet
     @objc func selectPhoto(_ sender: UITapGestureRecognizer){
             
         let alertSheet = UIAlertController(title: nil,
-                                           message: nil,
+                                        message: nil,
                                            preferredStyle: .actionSheet)
         let photo = UIAlertAction(title: "Выбрать фото", style: .default, handler: { _ in
             self.chooseImagePicker(source: .photoLibrary)

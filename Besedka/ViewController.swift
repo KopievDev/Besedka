@@ -10,13 +10,7 @@ import UIKit
 class ViewController: UIViewController {
 
     var stateViewController: String = "" // Состояние ViewController
-    // Init
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        print("init coder")
-
-    }
-  
+    
     
     //MARK: - LoadView
     //Этот метод вызывается при создании View
