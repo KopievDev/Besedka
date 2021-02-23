@@ -83,7 +83,7 @@ class ProfileViewController: UIViewController {
     //MARK: - viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print(self.editButton.frame) //(84.0, 812.0, 260.0, 50.0) - А тут выводит фрейм подогнанный под экран с помощью констрейтов (iphone 11) ... на разных экранах будут разные координаты
+        print(self.editButton.frame) //(77.0, 782.0, 260.0, 50.0) - А тут выводит фрейм подогнанный под экран с помощью констрейтов (iphone 11) ... на разных экранах будут разные координаты
     }
     
     //MARK: - Methods
