@@ -33,22 +33,29 @@ class ProfileViewController: UIViewController {
                 self.shortName.text =  "\(self.nameLabel.text?.split(separator: " ")[0].first ?? "N")\(self.nameLabel.text?.split(separator: " ")[1].first ?? "N")".uppercased()
             }
             let descText = alertController.textFields?[1].text ?? ""
+            let geoText = alertController.textFields?[2].text ?? ""
+
             if descText.count >= 1 {
-                self.descriptionLabel.text = descText
+                self.descriptionLabel.text = "\(descText)\n\(geoText)"
             }else{
                 self.descriptionLabel.text = "Opps..."
 
             }
+           
         })
+        
         let cancel = UIAlertAction(title: "Отменить", style: .cancel)
         
         alertController.addAction(apply)
         alertController.addAction(cancel)
         alertController.addTextField{ (textField) in
-            textField.placeholder = self.nameLabel.text ?? "Введите имя и фамилию"
+            textField.placeholder = "Введите имя и фамилию"
         }
         alertController.addTextField{ (textField) in
-            textField.placeholder = self.descriptionLabel.text ?? "Введите информацию о себе"
+            textField.placeholder = "Введите информацию о себе"
+        }
+        alertController.addTextField{ (textField) in
+            textField.placeholder = "Страна, город?"
         }
         
         present(alertController, animated: true)

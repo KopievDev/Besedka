@@ -86,7 +86,7 @@
                             <constraint firstItem="ypf-qQ-gI0" firstAttribute="centerX" secondItem="1jO-em-Sij" secondAttribute="centerX" id="U7q-jO-hxa"/>
                             <constraint firstItem="fml-1I-1o2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="ftx-Rn-l5N"/>
                             <constraint firstItem="1jO-em-Sij" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="k76-XC-spM"/>
-                            <constraint firstItem="1jO-em-Sij" firstAttribute="baseline" secondItem="ypf-qQ-gI0" secondAttribute="firstBaseline" constant="75" symbolType="layoutAnchor" id="qDp-du-BR4"/>
+                            <constraint firstItem="1jO-em-Sij" firstAttribute="baseline" secondItem="ypf-qQ-gI0" secondAttribute="firstBaseline" constant="70.5" symbolType="layoutAnchor" id="qDp-du-BR4"/>
                         </constraints>
                     </view>
                     <connections>
