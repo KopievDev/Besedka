@@ -45,7 +45,7 @@
                                 <color key="textColor" red="0.21157345180000001" green="0.21566632390000001" blue="0.21974813939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ivan Kopiev" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fml-1I-1o2">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ivan Kopiev" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="fml-1I-1o2">
                                 <rect key="frame" x="124.5" y="322" width="126" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="Bsk-hP-wlJ"/>
@@ -54,7 +54,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iOS Software Engineer Moscow, Russia" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22e-1k-Tz2">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iOS Software Engineer Moscow, Russia" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="22e-1k-Tz2">
                                 <rect key="frame" x="67.5" y="379" width="240" height="38.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Y6b-ev-hwX"/>
@@ -101,6 +101,9 @@
                         <outlet property="avatarImageView" destination="1jO-em-Sij" id="IOD-5D-G6P"/>
                         <outlet property="descriptionLabel" destination="22e-1k-Tz2" id="dGG-zE-1VW"/>
                         <outlet property="editButton" destination="QT9-eN-vJ9" id="aOp-We-iUu"/>
+                        <outlet property="imageBetweenTop" destination="k76-XC-spM" id="Zpy-Bb-k40"/>
+                        <outlet property="nameBetweenDesc" destination="64z-NY-dym" id="6W1-d3-8wJ"/>
+                        <outlet property="nameBetweenImage" destination="2Ya-5s-pQ8" id="KAo-9G-Gec"/>
                         <outlet property="nameLabel" destination="fml-1I-1o2" id="6yJ-Bg-U0x"/>
                         <outlet property="shortName" destination="ypf-qQ-gI0" id="byS-Fg-bx6"/>
                     </connections>
