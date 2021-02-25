@@ -9,6 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Roboto-regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
         <array key="SFProDisplay-Bold.ttf">
             <string>SFProDisplay-Bold</string>
         </array>
@@ -28,13 +31,17 @@
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1jO-em-Sij">
                                 <rect key="frame" x="67.5" y="50" width="240" height="240"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="41I-eF-AOF"/>
-                                    <constraint firstAttribute="height" constant="240" id="qAe-5W-V5m"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="41I-eF-AOF"/>
+                                    <constraint firstAttribute="width" secondItem="1jO-em-Sij" secondAttribute="height" multiplier="1:1" id="mQs-zG-zI8"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="qAe-5W-V5m"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ypf-qQ-gI0">
-                                <rect key="frame" x="67.5" y="100.5" width="240" height="143.5"/>
-                                <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="120"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="ypf-qQ-gI0">
+                                <rect key="frame" x="67.5" y="100" width="240" height="140"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="140" id="x5A-E4-wTJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="120"/>
                                 <color key="textColor" red="0.21157345180000001" green="0.21566632390000001" blue="0.21974813939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -50,7 +57,6 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iOS Software Engineer Moscow, Russia" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22e-1k-Tz2">
                                 <rect key="frame" x="67.5" y="379" width="240" height="38.5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="BfX-1Z-s7U"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Y6b-ev-hwX"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
@@ -62,7 +68,6 @@
                                 <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Ofh-j5-8me"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="260" id="Z8W-Vh-f8d"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="22"/>
                                 <state key="normal" title="Edit">
@@ -84,9 +89,12 @@
                             <constraint firstItem="ypf-qQ-gI0" firstAttribute="width" secondItem="1jO-em-Sij" secondAttribute="width" id="MeV-ae-eiB"/>
                             <constraint firstItem="1jO-em-Sij" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="SeA-ua-Cu5"/>
                             <constraint firstItem="ypf-qQ-gI0" firstAttribute="centerX" secondItem="1jO-em-Sij" secondAttribute="centerX" id="U7q-jO-hxa"/>
+                            <constraint firstItem="22e-1k-Tz2" firstAttribute="width" secondItem="1jO-em-Sij" secondAttribute="width" id="W9x-RE-fVX"/>
                             <constraint firstItem="fml-1I-1o2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="ftx-Rn-l5N"/>
+                            <constraint firstItem="1jO-em-Sij" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.64" id="jJL-3L-PZQ"/>
                             <constraint firstItem="1jO-em-Sij" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="k76-XC-spM"/>
-                            <constraint firstItem="1jO-em-Sij" firstAttribute="baseline" secondItem="ypf-qQ-gI0" secondAttribute="firstBaseline" constant="70.5" symbolType="layoutAnchor" id="qDp-du-BR4"/>
+                            <constraint firstItem="1jO-em-Sij" firstAttribute="centerY" secondItem="ypf-qQ-gI0" secondAttribute="centerY" id="qDp-du-BR4"/>
+                            <constraint firstItem="QT9-eN-vJ9" firstAttribute="width" secondItem="1jO-em-Sij" secondAttribute="width" multiplier="1.08333" id="sZb-gg-FqU"/>
                         </constraints>
                     </view>
                     <connections>

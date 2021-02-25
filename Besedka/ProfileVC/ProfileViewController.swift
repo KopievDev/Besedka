@@ -84,19 +84,21 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(self.editButton.frame) // (57.5, 587.0, 260.0, 50.0) На данном этапе выводит фрейм не загруженной кнопки - без применения констрейтов  (Как мы задали для iphone se) - В этом методе координаты не изменятся
-        setupDesign()
     }
     
     //MARK: - viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print(self.editButton.frame) //(77.0, 782.0, 260.0, 50.0) - А тут выводит фрейм подогнанный под экран с помощью констрейтов (iphone 11) ... на разных экранах будут разные координаты
+        setupDesign()
+        print(self.view.frame.height)
+        print(self.avatarImageView.frame)
     }
     
     //MARK: - Methods
     private func setupDesign(){
         // Setup imageView
-        self.avatarImageView.layer.cornerRadius = 120
+        self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.width / 2
         self.avatarImageView.backgroundColor = UIColor(red: 0.894,
                                                        green: 0.908,
                                                        blue: 0.17,
@@ -111,9 +113,24 @@ class ProfileViewController: UIViewController {
         //Setup Button
         self.editButton.layer.cornerRadius = 15
         //Get short name from name
+        
+        switch self.view.frame.height {
+                      case 548.0...568.0:
+                       self.shortName.font = UIFont(name: "Roboto-regular", size: 100)//iPhone 5S,SE
+                      case 647.0...667.0:
+                       self.shortName.font = UIFont(name: "Roboto-regular", size: 115)//iPhone 6,7,8 SE2G
+                      case 716.0...736.0:
+                       self.shortName.font = UIFont(name: "Roboto-regular", size: 120)//iPhone 6+,7+,8+
+                      case 792...812.0:
+                       self.shortName.font = UIFont(name: "Roboto-regular", size: 130)//iPhone X,XS,XR
+                      case 876.0...926.0:
+                       self.shortName.font = UIFont(name: "Roboto-regular", size: 160)//iPhone XS_Max
+                      default: print("_____")
+                      }
         if let name = self.nameLabel.text{
             self.shortName.text = "\(name.split(separator: " ")[0].first ?? "n")\(name.split(separator: " ")[1].first ?? "n")".uppercased()
         }
+       
 
     }
     
