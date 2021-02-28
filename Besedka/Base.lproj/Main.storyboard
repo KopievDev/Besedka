@@ -9,9 +9,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Roboto-regular.ttf">
-            <string>Roboto-Regular</string>
-        </array>
         <array key="SFProDisplay-Bold.ttf">
             <string>SFProDisplay-Bold</string>
         </array>
@@ -41,7 +38,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="140" id="x5A-E4-wTJ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="120"/>
+                                <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="120"/>
                                 <color key="textColor" red="0.21157345180000001" green="0.21566632390000001" blue="0.21974813939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -54,12 +51,12 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iOS Software Engineer Moscow, Russia" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="22e-1k-Tz2">
-                                <rect key="frame" x="67.5" y="379" width="240" height="38.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iOS Software Engineer Moscow, Russia" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="22e-1k-Tz2">
+                                <rect key="frame" x="67.5" y="363" width="240" height="42.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Y6b-ev-hwX"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -82,13 +79,16 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="fml-1I-1o2" firstAttribute="top" secondItem="1jO-em-Sij" secondAttribute="bottom" constant="32" id="2Ya-5s-pQ8"/>
-                            <constraint firstItem="22e-1k-Tz2" firstAttribute="top" secondItem="fml-1I-1o2" secondAttribute="bottom" constant="32" id="64z-NY-dym"/>
+                            <constraint firstItem="22e-1k-Tz2" firstAttribute="top" secondItem="fml-1I-1o2" secondAttribute="bottom" constant="32" id="64z-NY-dym">
+                                <variation key="heightClass=regular-widthClass=compact" constant="16"/>
+                            </constraint>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="QT9-eN-vJ9" secondAttribute="bottom" constant="30" id="6of-mb-fuw"/>
                             <constraint firstItem="QT9-eN-vJ9" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="DFh-52-HHD"/>
                             <constraint firstItem="22e-1k-Tz2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="MCx-Yr-X6n"/>
                             <constraint firstItem="ypf-qQ-gI0" firstAttribute="width" secondItem="1jO-em-Sij" secondAttribute="width" id="MeV-ae-eiB"/>
                             <constraint firstItem="1jO-em-Sij" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="SeA-ua-Cu5"/>
                             <constraint firstItem="ypf-qQ-gI0" firstAttribute="centerX" secondItem="1jO-em-Sij" secondAttribute="centerX" id="U7q-jO-hxa"/>
+                            <constraint firstItem="QT9-eN-vJ9" firstAttribute="top" relation="greaterThanOrEqual" secondItem="22e-1k-Tz2" secondAttribute="bottom" constant="10" id="W9X-6y-dmL"/>
                             <constraint firstItem="22e-1k-Tz2" firstAttribute="width" secondItem="1jO-em-Sij" secondAttribute="width" id="W9x-RE-fVX"/>
                             <constraint firstItem="fml-1I-1o2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="ftx-Rn-l5N"/>
                             <constraint firstItem="1jO-em-Sij" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.64" id="jJL-3L-PZQ"/>

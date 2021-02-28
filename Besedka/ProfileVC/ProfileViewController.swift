@@ -66,7 +66,6 @@ class ProfileViewController: UIViewController {
     
     //MARK: - Variables
     
-    let tapGesture = UITapGestureRecognizer()
     
     //MARK: - Init
     required init?(coder aDecoder: NSCoder) {
@@ -87,6 +86,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(self.editButton.frame) // (57.5, 587.0, 260.0, 50.0) На данном этапе выводит фрейм не загруженной кнопки - без применения констрейтов  (Как мы задали для iphone se) - В этом методе координаты не изменятся
+
     }
     
     // - viewDidAppear
@@ -94,7 +94,6 @@ class ProfileViewController: UIViewController {
         super.viewDidAppear(animated)
         print(self.editButton.frame) //(77.0, 782.0, 260.0, 50.0) - А тут выводит фрейм подогнанный под экран с помощью констрейтов (iphone 11) ... на разных экранах будут разные координаты
         setupDesign()
-        print(self.view.frame.height)
     }
     
     //MARK: - Methods
@@ -107,43 +106,44 @@ class ProfileViewController: UIViewController {
                                                        alpha: 1)
         self.avatarImageView.contentMode = .scaleAspectFit
         self.avatarImageView.clipsToBounds = true
-        self.tapGesture.addTarget(self, action: #selector(selectPhoto(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectPhoto(_:)))
         self.avatarImageView.addGestureRecognizer(tapGesture)
         
         //Setup label
         self.descriptionLabel.lineBreakMode = .byWordWrapping
         //Setup Button
         self.editButton.layer.cornerRadius = 15
-        //Check size screen
-        switch self.view.frame.height {
         
-            case 548.0...568.0://iPhone 5S,SE
-                self.shortName.font = UIFont(name: "Roboto-regular", size: 105)
-                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 12)
-                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 21)
-                self.nameBetweenDesc.constant /= 2
-                self.nameBetweenImage.constant /= 2
-                self.imageBetweenTop.constant /= 2
-            case 647.0...667.0://iPhone 6,7,8 SE2G
-                self.shortName.font = UIFont(name: "Roboto-regular", size: 125)
-                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 14)
-                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 23)
-                
-            case 716.0...736.0://iPhone 6+,7+,8+
-                self.shortName.font = UIFont(name: "Roboto-regular", size: 135)
-                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 16)
-                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 24)
-                
-            case 792...812.0://iPhone X,XS,XR, 11
-                self.shortName.font = UIFont(name: "Roboto-regular", size: 140)
-                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 17)
-                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 25)
-            case 897.0...926.0://iPhone XS_Max
-                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 18)
-                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 27)
-                self.shortName.font = UIFont(name: "Roboto-regular", size: 145)
-            default: print("_____")
-        }
+        //Check size screen
+//        switch self.view.frame.height {
+//        
+//            case 548.0...568.0://iPhone 5S,SE
+//                self.shortName.font = UIFont(name: "Roboto-regular", size: 105)
+//                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 12)
+//                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 21)
+//                self.nameBetweenDesc.constant /= 2
+//                self.nameBetweenImage.constant /= 2
+//                self.imageBetweenTop.constant /= 2
+//            case 647.0...667.0://iPhone 6,7,8 SE2G
+//                self.shortName.font = UIFont(name: "Roboto-regular", size: 125)
+//                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 14)
+//                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 23)
+//                
+//            case 716.0...736.0://iPhone 6+,7+,8+
+//                self.shortName.font = UIFont(name: "Roboto-regular", size: 135)
+//                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 16)
+//                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 24)
+//                
+//            case 792...812.0://iPhone X,XS,XR, 11
+//                self.shortName.font = UIFont(name: "Roboto-regular", size: 140)
+//                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 17)
+//                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 25)
+//            case 897.0...926.0://iPhone XS_Max
+//                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 18)
+//                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 27)
+//                self.shortName.font = UIFont(name: "Roboto-regular", size: 145)
+//            default: print("_____")
+//        }
         
         //Get short name from name
         if let name = self.nameLabel.text{
