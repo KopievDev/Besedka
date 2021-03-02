@@ -41,6 +41,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         state = #function
         }
         
+        // Create navigation controller
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let startController = ConversationsListViewController()
+        let navigationController = UINavigationController(rootViewController: startController)
+        window?.rootViewController = navigationController
+        window?.makeKeyAndVisible()
+        
+        
         return true
     }
     

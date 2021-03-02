@@ -20,6 +20,12 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var imageBetweenTop: NSLayoutConstraint!
     
     //MARK: - IBAction
+    
+    
+    @IBAction func closeProfile(_ sender: Any) {
+        dismiss(animated: true)
+    }
+    
     @IBAction func editButtonPressed(_ sender: Any) {
         
         // +++++ Лишний код - начало +++++
@@ -70,7 +76,7 @@ class ProfileViewController: UIViewController {
     //MARK: - Init
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        print("init...")
+//        print("init...")
         guard let frame = self.editButton?.frame else { return } // frame = nil
         print("Frame button - \(frame)")
         //print(self.editButton.frame) - Данное представление еще не инициализировано, поэтому приложение упадет при попытки вывести её фрэйм
@@ -78,21 +84,25 @@ class ProfileViewController: UIViewController {
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        
+
     }
     
     //MARK: - LifeCycle
     // - viewDidLoad
+    
+    override func loadView() {
+        super.loadView()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(self.editButton.frame) // (57.5, 587.0, 260.0, 50.0) На данном этапе выводит фрейм не загруженной кнопки - без применения констрейтов  (Как мы задали для iphone se) - В этом методе координаты не изменятся
+       // print(self.editButton.frame) // (57.5, 587.0, 260.0, 50.0) На данном этапе выводит фрейм не загруженной кнопки - без применения констрейтов  (Как мы задали для iphone se) - В этом методе координаты не изменятся
 
     }
     
     // - viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print(self.editButton.frame) //(77.0, 782.0, 260.0, 50.0) - А тут выводит фрейм подогнанный под экран с помощью констрейтов (iphone 11) ... на разных экранах будут разные координаты
+       // print(self.editButton.frame) //(77.0, 782.0, 260.0, 50.0) - А тут выводит фрейм подогнанный под экран с помощью констрейтов (iphone 11) ... на разных экранах будут разные координаты
         setupDesign()
     }
     
@@ -115,40 +125,45 @@ class ProfileViewController: UIViewController {
         self.editButton.layer.cornerRadius = 15
         
         //Check size screen
-//        switch self.view.frame.height {
-//        
-//            case 548.0...568.0://iPhone 5S,SE
-//                self.shortName.font = UIFont(name: "Roboto-regular", size: 105)
-//                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 12)
-//                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 21)
-//                self.nameBetweenDesc.constant /= 2
-//                self.nameBetweenImage.constant /= 2
-//                self.imageBetweenTop.constant /= 2
-//            case 647.0...667.0://iPhone 6,7,8 SE2G
-//                self.shortName.font = UIFont(name: "Roboto-regular", size: 125)
-//                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 14)
-//                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 23)
-//                
-//            case 716.0...736.0://iPhone 6+,7+,8+
-//                self.shortName.font = UIFont(name: "Roboto-regular", size: 135)
-//                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 16)
-//                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 24)
-//                
-//            case 792...812.0://iPhone X,XS,XR, 11
-//                self.shortName.font = UIFont(name: "Roboto-regular", size: 140)
-//                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 17)
-//                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 25)
-//            case 897.0...926.0://iPhone XS_Max
-//                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 18)
-//                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 27)
-//                self.shortName.font = UIFont(name: "Roboto-regular", size: 145)
-//            default: print("_____")
-//        }
+        switch self.view.frame.height {
+        
+            case 548.0...568.0://iPhone 5S,SE
+                self.shortName.font = UIFont(name: "Roboto-regular", size: 105)
+                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 12)
+                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 21)
+                self.nameBetweenDesc.constant /= 2
+                self.nameBetweenImage.constant /= 2
+                self.imageBetweenTop.constant /= 2
+            case 647.0...667.0://iPhone 6,7,8 SE2G
+                self.shortName.font = UIFont(name: "Roboto-regular", size: 125)
+                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 14)
+                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 23)
+                
+            case 716.0...736.0://iPhone 6+,7+,8+
+                self.shortName.font = UIFont(name: "Roboto-regular", size: 135)
+                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 16)
+                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 24)
+                
+            case 792...812.0://iPhone X,XS,XR, 11
+                self.shortName.font = UIFont(name: "Roboto-regular", size: 140)
+                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 17)
+                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 25)
+            case 897.0...926.0://iPhone XS_Max
+                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 18)
+                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 27)
+                self.shortName.font = UIFont(name: "Roboto-regular", size: 145)
+            default: print("_____")
+        }
         
         //Get short name from name
         if let name = self.nameLabel.text{
             self.shortName.text = "\(name.split(separator: " ")[0].first ?? "n")\(name.split(separator: " ")[1].first ?? "n")".uppercased()
         }
+        
+        let defaults = UserDefaults.standard
+        guard let image = defaults.data(forKey: "saveImg") else {return}
+        self.avatarImageView.image = UIImage(data: image, scale: 0.5)
+        self.shortName.isHidden = true
         
         
     }
@@ -194,6 +209,8 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         self.avatarImageView.image = info[.editedImage] as? UIImage
+        let imgData = (self.avatarImageView.image ?? UIImage()).jpegData(compressionQuality: 0.3)
+        UserDefaults.standard.set(imgData, forKey: "saveImg")
         self.shortName.isHidden = true
         dismiss(animated: true)
     }
@@ -202,6 +219,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         self.avatarImageView.image = nil
         self.shortName.isHidden = false
         dismiss(animated: true)
-        
+        UserDefaults.standard.set(nil, forKey: "saveImg")
+
     }
 }
