@@ -64,7 +64,7 @@ class UserCell: UITableViewCell {
     private let isOnline: UIView = {
         let view = UIView()
         view.clipsToBounds = true
-        view.layer.cornerRadius = 6
+        view.layer.cornerRadius = 8
         view.backgroundColor = UIColor(red: 0.353, green: 0.831, blue: 0.224, alpha: 1)
         view.layer.borderWidth = 3
         view.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
@@ -174,8 +174,8 @@ class UserCell: UITableViewCell {
         NSLayoutConstraint.activate([
             isOnline.topAnchor.constraint(equalTo: self.contactImageView.topAnchor, constant: 4),
             isOnline.leadingAnchor.constraint(equalTo: self.contactImageView.leadingAnchor, constant: 37),
-            isOnline.heightAnchor.constraint(equalToConstant: 12),
-            isOnline.widthAnchor.constraint(equalToConstant: 12)
+            isOnline.heightAnchor.constraint(equalToConstant: 16),
+            isOnline.widthAnchor.constraint(equalToConstant: 16)
 
         ])
         

@@ -34,6 +34,7 @@ class ConversationsListViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.userTableView.reloadData()
 
         createUI()
 
@@ -61,7 +62,7 @@ class ConversationsListViewController: UIViewController {
         if let image = defaults.data(forKey: "saveImg"){
             self.avatarImage = UIImage(data: image, scale: 0.2) ?? UIImage()
         } else {
-            self.avatarImage = UIImage(named: "2") ?? UIImage()
+            self.avatarImage = UIImage(named: "Anonymous") ?? UIImage()
         }
         
         let nv = UIView(frame: CGRect(x: 0, y: 0, width: 35, height: 35 ))
@@ -70,6 +71,7 @@ class ConversationsListViewController: UIViewController {
         let im = UIImageView(image: self.avatarImage)
         nv.addSubview(im)
         im.frame = nv.frame
+        im.contentMode = .scaleAspectFill
         let reconizer = UITapGestureRecognizer(target: self, action: #selector(showProfile))
         im.addGestureRecognizer(reconizer)
         im.isUserInteractionEnabled = true
@@ -90,21 +92,12 @@ class ConversationsListViewController: UIViewController {
         users.append(ilonMask)
         users.append(spam)
         users.append(sber)
+        users.append(frodo)
+        users.append(batman)
+        users.append(deadpool)
+        users.append(nogotochki)
+        users.append(joker)
         
-//        users.append(User(name: "Bro", message: "Hello", date: Date(timeIntervalSinceNow: -86660), isOnline: false, isArchive: true, hasUnreadMessages: true))
-//        users.append(User(name: "Jon", message: "Я первый", date: Date(), isOnline: false, isArchive: false, hasUnreadMessages: false))
-//        users.append(User(name: "Jully", message: "Hello rick dick pick", date: Date(), isOnline: false, isArchive: true, hasUnreadMessages: true))
-//        users.append(User(name: "Koby", message: "Я второй еба", date: Date(), isOnline: true, isArchive: false, hasUnreadMessages: false))
-//        users.append(User(name: "Lory", message: "Я третья", date: Date(timeIntervalSinceNow: -386660), isOnline: true, isArchive: false, hasUnreadMessages: false))
-//        users.append(User(name: "Bob", message: "А я Боб", date: Date(), isOnline: true, isArchive: false, hasUnreadMessages: false))
-//        users.append(User(name: "Vano", message: "А сверху Боб", date: Date(timeIntervalSinceNow: -863660), isOnline: true, isArchive: false, hasUnreadMessages: true))
-//        users.append(User(name: "Jon", message: "Gays", date: Date(), isOnline: true, isArchive: true, hasUnreadMessages: false))
-//        users.append(User(name: "Jony snow", message: "Gaydgdfgdsgdgs", date: Date(), isOnline: false, isArchive: false, hasUnreadMessages: true))
-//        users.append(User(name: "Tony Stark", message: nil, date: Date(), isOnline: false, isArchive: true, hasUnreadMessages: false))
-
-        
-        onlineArray = users.filter({user in !user.isArchive}).sorted(by: {$0.hasUnreadMessages == true && $1.hasUnreadMessages == false}).sorted(by: {$0.isOnline == true && $1.isOnline == false})
-        historyArray = users.filter({user in user.isArchive}).sorted(by: {$0.hasUnreadMessages == true && $1.hasUnreadMessages == false}).sorted(by: {$0.isOnline == true && $1.isOnline == false})
     }
     
 }
@@ -116,14 +109,15 @@ extension ConversationsListViewController:UITableViewDataSource {
         return 2
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       
+        onlineArray = users.filter({user in !user.isArchive}).sorted(by: {$0.hasUnreadMessages == true && $1.hasUnreadMessages == false}).sorted(by: {$0.isOnline == true && $1.isOnline == false})
+        historyArray = users.filter({user in user.isArchive}).sorted(by: {$0.hasUnreadMessages == true && $1.hasUnreadMessages == false}).sorted(by: {$0.isOnline == true && $1.isOnline == false})
         switch section {
         case 0:
             return onlineArray.count
         default:
             return historyArray.count
         }
-        
+
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -176,10 +170,18 @@ extension ConversationsListViewController:UITableViewDelegate {
         }
     }
     
-    func wantToTalk(to user: User)  {
+    func wantToTalk(to user: User){
+        
+        if user.hasUnreadMessages{
+            if let index = self.users.firstIndex(where: { currentUser in currentUser.name == user.name}){
+                self.users[index].hasUnreadMessages = false
+            }
+        }
+        
         let chatView = ConversationViewController()
         chatView.user = user
-       // chatView.configureNavigationBar(withTitle: user.name, prefersLargeTitles: false)
+        
+        // chatView.configureNavigationBar(withTitle: user.name, prefersLargeTitles: false)
         navigationController?.pushViewController(chatView, animated: true)
     }
 }

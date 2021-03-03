@@ -94,7 +94,7 @@ class MessageCell: UITableViewCell {
         leftBuuble.isActive = false
         rightBubble = bubbleContainer.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12)
         rightBubble.isActive = false
-        let widthMessage = self.frame.width * 3 / 4
+        let widthMessage = self.frame.width * 3 / 4 - 12
         NSLayoutConstraint.activate([
             //BubbleView
             bubbleContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
@@ -106,9 +106,10 @@ class MessageCell: UITableViewCell {
             textView.topAnchor.constraint(equalTo: bubbleContainer.topAnchor, constant: 4),
             textView.leadingAnchor.constraint(equalTo: bubbleContainer.leadingAnchor, constant: 12),
             textView.trailingAnchor.constraint(equalTo: bubbleContainer.trailingAnchor, constant: -12),
+            textView.widthAnchor.constraint(greaterThanOrEqualToConstant: widthMessage * 0.3),
             //DateLabel
-            dateLabel.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: 5),
-            dateLabel.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
+            dateLabel.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: -10),
+            dateLabel.trailingAnchor.constraint(equalTo: textView.trailingAnchor, constant: 5),
             dateLabel.bottomAnchor.constraint(equalTo: bubbleContainer.bottomAnchor, constant: -4)
             
         ])

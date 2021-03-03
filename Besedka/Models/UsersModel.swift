@@ -31,8 +31,8 @@ struct Messages {
     var toMe : Bool = false
 }
 
-let tonyStark = User(name: "Tony Stark", isOnline: true, isArchive: false, hasUnreadMessages: false,
-                     image: "Tony", messages: [
+let tonyStark = User(name: "Tony Stark", isOnline: true, isArchive: false, hasUnreadMessages: false, image: "Tony",
+                     messages: [
                         Messages(message: "What's up Bro", date: Date(timeIntervalSinceNow: -2000), toMe: true),
                         Messages(message: "i'am fine", date: Date(timeIntervalSinceNow: -1000), toMe: false),
                         Messages(message: "zbs", date: Date(), toMe: true),
@@ -72,17 +72,22 @@ let lebowski = User(name: "Lebowski", isOnline: false, isArchive: false, hasUnre
                         Messages(message: "Where's the money, Lebowski!?!?!?", date: Date(timeIntervalSinceNow: -100000000), toMe: false)])
 
 let LebronJames = User(name: "Lebron", isOnline: true, isArchive: false, hasUnreadMessages: false, image: "lebron",
-                    messages: [
-                    Messages(message: "Go basket?", date: Date(timeIntervalSinceNow: -100000), toMe: false)])
+                       messages: [
+                        Messages(message: "Go basket?", date: Date(timeIntervalSinceNow: -100000), toMe: false),
+                        Messages(message: "Go Bro", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                       ])
 
 let ilonMask = User(name: "Ilon Mask", isOnline: true, isArchive: false, hasUnreadMessages: false, image: "ilon",
                     messages: [
-                    Messages(message: "Go basket?", date: Date(timeIntervalSinceNow: -100000), toMe: false)])
+                    Messages(message: "Ну как тебе мое приложение?", date: Date(timeIntervalSinceNow: -100000), toMe: false),
+                        Messages(message: "Офигенно!", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+
+                    ])
 
 
-let walterWhite = User(name: "Walter White", isOnline: true, isArchive: false, hasUnreadMessages: false, image: "walter",
+let walterWhite = User(name: "Walter White", isOnline: true, isArchive: false, hasUnreadMessages: true, image: "walter",
                     messages: [
-                    Messages(message: "Go basket?", date: Date(timeIntervalSinceNow: -100000), toMe: false)])
+                    Messages(message: "Джесси не видел?", date: Date(timeIntervalSinceNow: -100000), toMe: false)])
 
 let myDog = User(name: "Мой пёс", isOnline: true, isArchive: false, hasUnreadMessages: false, image: "dog",
                     messages: [
@@ -91,8 +96,9 @@ let myDog = User(name: "Мой пёс", isOnline: true, isArchive: false, hasUnr
 
 let subZero = User(name: "Subzero", isOnline: true, isArchive: false, hasUnreadMessages: false, image: "subzero",
                    messages: [
-                    Messages(message: "Тебе никогда не стать iOS разработчиком!!! Лол", date: Date(timeIntervalSinceNow: -100000), toMe: true),
-                    Messages(message: "Опять ты хрень сморозил!!?", date: Date(timeIntervalSinceNow: -100000), toMe: false)])
+                    Messages(message: "Опять ты хрень сморозил!!?", date: Date(timeIntervalSinceNow: -100000), toMe: false),
+                    Messages(message: "Тебе никогда не стать iOS разработчиком!!! Лол", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
+                    
 
 
 
@@ -103,29 +109,32 @@ let spam = User(name: "spam", isOnline: false, isArchive: true, hasUnreadMessage
 
 let jessyPinkman = User(name: "Jessy Pinkman", isOnline: true, isArchive: true, hasUnreadMessages: false, image: "jessy",
                     messages: [
-                    Messages(message: "Тебя ищет Волтеры", date: Date(timeIntervalSinceNow: -100000), toMe: false)])
+                    Messages(message: "Тебя ищет Волтер", date: Date(timeIntervalSinceNow: -100000), toMe: false)])
 
 
 let sber = User(name: "900 protected AUE", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "sber",
                     messages: [
                     Messages(message: "Здравствуйте, это служба безопасности. Назовите номер карты ", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
 //
-let nogotochki = User(name: "Ноготочки", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "sber",
+let nogotochki = User(name: "Ноготочки", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "nogotochki",
                     messages: [
-                    Messages(message: "Здравствуйте, это служба безопасности. Назовите номер карты ", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
+                    Messages(message: "Здравствуйте, шилак не интересует?? НЕДОРОГО!)) ", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
 
-let frodo = User(name: "Ноготочки", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "sber",
-                    messages: [
-                    Messages(message: "Здравствуйте, это служба безопасности. Назовите номер карты ", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
+let frodo = User(name: "Фродо Бэгинс", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "frodo",
+                 messages: [
+                    Messages(message: "Пccc...", date: Date(timeIntervalSinceNow: -100020), toMe: true),
+                    Messages(message: "Привет! Золотые кольца не интересуют?", date: Date(timeIntervalSinceNow: -100000), toMe: true)
+                 ])
 
-let betman = User(name: "Ноготочки", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "sber",
+let batman = User(name: "Batman", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "batman",
                     messages: [
-                    Messages(message: "Здравствуйте, это служба безопасности. Назовите номер карты ", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
+                    Messages(message: "Привет! Детонатор не видел??", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
 
-let deadpool = User(name: "Ноготочки", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "sber",
-                    messages: [
-                    Messages(message: "Здравствуйте, это служба безопасности. Назовите номер карты ", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
+let deadpool = User(name: "Deadpool", isOnline: true, isArchive: true, hasUnreadMessages: false, image: "deadpool")
 
-let joker = User(name: "Ноготочки", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "sber",
+let joker = User(name: "Joker", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "joker",
                     messages: [
-                    Messages(message: "Здравствуйте, это служба безопасности. Назовите номер карты ", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
+                    Messages(message: "Лол", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                        Messages(message: "Детонатор у меня", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                        Messages(message: "Только крылатому с острыми ушами не говори!", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                        Messages(message: "Окай", date: Date(timeIntervalSinceNow: -100000), toMe: false) ])

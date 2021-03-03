@@ -20,8 +20,10 @@ class ConversationViewController: UIViewController {
         table.delegate = self
         table.separatorStyle = .none
         table.estimatedRowHeight = 100
+       // table.transform = CGAffineTransform(scaleX: 1, y: -1)
+        table.remembersLastFocusedIndexPath = true
+                
         
-
         return table
     }()
    
@@ -30,8 +32,8 @@ class ConversationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
-      
-
+        userTableView.scrollToLastRow(animated: true)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -45,9 +47,6 @@ class ConversationViewController: UIViewController {
         guard let user = user else {return}
         view.addSubview(userTableView)
         configureNavigationBar(withTitle: user.name, image: UIImage(named: user.image ?? "Anonymous") ?? UIImage())
-        
-
-
 
     }
     //MARK: - Selectors
@@ -66,6 +65,8 @@ extension ConversationViewController: UITableViewDataSource{
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? MessageCell{
             cell.leftBuuble.isActive = false
             cell.rightBubble.isActive = false
+            //cell.transform = CGAffineTransform(scaleX: 1, y: -1)
+
             cell.message = user?.messages?[indexPath.row]
             
             return cell
@@ -78,7 +79,27 @@ extension ConversationViewController: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
 
     }
+
 }
+
+extension UITableView {
+    func setOffsetToBottom(animated: Bool) {
+        self.setContentOffset(CGPoint(x: 0, y: self.contentSize.height - self.frame.size.height), animated: true)
+    }
+
+    func scrollToLastRow(animated: Bool) {
+        if self.numberOfRows(inSection: 0) > 0 {
+            self.scrollToRow(at: IndexPath(row: self.numberOfRows(inSection: 0) - 1, section: 0) as IndexPath, at: .none, animated: animated)
+            print(numberOfRows(inSection: 0))
+        }
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 50
+    }
+}
+
+
