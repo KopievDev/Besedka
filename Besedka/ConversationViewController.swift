@@ -17,7 +17,11 @@ class ConversationViewController: UIViewController {
         let table = UITableView(frame: view.frame, style: .plain)
         table.register(MessageCell.self, forCellReuseIdentifier: cellId)
         table.dataSource = self
+        table.delegate = self
         table.separatorStyle = .none
+        table.estimatedRowHeight = 100
+        
+
         return table
     }()
    
@@ -25,20 +29,25 @@ class ConversationViewController: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
+      
 
     }
     
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print(#function)
+
+    }
     
     //MARK: - Helpers
     func configure(){
-        navigationController?.navigationBar.prefersLargeTitles = false
-
         guard let user = user else {return}
-        self.title = user.name
         view.addSubview(userTableView)
+        configureNavigationBar(withTitle: user.name, image: UIImage(named: user.image ?? "Anonymous") ?? UIImage())
         
+
+
 
     }
     //MARK: - Selectors
@@ -55,11 +64,21 @@ extension ConversationViewController: UITableViewDataSource{
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? MessageCell{
-           
+            cell.leftBuuble.isActive = false
+            cell.rightBubble.isActive = false
             cell.message = user?.messages?[indexPath.row]
+            
             return cell
         }
         return UITableViewCell()
     }
 
+}
+extension ConversationViewController: UITableViewDelegate{
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+
+    }
 }

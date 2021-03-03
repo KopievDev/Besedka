@@ -34,33 +34,10 @@ class ConversationsListViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         createUI()
 
     }
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        createUI()
-        print(#function)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        print(#function)
-
-    }
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print(#function)
-
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        print(#function)
-
-    }
-    
     //MARK: - Selectors
     @objc func showProfile(){
         print("push")
@@ -75,9 +52,10 @@ class ConversationsListViewController: UIViewController {
     
     func createUI() {
         
+        navigationController?.navigationBar.prefersLargeTitles = true
+
         title = "Tinkoff Chat"
         self.view.addSubview(userTableView)
-        navigationController?.navigationBar.prefersLargeTitles = true
 
         let defaults = UserDefaults.standard
         if let image = defaults.data(forKey: "saveImg"){
@@ -105,6 +83,13 @@ class ConversationsListViewController: UIViewController {
         users.append(tonyStark)
         users.append(lebowski)
         users.append(LebronJames)
+        users.append(subZero)
+        users.append(walterWhite)
+        users.append(myDog)
+        users.append(jessyPinkman)
+        users.append(ilonMask)
+        users.append(spam)
+        users.append(sber)
         
 //        users.append(User(name: "Bro", message: "Hello", date: Date(timeIntervalSinceNow: -86660), isOnline: false, isArchive: true, hasUnreadMessages: true))
 //        users.append(User(name: "Jon", message: "Я первый", date: Date(), isOnline: false, isArchive: false, hasUnreadMessages: false))
@@ -194,8 +179,7 @@ extension ConversationsListViewController:UITableViewDelegate {
     func wantToTalk(to user: User)  {
         let chatView = ConversationViewController()
         chatView.user = user
-        navigationController?.navigationBar.prefersLargeTitles = false
-
+       // chatView.configureNavigationBar(withTitle: user.name, prefersLargeTitles: false)
         navigationController?.pushViewController(chatView, animated: true)
     }
 }

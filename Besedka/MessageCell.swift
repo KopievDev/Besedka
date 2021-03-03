@@ -56,6 +56,7 @@ class MessageCell: UITableViewCell {
     //MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+       
         createUI()
     }
     
@@ -67,16 +68,16 @@ class MessageCell: UITableViewCell {
     //MARK:- Helpers
     func configure()  {
         guard let message = message else {return}
-        print(message.message ?? "huy tibe")
-        
         textView.text = message.message
-        
         
         if message.toMe {
             leftBuuble.isActive = true
+            bubbleContainer.backgroundColor = UIColor(red: 0.875, green: 0.875, blue: 0.875, alpha: 1)
         } else {
             rightBubble.isActive = true
+            bubbleContainer.backgroundColor = UIColor(red: 0.863, green: 0.969, blue: 0.773, alpha: 1)
         }
+        dateLabel.text = message.date?.checkDate()
      
     }
     
@@ -98,6 +99,8 @@ class MessageCell: UITableViewCell {
             //BubbleView
             bubbleContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
             bubbleContainer.widthAnchor.constraint(lessThanOrEqualToConstant: widthMessage),
+            bubbleContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+
                             
             //TextView
             textView.topAnchor.constraint(equalTo: bubbleContainer.topAnchor, constant: 4),

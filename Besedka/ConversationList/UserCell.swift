@@ -53,6 +53,7 @@ class UserCell: UITableViewCell {
         let iv = UIImageView()
         iv.clipsToBounds = true
         iv.layer.cornerRadius = 48 / 2
+        iv.contentMode = .scaleAspectFill
         iv.backgroundColor = .gray
         iv.image = UIImage(named: "2")
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -104,9 +105,14 @@ class UserCell: UITableViewCell {
     
     func configure()  {
         self.backgroundColor = .clear
-        self.isOnline.isHidden = true
+        //self.isOnline.backgroundColor = .darkGray
         self.messageLabel.font = UIFont.systemFont(ofSize: 14)
+        self.contactImageView.image = UIImage(named: "Anonymous")
+        
         guard let user = user else {return}
+        if user.image != nil {
+            self.contactImageView.image = UIImage(named: user.image ?? "Anonymous")
+        }
         fullNameLabel.text = user.name
         if user.message != nil{
             messageLabel.text = user.message
@@ -114,11 +120,14 @@ class UserCell: UITableViewCell {
             messageLabel.font = UIFont.italicSystemFont(ofSize: 14)
             messageLabel.text = "No messages yet"
         }
-        dateLabel.text = checkDate(date: user.date ?? Date())
+        dateLabel.text = user.date?.checkDate()
         if !user.isOnline{
-            self.isOnline.isHidden = true
+            self.isOnline.backgroundColor = .darkGray
+
+//            self.isOnline.isHidden = true
         }else{
-            self.isOnline.isHidden = false
+           // self.isOnline.isHidden = false
+            self.isOnline.backgroundColor = UIColor(red: 0.353, green: 0.831, blue: 0.224, alpha: 1)
 
         }
         if user.hasUnreadMessages {
@@ -129,25 +138,6 @@ class UserCell: UITableViewCell {
         
         
     }
-
-    func checkDate(date: Date) -> String{
-        let now = Date()
-        let calendar = Calendar.current
-        let day = calendar.component(.day, from: date)
-        let month = calendar.component(.month, from: date)
-        let dayNow = calendar.component(.day, from: now)
-        let monthNow = calendar.component(.month, from: now)
-        let dateFormatter = DateFormatter()
-        
-        if month < monthNow || month == monthNow && day < dayNow{
-            dateFormatter.dateFormat = "dd MMM"
-            return dateFormatter.string(from: date)
-        }else {
-            dateFormatter.dateFormat = "HH:mm"
-            return dateFormatter.string(from: date)
-        }
-    }
-        
     
     func createConstrains(){
         
@@ -191,3 +181,6 @@ class UserCell: UITableViewCell {
         
     }
 }
+
+
+
