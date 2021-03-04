@@ -6,31 +6,89 @@
 //
 
 import UIKit
+#if DEBUG // Если схема запуска DEBUG :
+let showLog = true
+#else // если схема запуска RELEASE :
+let showLog = false
+#endif
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var window: UIWindow?
+    var state: String = "" //Состояние приложения
 
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+    //Сообщает делегату, что процесс запуска начался
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool{
+        
+        if showLog {
+            print("#Run DEBUG scheme")
+            state = #function
+            print("The start of the method \(#function)")
+        }else{
+            print("#Run RELEASE scheme")
+        }
+        
         return true
     }
+    
+    //Сообщает делегату, что процесс запуска почти завершен и приложение почти готово к запуску.
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-    // MARK: UISceneSession Lifecycle
-
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        if showLog {
+        print("Application moved from \(state) to \(#function):  \(#function) ")
+        state = #function
+        }
+        
+        return true
     }
+    
+    //Сообщает делегату, что приложение стало активным.
+    func applicationDidBecomeActive(_ application: UIApplication) {
 
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+        if showLog {
+        print("Application moved from \(state) to \(#function):  \(#function) ")
+        state = #function
+        }
+        
+      }
+    
+    //Сообщает делегату, что приложение вот-вот станет неактивным.
+    func applicationWillResignActive(_ application: UIApplication) {
+
+        if showLog {
+        print("Application moved from \(state) to \(#function):  \(#function) ")
+        state = #function
+        }
+        
     }
+    
+    //Сообщает делегату, что приложение теперь находится в фоновом режиме.
+    func applicationDidEnterBackground(_ application: UIApplication) {
 
+        if showLog {
+        print("Application moved from \(state) to \(#function):  \(#function) ")
+        state = #function
+        }
+    }
+    //Сообщает делегату, что приложение вот-вот выйдет на передний план.
+    func applicationWillEnterForeground(_ application: UIApplication) {
 
+        if showLog {
+        print("Application moved from \(state) to \(#function):  \(#function) ")
+        state = #function
+        }
+    }
+    //Сообщает делегату, когда приложение собирается завершить работу.
+    func applicationWillTerminate(_ application: UIApplication) {
+
+        if showLog {
+        print("Application moved from \(state) to \(#function):  \(#function) ")
+        state = #function
+        }
+    }
+    
+    
 }
 
