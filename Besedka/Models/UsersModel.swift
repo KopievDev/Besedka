@@ -8,7 +8,7 @@
 import Foundation
 
 struct User {
-    var name : String
+    var name : String?
     var isOnline : Bool
     var isArchive : Bool
     var hasUnreadMessages: Bool
@@ -108,22 +108,22 @@ let subZero = User(name: "Subzero", isOnline: true, isArchive: false, hasUnreadM
 
 
 let spam = User(name: "spam", isOnline: false, isArchive: true, hasUnreadMessages: false, image: "spam",
-                    messages: [
+                messages: [
                     Messages(message: "Продам гараж и сделаю кухню - звони!⚒💰", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
 
 
 let jessyPinkman = User(name: "Jessy Pinkman", isOnline: true, isArchive: true, hasUnreadMessages: false, image: "jessy",
-                    messages: [
-                    Messages(message: "Тебя ищет Волтер", date: Date(timeIntervalSinceNow: -100000), toMe: false)])
+                        messages: [
+                            Messages(message: "Тебя ищет Волтер", date: Date(timeIntervalSinceNow: -100000), toMe: false)])
 
 
 let sber = User(name: "900 protected AUE", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "sber",
-                    messages: [
+                messages: [
                     Messages(message: "Здравствуйте, это служба безопасности. Назовите номер карты ", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
 //
 let nogotochki = User(name: "Ноготочки", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "nogotochki",
-                    messages: [
-                    Messages(message: "‼️‼️‼️ Здравствуйте, шилак не интересует?? НЕДОРОГО!)) ", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
+                      messages: [
+                        Messages(message: "‼️‼️‼️ Здравствуйте, шилак не интересует?? НЕДОРОГО!)) ", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
 
 let frodo = User(name: "Фродо Бэгинс", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "frodo",
                  messages: [
@@ -132,21 +132,41 @@ let frodo = User(name: "Фродо Бэгинс", isOnline: false, isArchive: tr
                  ])
 
 let batman = User(name: "Batman", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "batman",
-                    messages: [
+                  messages: [
                     Messages(message: "Привет! Детонатор не видел??😦", date: Date(timeIntervalSinceNow: -100000), toMe: true)])
 
 let deadpool = User(name: "Deadpool", isOnline: true, isArchive: true, hasUnreadMessages: false, image: "deadpool")
 
 let joker = User(name: "Joker", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "joker",
-                    messages: [
+                 messages: [
                     Messages(message: "Лол", date: Date(timeIntervalSinceNow: -100000), toMe: true),
-                        Messages(message: "Детонатор у меня", date: Date(timeIntervalSinceNow: -100000), toMe: true),
-                        Messages(message: "Только крылатому с острыми ушами не говори!🤫", date: Date(timeIntervalSinceNow: -100000), toMe: true),
-                        Messages(message: "Окай👌🏻", date: Date(timeIntervalSinceNow: -100000), toMe: false) ])
+                    Messages(message: "Детонатор у меня", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "Только крылатому с острыми ушами не говори!🤫", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "Окай👌🏻", date: Date(timeIntervalSinceNow: -100000), toMe: false) ])
 
 let morfeus = User(name: "Морфеус", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "morfeus",
-                    messages: [
+                   messages: [
                     Messages(message: "Привет...⍱⌇⍧⍭⍻⏂⑂⑀⍢⍣⌌⌍", date: Date(timeIntervalSinceNow: -100000), toMe: true),
-                        Messages(message: "Мне нужна новая партия синих таблеток", date: Date(timeIntervalSinceNow: -100000), toMe: true),
-                        Messages(message: "Желательно как можно быстрей", date: Date(timeIntervalSinceNow: -100000), toMe: true),
-                        Messages(message: "Окай👌🏻 с тебя 1 биток", date: Date(timeIntervalSinceNow: -100000), toMe: false) ])
+                    Messages(message: "Мне нужна новая партия синих таблеток", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "Желательно как можно быстрей", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "Окай👌🏻 с тебя 1 биток", date: Date(timeIntervalSinceNow: -100000), toMe: false) ])
+
+let prapor = User(name: "Прапор", isOnline: false, isArchive: true, hasUnreadMessages: true, image: "prapor",
+                  messages: [
+                    Messages(message: "Привет!", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "Na vjb yjub yt dbtk", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "блин", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "ты мои ноги не видел??", date: Date(timeIntervalSinceNow: -100000), toMe: true) ])
+
+let gagarin = User(name: "Гагарин", isOnline: false, isArchive: false, hasUnreadMessages: false, image: "gagarin",
+                   messages: [
+                    Messages(message: "Привет!", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "Ну как вы там в 2021!?", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "За продуктами на Марс летаете?", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "Прости Юра, мы всё ...⎌", date: Date(timeIntervalSinceNow: -100000), toMe: false) ])
+
+let anonym = User(isOnline: true , isArchive: false, hasUnreadMessages: true,
+                  messages: [
+                    Messages(message: "Привет!", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "Взможно Вас заинтересует дополнительный заработок?", date: Date(timeIntervalSinceNow: -100000), toMe: true),
+                    Messages(message: "Что Вы знаете про биржи.?", date: Date(timeIntervalSinceNow: -100000), toMe: true),])

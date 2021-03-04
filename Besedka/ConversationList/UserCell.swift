@@ -111,7 +111,7 @@ class UserCell: UITableViewCell {
         if user.image != nil {
             self.contactImageView.image = UIImage(named: user.image ?? "Anonymous")
         }
-        fullNameLabel.text = user.name
+        fullNameLabel.text = user.name ?? "Незвестный"
         if user.lastMessage != nil{
             messageLabel.text = user.lastMessage
         }else {

@@ -40,10 +40,9 @@ class ConversationsListViewController: UIViewController {
     }
     //MARK: - Selectors
     @objc func showProfile(){
-        print("push")
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        sb.instantiateViewController(withIdentifier: "profile")
-        guard  let secondViewController = (sb.instantiateViewController(withIdentifier: "profile"))  as? ProfileViewController else {return}
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        storyboard.instantiateViewController(withIdentifier: "profile")
+        guard  let secondViewController = (storyboard.instantiateViewController(withIdentifier: "profile"))  as? ProfileViewController else {return}
         secondViewController.modalPresentationStyle = .fullScreen
         self.navigationController?.present(secondViewController, animated: true, completion: nil)
 
@@ -79,7 +78,7 @@ class ConversationsListViewController: UIViewController {
         title = "Tinkoff Chat"
         
         self.view.addSubview(userTableView)
-
+ 
         updImageProfile()
     }
 
@@ -101,7 +100,10 @@ class ConversationsListViewController: UIViewController {
         users.append(nogotochki)
         users.append(joker)
         users.append(morfeus)
-        
+        users.append(prapor)
+        users.append(gagarin)
+        users.append(anonym)
+
     }
     
     // Метод для перехода к собщениям контакта

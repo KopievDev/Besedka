@@ -30,15 +30,14 @@ class ConversationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
-        userTableView.scrollToLastRow(animated: true)
-
     }
     
     //MARK: - Helpers
     func configure(){
         guard let user = user else {return}
         view.addSubview(userTableView)
-        configureNavigationBar(withTitle: user.name, image: UIImage(named: user.image ?? "Anonymous") ?? UIImage())
+        configureNavigationBar(withTitle: user.name ?? "Неизвестный", image: UIImage(named: user.image ?? "Anonymous") ?? UIImage())
+        userTableView.scrollToLastRow(animated: true)
 
     }
 }
@@ -82,7 +81,6 @@ extension UITableView {
     func scrollToLastRow(animated: Bool) {
         if self.numberOfRows(inSection: 0) > 0 {
             self.scrollToRow(at: IndexPath(row: self.numberOfRows(inSection: 0) - 1, section: 0) as IndexPath, at: .none, animated: animated)
-            print(numberOfRows(inSection: 0))
         }
     }
     
