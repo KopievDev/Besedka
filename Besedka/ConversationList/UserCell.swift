@@ -9,9 +9,7 @@ import UIKit
 
 class UserCell: UITableViewCell {
 
-    // MARK: - Properties
-    let identifier = "cell"
-    
+    // MARK: - Properties    
     var user : User? {
         didSet{configure()}
     }
@@ -28,7 +26,7 @@ class UserCell: UITableViewCell {
     //Last message
     private let messageLabel: UILabel = {
         let label = UILabel()
-        label.text = "Hi Bro! How are you??How are you??How are you??How are you?? How are you?? How are you?? How are you?? How are you?? How are you?? How are you?? "
+        label.text = "Hi Bro! How are you??"
         label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
         label.textColor = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.6)
@@ -55,7 +53,7 @@ class UserCell: UITableViewCell {
         iv.layer.cornerRadius = 48 / 2
         iv.contentMode = .scaleAspectFill
         iv.backgroundColor = .gray
-        iv.image = UIImage(named: "2")
+        iv.image = UIImage(named: "Anonimous")
         iv.translatesAutoresizingMaskIntoConstraints = false
     
         return iv
@@ -114,8 +112,8 @@ class UserCell: UITableViewCell {
             self.contactImageView.image = UIImage(named: user.image ?? "Anonymous")
         }
         fullNameLabel.text = user.name
-        if user.message != nil{
-            messageLabel.text = user.message
+        if user.lastMessage != nil{
+            messageLabel.text = user.lastMessage
         }else {
             messageLabel.font = UIFont.italicSystemFont(ofSize: 14)
             messageLabel.text = "No messages yet"

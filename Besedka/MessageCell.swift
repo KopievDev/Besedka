@@ -13,7 +13,7 @@ class MessageCell: UITableViewCell {
     var message : Messages? {
         didSet{configure()}
     }
-    
+    var widthMessage : CGFloat = 0
     //MARK: - UI
     //TextView
     private let textView : UITextView = {
@@ -49,29 +49,36 @@ class MessageCell: UITableViewCell {
     }()
     
     //Constrains
-    var leftBuuble = NSLayoutConstraint()
+    var leftBubble = NSLayoutConstraint()
     var rightBubble = NSLayoutConstraint()
-    
+    var widthBubble = NSLayoutConstraint()
     
     //MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-       
+
         createUI()
     }
     
     required init?(coder: NSCoder) {
+        super.init(coder: coder)
+
         fatalError("init(coder:) has not been implemented")
+
     }
     
     
     //MARK:- Helpers
     func configure()  {
+        // Ширина сообщения
+        widthBubble = bubbleContainer.widthAnchor.constraint(lessThanOrEqualToConstant:widthMessage )
+        widthBubble.isActive = true
+        //Передача данных
         guard let message = message else {return}
         textView.text = message.message
         
         if message.toMe {
-            leftBuuble.isActive = true
+            leftBubble.isActive = true
             bubbleContainer.backgroundColor = UIColor(red: 0.875, green: 0.875, blue: 0.875, alpha: 1)
         } else {
             rightBubble.isActive = true
@@ -90,18 +97,15 @@ class MessageCell: UITableViewCell {
     
     func createConstrains() {
         
-        leftBuuble = bubbleContainer.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12)
-        leftBuuble.isActive = false
+        leftBubble = bubbleContainer.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12)
+        leftBubble.isActive = false
         rightBubble = bubbleContainer.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12)
         rightBubble.isActive = false
-        let widthMessage = self.frame.width * 3 / 4 - 12
+
         NSLayoutConstraint.activate([
             //BubbleView
             bubbleContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-            bubbleContainer.widthAnchor.constraint(lessThanOrEqualToConstant: widthMessage),
             bubbleContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
-
-                            
             //TextView
             textView.topAnchor.constraint(equalTo: bubbleContainer.topAnchor, constant: 4),
             textView.leadingAnchor.constraint(equalTo: bubbleContainer.leadingAnchor, constant: 12),

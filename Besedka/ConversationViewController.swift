@@ -22,8 +22,6 @@ class ConversationViewController: UIViewController {
         table.estimatedRowHeight = 100
        // table.transform = CGAffineTransform(scaleX: 1, y: -1)
         table.remembersLastFocusedIndexPath = true
-                
-        
         return table
     }()
    
@@ -33,12 +31,6 @@ class ConversationViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
         userTableView.scrollToLastRow(animated: true)
-        
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        print(#function)
 
     }
     
@@ -49,21 +41,19 @@ class ConversationViewController: UIViewController {
         configureNavigationBar(withTitle: user.name, image: UIImage(named: user.image ?? "Anonymous") ?? UIImage())
 
     }
-    //MARK: - Selectors
-    
-
 }
 
 //MARK: - Extensions TableView
 extension ConversationViewController: UITableViewDataSource{
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
         return user?.messages?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? MessageCell{
-            cell.leftBuuble.isActive = false
+            cell.widthMessage = self.view.bounds.width * 0.75 - 12
+            cell.leftBubble.isActive = false
             cell.rightBubble.isActive = false
             //cell.transform = CGAffineTransform(scaleX: 1, y: -1)
 
@@ -96,10 +86,6 @@ extension UITableView {
         }
     }
     
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 50
-    }
 }
 
 
