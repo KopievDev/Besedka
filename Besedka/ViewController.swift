@@ -11,6 +11,7 @@ class ViewController: UIViewController {
 
     var stateViewController: String = "" // Состояние ViewController
     
+    
     //MARK: - LoadView
     //Этот метод вызывается при создании View
     override func loadView() {

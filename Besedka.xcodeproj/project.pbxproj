@@ -7,14 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B53BF7B225E7D436000DC192 /* Roboto-regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B53BF7B125E7D436000DC192 /* Roboto-regular.ttf */; };
 		B557FE4B25D84D1600BF0F06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B557FE4A25D84D1600BF0F06 /* AppDelegate.swift */; };
 		B557FE4F25D84D1600BF0F06 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B557FE4E25D84D1600BF0F06 /* ViewController.swift */; };
 		B557FE5225D84D1600BF0F06 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B557FE5025D84D1600BF0F06 /* Main.storyboard */; };
 		B557FE5425D84D1800BF0F06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B557FE5325D84D1800BF0F06 /* Assets.xcassets */; };
 		B557FE5725D84D1800BF0F06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B557FE5525D84D1800BF0F06 /* LaunchScreen.storyboard */; };
+		B59A65F425DFD7CD009CB134 /* SFProDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B59A65F325DFD7B6009CB134 /* SFProDisplay-Bold.ttf */; };
+		B59A65F725DFD988009CB134 /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B59A65F625DFD97B009CB134 /* SFProText-Regular.ttf */; };
+		B59A65FA25DFE25E009CB134 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59A65F925DFE25E009CB134 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B53BF7B125E7D436000DC192 /* Roboto-regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-regular.ttf"; sourceTree = "<group>"; };
 		B557FE4725D84D1600BF0F06 /* Besedka.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Besedka.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B557FE4A25D84D1600BF0F06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B557FE4E25D84D1600BF0F06 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +27,9 @@
 		B557FE5325D84D1800BF0F06 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B557FE5625D84D1800BF0F06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B557FE5825D84D1800BF0F06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B59A65F325DFD7B6009CB134 /* SFProDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Bold.ttf"; sourceTree = "<group>"; };
+		B59A65F625DFD97B009CB134 /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Regular.ttf"; sourceTree = "<group>"; };
+		B59A65F925DFE25E009CB134 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +62,9 @@
 		B557FE4925D84D1600BF0F06 /* Besedka */ = {
 			isa = PBXGroup;
 			children = (
+				B59A65F225DFD798009CB134 /* Fonts */,
 				B557FE4A25D84D1600BF0F06 /* AppDelegate.swift */,
+				B59A65FC25DFE40F009CB134 /* ProfileVC */,
 				B557FE4E25D84D1600BF0F06 /* ViewController.swift */,
 				B557FE5025D84D1600BF0F06 /* Main.storyboard */,
 				B557FE5325D84D1800BF0F06 /* Assets.xcassets */,
@@ -62,6 +72,24 @@
 				B557FE5825D84D1800BF0F06 /* Info.plist */,
 			);
 			path = Besedka;
+			sourceTree = "<group>";
+		};
+		B59A65F225DFD798009CB134 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B59A65F625DFD97B009CB134 /* SFProText-Regular.ttf */,
+				B59A65F325DFD7B6009CB134 /* SFProDisplay-Bold.ttf */,
+				B53BF7B125E7D436000DC192 /* Roboto-regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		B59A65FC25DFE40F009CB134 /* ProfileVC */ = {
+			isa = PBXGroup;
+			children = (
+				B59A65F925DFE25E009CB134 /* ProfileViewController.swift */,
+			);
+			path = ProfileVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,6 +152,9 @@
 				B557FE5725D84D1800BF0F06 /* LaunchScreen.storyboard in Resources */,
 				B557FE5425D84D1800BF0F06 /* Assets.xcassets in Resources */,
 				B557FE5225D84D1600BF0F06 /* Main.storyboard in Resources */,
+				B53BF7B225E7D436000DC192 /* Roboto-regular.ttf in Resources */,
+				B59A65F725DFD988009CB134 /* SFProText-Regular.ttf in Resources */,
+				B59A65F425DFD7CD009CB134 /* SFProDisplay-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +165,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B59A65FA25DFE25E009CB134 /* ProfileViewController.swift in Sources */,
 				B557FE4F25D84D1600BF0F06 /* ViewController.swift in Sources */,
 				B557FE4B25D84D1600BF0F06 /* AppDelegate.swift in Sources */,
 			);

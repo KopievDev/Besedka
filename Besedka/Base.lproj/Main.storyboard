@@ -1,24 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
+        <array key="SFProDisplay-Bold.ttf">
+            <string>SFProDisplay-Bold</string>
+        </array>
+        <array key="SFProText-Regular.ttf">
+            <string>SFProText-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
-        <!--View Controller-->
+        <!--Pro-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Pro" id="BYZ-38-t0r" customClass="ProfileViewController" customModule="Besedka" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1jO-em-Sij">
+                                <rect key="frame" x="67.5" y="50" width="240" height="240"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="41I-eF-AOF"/>
+                                    <constraint firstAttribute="width" secondItem="1jO-em-Sij" secondAttribute="height" multiplier="1:1" id="mQs-zG-zI8"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="qAe-5W-V5m"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="ypf-qQ-gI0">
+                                <rect key="frame" x="67.5" y="100" width="240" height="140"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="140" id="x5A-E4-wTJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="120"/>
+                                <color key="textColor" red="0.21157345180000001" green="0.21566632390000001" blue="0.21974813939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ivan Kopiev" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="fml-1I-1o2">
+                                <rect key="frame" x="124.5" y="322" width="126" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="Bsk-hP-wlJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iOS Software Engineer Moscow, Russia" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="22e-1k-Tz2">
+                                <rect key="frame" x="67.5" y="379" width="240" height="38.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Y6b-ev-hwX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QT9-eN-vJ9">
+                                <rect key="frame" x="57.5" y="587" width="260" height="50"/>
+                                <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Ofh-j5-8me"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="22"/>
+                                <state key="normal" title="Edit">
+                                    <color key="titleColor" red="0.63921568627450975" green="0.63921568627450975" blue="0.63921568627450975" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="editButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yoF-mF-j30"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="fml-1I-1o2" firstAttribute="top" secondItem="1jO-em-Sij" secondAttribute="bottom" constant="32" id="2Ya-5s-pQ8"/>
+                            <constraint firstItem="22e-1k-Tz2" firstAttribute="top" secondItem="fml-1I-1o2" secondAttribute="bottom" constant="32" id="64z-NY-dym"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="QT9-eN-vJ9" secondAttribute="bottom" constant="30" id="6of-mb-fuw"/>
+                            <constraint firstItem="QT9-eN-vJ9" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="DFh-52-HHD"/>
+                            <constraint firstItem="22e-1k-Tz2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="MCx-Yr-X6n"/>
+                            <constraint firstItem="ypf-qQ-gI0" firstAttribute="width" secondItem="1jO-em-Sij" secondAttribute="width" id="MeV-ae-eiB"/>
+                            <constraint firstItem="1jO-em-Sij" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="SeA-ua-Cu5"/>
+                            <constraint firstItem="ypf-qQ-gI0" firstAttribute="centerX" secondItem="1jO-em-Sij" secondAttribute="centerX" id="U7q-jO-hxa"/>
+                            <constraint firstItem="22e-1k-Tz2" firstAttribute="width" secondItem="1jO-em-Sij" secondAttribute="width" id="W9x-RE-fVX"/>
+                            <constraint firstItem="fml-1I-1o2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="ftx-Rn-l5N"/>
+                            <constraint firstItem="1jO-em-Sij" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.64" id="jJL-3L-PZQ"/>
+                            <constraint firstItem="1jO-em-Sij" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="k76-XC-spM"/>
+                            <constraint firstItem="1jO-em-Sij" firstAttribute="centerY" secondItem="ypf-qQ-gI0" secondAttribute="centerY" id="qDp-du-BR4"/>
+                            <constraint firstItem="QT9-eN-vJ9" firstAttribute="width" secondItem="1jO-em-Sij" secondAttribute="width" multiplier="1.08333" id="sZb-gg-FqU"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="avatarImageView" destination="1jO-em-Sij" id="IOD-5D-G6P"/>
+                        <outlet property="descriptionLabel" destination="22e-1k-Tz2" id="dGG-zE-1VW"/>
+                        <outlet property="editButton" destination="QT9-eN-vJ9" id="aOp-We-iUu"/>
+                        <outlet property="imageBetweenTop" destination="k76-XC-spM" id="Zpy-Bb-k40"/>
+                        <outlet property="nameBetweenDesc" destination="64z-NY-dym" id="6W1-d3-8wJ"/>
+                        <outlet property="nameBetweenImage" destination="2Ya-5s-pQ8" id="KAo-9G-Gec"/>
+                        <outlet property="nameLabel" destination="fml-1I-1o2" id="6yJ-Bg-U0x"/>
+                        <outlet property="shortName" destination="ypf-qQ-gI0" id="byS-Fg-bx6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-575.20000000000005" y="58.920539730134934"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
