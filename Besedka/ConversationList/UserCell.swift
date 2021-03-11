@@ -9,37 +9,31 @@ import UIKit
 
 class UserCell: UITableViewCell {
 
-    // MARK: - Properties    
-    var user : User? {
-        didSet{configure()}
-    }
+    // MARK: - Properties
+    
     // username
      let fullNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
-
         return label
     }()
     
     //Last message
-    private let messageLabel: UILabel = {
-        let label = UILabel()
+    private let messageLabel: SecondaryLabel = {
+        let label = SecondaryLabel()
         label.text = "Hi Bro! How are you??"
         label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
-        label.textColor = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.6)
         label.font = UIFont.systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
 
         return label
     }()
     //Date label
-    private let dateLabel: UILabel = {
-        let label = UILabel()
+    private let dateLabel: SecondaryLabel = {
+        let label = SecondaryLabel()
         label.text = "25.01.21"
-        label.textColor = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.6)
         label.textAlignment = .right
         label.font = UIFont.systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -91,7 +85,7 @@ class UserCell: UITableViewCell {
      //MARK: - Helpers
     
     func createUI() {
-        
+
         addSubview(contactImageView)
         addSubview(fullNameLabel)
         addSubview(dateLabel)
@@ -100,8 +94,7 @@ class UserCell: UITableViewCell {
         createConstrains()
       
     }
-    
-    func configure()  {
+    func configureCell(user: User?)  {
         self.backgroundColor = .clear
         //self.isOnline.backgroundColor = .darkGray
         self.messageLabel.font = UIFont.systemFont(ofSize: 14)
@@ -130,53 +123,42 @@ class UserCell: UITableViewCell {
         }
         if user.hasUnreadMessages {
             self.messageLabel.font = UIFont.boldSystemFont(ofSize: 14)
-            self.messageLabel.textColor = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 1)
-            self.backgroundColor = #colorLiteral(red: 1, green: 0.9964868931, blue: 0.9576218565, alpha: 1)
+            self.backgroundColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.1)
         }
         
         
     }
-    
+        
     func createConstrains(){
         
 
         NSLayoutConstraint.activate([
+            
             dateLabel.leadingAnchor.constraint(greaterThanOrEqualTo: fullNameLabel.trailingAnchor, constant: 6),
             dateLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            dateLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
+            dateLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
             
-            
-        ])
-        NSLayoutConstraint.activate([
             fullNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 70),
-            fullNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
+            fullNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+            fullNameLabel.widthAnchor.constraint(equalToConstant: self.frame.width - dateLabel.frame.width - 76), // Работа над ошибками
             
-            
-        ])
-        
-        NSLayoutConstraint.activate([
             messageLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 36),
             messageLabel.leadingAnchor.constraint(equalTo:self.leadingAnchor, constant: 70),
             messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            messageLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15)
+            messageLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
             
-        ])
-        
-        NSLayoutConstraint.activate([
+            
             contactImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             contactImageView.leadingAnchor.constraint(equalTo:self.leadingAnchor, constant: 10),
             contactImageView.heightAnchor.constraint(equalToConstant: 48),
-            contactImageView.widthAnchor.constraint(equalToConstant: 48)
-
-        ])
-        NSLayoutConstraint.activate([
+            contactImageView.widthAnchor.constraint(equalToConstant: 48),
+            
             isOnline.topAnchor.constraint(equalTo: self.contactImageView.topAnchor, constant: 4),
             isOnline.leadingAnchor.constraint(equalTo: self.contactImageView.leadingAnchor, constant: 37),
             isOnline.heightAnchor.constraint(equalToConstant: 16),
             isOnline.widthAnchor.constraint(equalToConstant: 16)
-
         ])
-        
+    
     }
 }
 

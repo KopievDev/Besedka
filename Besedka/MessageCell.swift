@@ -10,9 +10,7 @@ import UIKit
 class MessageCell: UITableViewCell {
     
     //MARK: - Properties
-    var message : Messages? {
-        didSet{configure()}
-    }
+
     var widthMessage : CGFloat = 0
     //MARK: - UI
     //TextView
@@ -23,7 +21,7 @@ class MessageCell: UITableViewCell {
         textView.isScrollEnabled = false
         textView.isEditable = false
         textView.text = "Test teste test"
-        textView.textColor = .black
+        textView.textColor = Theme.current.labelColor
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
@@ -33,7 +31,7 @@ class MessageCell: UITableViewCell {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 11)
         label.text = "23:23"
-        label.textColor = .gray
+        label.textColor = Theme.current.secondaryLabelColor
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -43,7 +41,7 @@ class MessageCell: UITableViewCell {
     let bubbleContainer : UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(red: 0.863, green: 0.969, blue: 0.773, alpha: 1)
+        view.backgroundColor = Theme.current.bubbleFromMe
         view.layer.cornerRadius = 12
         return view
     }()
@@ -56,7 +54,6 @@ class MessageCell: UITableViewCell {
     //MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
         createUI()
     }
     
@@ -69,7 +66,12 @@ class MessageCell: UITableViewCell {
     
     
     //MARK:- Helpers
-    func configure()  {
+    func configureCell(message: Messages?)  {
+        //Обнуление ячейки
+        self.backgroundColor = .clear
+        textView.textColor = Theme.current.labelColor
+        dateLabel.textColor = Theme.current.secondaryLabelColor
+
         // Ширина сообщения
         widthBubble = bubbleContainer.widthAnchor.constraint(lessThanOrEqualToConstant:widthMessage )
         widthBubble.isActive = true
@@ -79,10 +81,12 @@ class MessageCell: UITableViewCell {
         
         if message.toMe {
             leftBubble.isActive = true
-            bubbleContainer.backgroundColor = UIColor(red: 0.875, green: 0.875, blue: 0.875, alpha: 1)
+            bubbleContainer.backgroundColor = Theme.current.bubbleToMe
         } else {
             rightBubble.isActive = true
-            bubbleContainer.backgroundColor = UIColor(red: 0.863, green: 0.969, blue: 0.773, alpha: 1)
+            bubbleContainer.backgroundColor = Theme.current.bubbleFromMe
+            textView.textColor = Theme.current.textFromMe
+            dateLabel.textColor = Theme.current.textFromMe
         }
         dateLabel.text = message.date?.checkDate()
      
@@ -112,10 +116,9 @@ class MessageCell: UITableViewCell {
             textView.trailingAnchor.constraint(equalTo: bubbleContainer.trailingAnchor, constant: -12),
             textView.widthAnchor.constraint(greaterThanOrEqualToConstant: widthMessage * 0.3),
             //DateLabel
-            dateLabel.topAnchor.constraint(equalTo: textView.bottomAnchor, constant: -10),
+            dateLabel.topAnchor.constraint(equalTo: textView.bottomAnchor),
             dateLabel.trailingAnchor.constraint(equalTo: textView.trailingAnchor, constant: 5),
-            dateLabel.bottomAnchor.constraint(equalTo: bubbleContainer.bottomAnchor, constant: -4)
-            
+            dateLabel.bottomAnchor.constraint(equalTo: bubbleContainer.bottomAnchor,constant: -5)
         ])
         
     }

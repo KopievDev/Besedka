@@ -1,174 +1,185 @@
 //
-//  ProfileViewController.swift
+//  ProfileViewControllerTwo.swift
 //  Besedka
 //
-//  Created by Ivan Kopiev on 19.02.2021.
+//  Created by Ivan Kopiev on 11.03.2021.
 //
 
 import UIKit
 
 class ProfileViewController: UIViewController {
+    //MARK: - Properties
+    lazy var radius = CGFloat()
+    //UI
+    lazy var avatarImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.layer.cornerRadius = radius
+        imageView.backgroundColor = UIColor(red: 0.894, green: 0.908, blue: 0.17, alpha: 1)
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectPhoto(_:)))
+        imageView.addGestureRecognizer(tapGesture)
+        return imageView
+    }()
+    
+    lazy var titleLabel : UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 26)
+        label.numberOfLines = 1
+        label.text = "My Profile"
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    lazy var shortName : UILabel = {
+        let label = UILabel()
+        label.text = "NN"
+        label.font = .systemFont(ofSize: 120)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    lazy var nameLabel : UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 24)
+        label.numberOfLines = 1
+        label.text = "Ivan Kopiev"
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    lazy var descriptionLabel : UILabel = {
+        let label = UILabel()
+        label.lineBreakMode = .byWordWrapping
+        label.font = .systemFont(ofSize: 16)
+        label.numberOfLines = 0
+        label.contentMode = .topLeft
+        label.text = "iOS Software Engineer \nMoscow, Russia"
+        label.translatesAutoresizingMaskIntoConstraints = false
 
-    //MARK: - Outlets
-    @IBOutlet weak var avatarImageView: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var editButton: UIButton!
-    @IBOutlet weak var shortName: UILabel!
-    @IBOutlet weak var nameBetweenDesc: NSLayoutConstraint!
-    @IBOutlet weak var nameBetweenImage: NSLayoutConstraint!
-    @IBOutlet weak var imageBetweenTop: NSLayoutConstraint!
+        return label
+    }()
     
-    //MARK: - IBAction
+    lazy var editButton : UIButton = {
+        let button = UIButton()
+        button.backgroundColor = Theme.current.buttonBackground
+        button.layer.cornerRadius = 15
+        button.setTitle("Edit", for: .normal)
+        button.setTitleColor(.darkGray, for: .normal)
+        button.setTitleColor(.lightGray, for: .highlighted)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 22)
+        button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
-    
-    @IBAction func closeProfile(_ sender: Any) {
-        dismiss(animated: true)
-    }
-    
-    @IBAction func editButtonPressed(_ sender: Any) {
-        
-        // +++++ Лишний код - начало +++++
-        let alertController = UIAlertController(title: "Настойка профиля", message: "Введите свои данные:", preferredStyle: .alert)
-        let apply = UIAlertAction(title: "Применить", style: .default, handler: {_ in
-            let text = alertController.textFields?[0].text ?? ""
-            if text.split(separator: " ").count >= 2 {
-                
-                self.nameLabel.text = text
-                self.shortName.text = "\(text.split(separator: " ")[0].first ?? "N")\(text.split(separator: " ")[1].first ?? "N")".uppercased()
-            }else {
-                self.nameLabel.text = "No Name"
-                self.shortName.text =  "\(self.nameLabel.text?.split(separator: " ")[0].first ?? "N")\(self.nameLabel.text?.split(separator: " ")[1].first ?? "N")".uppercased()
-            }
-            let descText = alertController.textFields?[1].text ?? ""
-            let geoText = alertController.textFields?[2].text ?? ""
+    lazy var closeButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("Close", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.darkGray, for: .highlighted)
+        button.addTarget(self, action: #selector(closeProfile), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
-            if descText.count >= 1 {
-                self.descriptionLabel.text = "\(descText)\n\(geoText)"
-            }else{
-                self.descriptionLabel.text = "Opps..."
+    //MARK: - Lifecycle
+    
 
-            }
-           
-        })
-        
-        let cancel = UIAlertAction(title: "Отменить", style: .cancel)
-        
-        alertController.addAction(apply)
-        alertController.addAction(cancel)
-        alertController.addTextField{ (textField) in
-            textField.placeholder = "Введите имя и фамилию"
-        }
-        alertController.addTextField{ (textField) in
-            textField.placeholder = "Введите информацию о себе"
-        }
-        alertController.addTextField{ (textField) in
-            textField.placeholder = "Страна, город?"
-        }
-        
-        present(alertController, animated: true)
-        // +++++ Лишний код - конец +++++
-    }
-    
-    //MARK: - Variables
-    
-    
-    //MARK: - Init
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-//        print("init...")
-        guard let frame = self.editButton?.frame else { return } // frame = nil
-        print("Frame button - \(frame)")
-        //print(self.editButton.frame) - Данное представление еще не инициализировано, поэтому приложение упадет при попытки вывести её фрэйм
-    }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-
-    }
-    
-    //MARK: - LifeCycle
-    // - viewDidLoad
-    
-    override func loadView() {
-        super.loadView()
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
-       // print(self.editButton.frame) // (57.5, 587.0, 260.0, 50.0) На данном этапе выводит фрейм не загруженной кнопки - без применения констрейтов  (Как мы задали для iphone se) - В этом методе координаты не изменятся
-
+        createDesing()
     }
     
-    // - viewDidAppear
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-       // print(self.editButton.frame) //(77.0, 782.0, 260.0, 50.0) - А тут выводит фрейм подогнанный под экран с помощью констрейтов (iphone 11) ... на разных экранах будут разные координаты
+    deinit {
+        print("Deinit profileVC")
+    }
+        
+    //MARK: - Helpers
+    
+    private func createDesing(){
+
+        self.view.addSubview(avatarImageView)
+        self.view.addSubview(shortName)
+        self.view.addSubview(descriptionLabel)
+        self.view.addSubview(nameLabel)
+        self.view.addSubview(editButton)
+        self.view.addSubview(closeButton)
+        self.view.addSubview(titleLabel)
+
+        createConstraints()
+        setupColors()
         setupDesign()
     }
     
-    //MARK: - Methods
+    
     private func setupDesign(){
-        // Setup imageView
-        self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.width / 2
-        self.avatarImageView.backgroundColor = UIColor(red: 0.894,
-                                                       green: 0.908,
-                                                       blue: 0.17,
-                                                       alpha: 1)
-        self.avatarImageView.contentMode = .scaleAspectFit
-        self.avatarImageView.clipsToBounds = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectPhoto(_:)))
-        self.avatarImageView.addGestureRecognizer(tapGesture)
-        
-        //Setup label
-        self.descriptionLabel.lineBreakMode = .byWordWrapping
-        //Setup Button
-        self.editButton.layer.cornerRadius = 15
-        
-        //Check size screen
-        switch self.view.frame.height {
-        
-            case 548.0...568.0://iPhone 5S,SE
-                self.shortName.font = UIFont(name: "Roboto-regular", size: 105)
-                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 12)
-                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 21)
-                self.nameBetweenDesc.constant /= 2
-                self.nameBetweenImage.constant /= 2
-                self.imageBetweenTop.constant /= 2
-            case 647.0...667.0://iPhone 6,7,8 SE2G
-                self.shortName.font = UIFont(name: "Roboto-regular", size: 125)
-                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 14)
-                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 23)
-                
-            case 716.0...736.0://iPhone 6+,7+,8+
-                self.shortName.font = UIFont(name: "Roboto-regular", size: 135)
-                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 16)
-                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 24)
-                
-            case 792...812.0://iPhone X,XS,XR, 11
-                self.shortName.font = UIFont(name: "Roboto-regular", size: 140)
-                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 17)
-                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 25)
-            case 897.0...926.0://iPhone XS_Max
-                self.descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 18)
-                self.nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 27)
-                self.shortName.font = UIFont(name: "Roboto-regular", size: 145)
-            default: print("_____")
-        }
         
         //Get short name from name
         if let name = self.nameLabel.text{
             self.shortName.text = "\(name.split(separator: " ")[0].first ?? "n")\(name.split(separator: " ")[1].first ?? "n")".uppercased()
         }
-        
+        //Get saved image
         let defaults = UserDefaults.standard
         guard let image = defaults.data(forKey: "saveImg") else {return}
         self.avatarImageView.image = UIImage(data: image, scale: 0.5)
         self.shortName.isHidden = true
-        
-        
+        self.avatarImageView.layer.cornerRadius = radius
+
+    }
+    private func setupColors(){
+        self.view.backgroundColor = Theme.current.backgroundColor
+        self.closeButton.setTitleColor(Theme.current.labelColor, for: .normal)
+        self.closeButton.setTitleColor(Theme.current.secondaryLabelColor, for: .highlighted)
+        self.editButton.backgroundColor = Theme.current.buttonBackground
     }
     
-    // Обработка тапа по картинке - вызываем actionSheet
+    private func createConstraints(){
+        
+        NSLayoutConstraint.activate([
+            self.avatarImageView.widthAnchor.constraint(greaterThanOrEqualToConstant: 180),
+            self.avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor),
+            self.avatarImageView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
+            self.avatarImageView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 60),
+            self.avatarImageView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 70),
+            
+            self.shortName.widthAnchor.constraint(equalTo: self.avatarImageView.widthAnchor),
+            self.shortName.centerYAnchor.constraint(equalTo: self.avatarImageView.centerYAnchor),
+            self.shortName.centerXAnchor.constraint(equalTo: self.avatarImageView.centerXAnchor),
+            
+            self.nameLabel.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: 32),
+            self.nameLabel.centerXAnchor.constraint(equalTo: self.avatarImageView.centerXAnchor),
+            self.nameLabel.heightAnchor.constraint(equalToConstant: 25),
+
+            self.descriptionLabel.topAnchor.constraint(equalTo: self.nameLabel.bottomAnchor, constant: 16),
+            self.descriptionLabel.widthAnchor.constraint(equalTo: self.avatarImageView.widthAnchor),
+            self.descriptionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 30),
+            self.descriptionLabel.centerXAnchor.constraint(equalTo: self.avatarImageView.centerXAnchor),
+
+            self.editButton.topAnchor.constraint(greaterThanOrEqualTo: self.descriptionLabel.bottomAnchor, constant: -30),
+            self.editButton.centerXAnchor.constraint(equalTo: self.avatarImageView.centerXAnchor),
+            self.editButton.heightAnchor.constraint(equalToConstant: 60),
+            self.editButton.widthAnchor.constraint(equalTo: self.avatarImageView.widthAnchor),
+            self.editButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -30 ),
+            
+            self.closeButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            self.closeButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            self.closeButton.heightAnchor.constraint(equalToConstant: 30),
+            self.closeButton.widthAnchor.constraint(equalToConstant: 50),
+            
+            self.titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            self.titleLabel.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor)
+
+            
+        ])
+        
+    }
+    //MARK: - Selectors
     @objc func selectPhoto(_ sender: UITapGestureRecognizer){
         
         let alertSheet = UIAlertController(title: nil,
@@ -190,6 +201,52 @@ class ProfileViewController: UIViewController {
         present(alertSheet, animated: true)
         
     }
+    
+    @objc private func editProfile(){
+        
+        // +++++ Лишний код - начало +++++
+        let alertController = UIAlertController(title: "Настойка профиля", message: "Введите свои данные:", preferredStyle: .alert)
+        let apply = UIAlertAction(title: "Применить", style: .default, handler: {_ in
+            let text = alertController.textFields?[0].text ?? ""
+            if text.split(separator: " ").count >= 2 {
+                
+                self.nameLabel.text = text
+                self.shortName.text = "\(text.split(separator: " ")[0].first ?? "N")\(text.split(separator: " ")[1].first ?? "N")".uppercased()
+            }else {
+                self.nameLabel.text = "No Name"
+                self.shortName.text =  "\(self.nameLabel.text?.split(separator: " ")[0].first ?? "N")\(self.nameLabel.text?.split(separator: " ")[1].first ?? "N")".uppercased()
+            }
+            let descText = alertController.textFields?[1].text ?? ""
+            let geoText = alertController.textFields?[2].text ?? ""
+
+            if descText.count >= 1 {
+                self.descriptionLabel.text = "\(descText)\n\(geoText)"
+            }else{
+                self.descriptionLabel.text = "Opps..."
+            }
+        })
+        
+        let cancel = UIAlertAction(title: "Отменить", style: .cancel)
+        
+        alertController.addAction(apply)
+        alertController.addAction(cancel)
+        alertController.addTextField{ (textField) in
+            textField.placeholder = "Введите имя и фамилию"
+        }
+        alertController.addTextField{ (textField) in
+            textField.placeholder = "Введите информацию о себе"
+        }
+        alertController.addTextField{ (textField) in
+            textField.placeholder = "Страна, город?"
+        }
+        
+        present(alertController, animated: true)
+        // +++++ Лишний код - конец +++++
+    }
+    
+    @objc private func closeProfile(){
+        dismiss(animated: true)
+    }
 }
 
 //MARK: - Extension UIImagePicker - work with image
@@ -202,8 +259,6 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
             imagePicker.allowsEditing = true
             imagePicker.sourceType = source
             present(imagePicker, animated: true)
-            
-            
         }
     }
     
@@ -223,3 +278,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
 
     }
 }
+
+    
+
+
