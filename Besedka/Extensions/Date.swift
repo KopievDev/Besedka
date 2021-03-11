@@ -9,7 +9,7 @@ import UIKit
 
 extension Date{
     
-    func checkDate() -> String{
+    func formatedDate() -> String{
         let now = Date()
         let calendar = Calendar.current
         let day = calendar.component(.day, from: self)

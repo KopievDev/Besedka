@@ -8,10 +8,10 @@
 import UIKit
 
 class Theme {
-    static var current: ThemeProtocolSec = DarkTheme()
+    static var current: ThemeProtocol = DarkTheme()
 }
 
-protocol ThemeProtocolSec {
+protocol ThemeProtocol {
     
     var tint: UIColor { get }
     var secondaryTint: UIColor { get }
@@ -30,13 +30,17 @@ protocol ThemeProtocolSec {
     
     var buttonBackground: UIColor {get}
     var textFromMe: UIColor {get}
+    
+    func apply(for application: UIApplication)
+    func extend()
+
 }
 
 
-extension ThemeProtocolSec {
+extension ThemeProtocol {
     func apply(for application: UIApplication) {
     
-        UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self]).backgroundColor = Theme.current.selectionColor
+        UIView.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self]).backgroundColor = Theme.current.secondaryTint
         UILabel.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self]).textColor = Theme.current.secondaryLabelColor
         
         UINavigationBar.appearance().barStyle = Theme.current.barStyle
@@ -51,8 +55,21 @@ extension ThemeProtocolSec {
         UILabel.appearance().textColor = Theme.current.labelColor
         SecondaryLabel.appearance().textColor = Theme.current.secondaryLabelColor
         
+        UITableViewCell.appearance().with {
+            $0.backgroundColor = .clear
+            $0.selectionColor = selectionColor
+        }
+        
 
+        self.extend()
+        
         UIApplication.shared.windows.reload()
 
     }
+    
+    func extend() {
+        // Optionally extend theme
+    }
 }
+
+

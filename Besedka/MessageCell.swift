@@ -88,7 +88,7 @@ class MessageCell: UITableViewCell {
             textView.textColor = Theme.current.textFromMe
             dateLabel.textColor = Theme.current.textFromMe
         }
-        dateLabel.text = message.date?.checkDate()
+        dateLabel.text = message.date?.formatedDate()
      
     }
     

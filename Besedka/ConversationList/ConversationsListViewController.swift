@@ -95,15 +95,7 @@ class ConversationsListViewController: UIViewController {
         addSettingButton()
     }
 
-    func addSettingButton(){
         
-        if #available(iOS 13.0, *) {
-            self.navigationItem.setLeftBarButton(UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(goToSetting)), animated: true)
-        } else {
-            // Fallback on earlier versions
-        }
-    }
-    
     func getData(){
         users.append(tonyStark)
         users.append(lebowski)
@@ -262,15 +254,20 @@ extension ConversationsListViewController: UITableViewDelegate {
 }
 
 
-//MARK: - Homework #4
+//MARK: - Homework #4.2
 
 extension ConversationsListViewController {
+    
+    func addSettingButton(){
+        self.navigationItem.setLeftBarButton(UIBarButtonItem(image: UIImage(named: "gear"), style: .plain, target: self, action: #selector(goToSetting)), animated: true)
+    }
+    
     
     @objc func goToSetting(){
         let settingView = ThemesViewController()
         
         //Clouser
-        settingView.themeSelected = { [weak self] theme in
+        settingView.themeSelected = {[weak self] theme in
             self?.changeTheme(name: theme)
         }
         
@@ -282,8 +279,8 @@ extension ConversationsListViewController {
     }
 }
 
-//MARK: - Delegate ThemeProtocol
-extension ConversationsListViewController: ThemeProtocol{
+//MARK: - Delegate ThemeProtocol  - Homework #4.3
+extension ConversationsListViewController: ThemeDelegateProtocol{
     
     func changeTheme(name: String) {
         switch name {
@@ -302,23 +299,3 @@ extension ConversationsListViewController: ThemeProtocol{
 }
 
 
-public extension UIWindow {
-    
-    /// Unload all views and add back.
-    /// Useful for applying `UIAppearance` changes to existing views.
-    func reload() {
-        subviews.forEach { view in
-            view.removeFromSuperview()
-            addSubview(view)
-        }
-    }
-}
-
-public extension Array where Element == UIWindow {
-    
-    /// Unload all views for each `UIWindow` and add back.
-    /// Useful for applying `UIAppearance` changes to existing views.
-    func reload() {
-        forEach { $0.reload() }
-    }
-}

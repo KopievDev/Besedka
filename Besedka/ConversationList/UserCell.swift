@@ -111,7 +111,7 @@ class UserCell: UITableViewCell {
             messageLabel.font = UIFont.italicSystemFont(ofSize: 14)
             messageLabel.text = "No messages yet"
         }
-        dateLabel.text = user.date?.checkDate()
+        dateLabel.text = user.date?.formatedDate()
         if !user.isOnline{
             self.isOnline.backgroundColor = .darkGray
 
@@ -123,7 +123,7 @@ class UserCell: UITableViewCell {
         }
         if user.hasUnreadMessages {
             self.messageLabel.font = UIFont.boldSystemFont(ofSize: 14)
-            self.backgroundColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.1)
+            self.backgroundColor = Theme.current.selectionColor
         }
         
         

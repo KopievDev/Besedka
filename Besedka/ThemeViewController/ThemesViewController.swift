@@ -7,13 +7,15 @@
 
 import UIKit
 
-protocol ThemeProtocol {
+protocol ThemeDelegateProtocol {
     func changeTheme(name: String)
 }
 
+//MARK: - HOMEWORK #4.1
 class ThemesViewController: UIViewController {
     //MARK: - Properties
-    var delegate : ThemeProtocol?
+    
+    var delegate : ThemeDelegateProtocol?
     var themeSelected: ((String)->())?
     
     
@@ -25,7 +27,7 @@ class ThemesViewController: UIViewController {
         button.textLabel.text = "Day"
         return button
     }()
-    lazy  var nightBar  : ThemeButton = {
+    lazy  var nightButton  : ThemeButton = {
         let button = ThemeButton()
         button.formView.backgroundColor = .black
         button.textLabel.text = "Night"
@@ -33,7 +35,7 @@ class ThemesViewController: UIViewController {
         button.bubbleViewTwo.backgroundColor = UIColor(red: 0.361, green: 0.361, blue: 0.361, alpha: 1)
         return button
     }()
-    let myButton = ThemeButton()
+    let classicButton = ThemeButton()
     
     
     //MARK: - Lifecycle
@@ -56,7 +58,7 @@ class ThemesViewController: UIViewController {
         view.backgroundColor = Theme.current.backgroundColor
         
         // StackView
-        let stackView = UIStackView(arrangedSubviews: [myButton, dayButton, nightBar])
+        let stackView = UIStackView(arrangedSubviews: [classicButton, dayButton, nightButton])
         stackView.axis = .vertical
         stackView.spacing = 40
         stackView.distribution = .equalCentering
@@ -71,19 +73,19 @@ class ThemesViewController: UIViewController {
         if let theme = UserDefaults.standard.string(forKey: "theme") {
             switch theme {
             case "Classic":
-                self.myButton.formView.layer.borderColor = UIColor(red: 0, green: 0.55, blue: 0.55, alpha: 1).cgColor
-                self.myButton.formView.layer.borderWidth = 3
+                self.classicButton.formView.layer.borderColor = UIColor(red: 0, green: 0.55, blue: 0.55, alpha: 1).cgColor
+                self.classicButton.formView.layer.borderWidth = 3
             case "Day":
                 self.dayButton.formView.layer.borderColor = UIColor(red: 0, green: 0.55, blue: 0.55, alpha: 1).cgColor
                 self.dayButton.formView.layer.borderWidth = 3
             default:
-                self.nightBar.formView.layer.borderColor = UIColor(red: 0, green: 0.55, blue: 0.55, alpha: 1).cgColor
-                self.nightBar.formView.layer.borderWidth = 3
+                self.nightButton.formView.layer.borderColor = UIColor(red: 0, green: 0.55, blue: 0.55, alpha: 1).cgColor
+                self.nightButton.formView.layer.borderWidth = 3
             }
         }
 
-        nightBar.addTarget(self, action: #selector(changeMode(sender:)), for: .touchUpInside)
-        myButton.addTarget(self, action: #selector(changeMode(sender:)), for: .touchUpInside)
+        nightButton.addTarget(self, action: #selector(changeMode(sender:)), for: .touchUpInside)
+        classicButton.addTarget(self, action: #selector(changeMode(sender:)), for: .touchUpInside)
         dayButton.addTarget(self, action: #selector(changeMode(sender:)), for: .touchUpInside)
       
 
@@ -94,20 +96,20 @@ class ThemesViewController: UIViewController {
         case "Classic":
             self.dayButton.formView.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1).cgColor
             self.dayButton.formView.layer.borderWidth = 1
-            self.nightBar.formView.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1).cgColor
-            self.nightBar.formView.layer.borderWidth = 1
+            self.nightButton.formView.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1).cgColor
+            self.nightButton.formView.layer.borderWidth = 1
         
         case "Night":
-            self.myButton.formView.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1).cgColor
-            self.myButton.formView.layer.borderWidth = 1
+            self.classicButton.formView.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1).cgColor
+            self.classicButton.formView.layer.borderWidth = 1
             self.dayButton.formView.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1).cgColor
             self.dayButton.formView.layer.borderWidth = 1
             
         default:
-            self.myButton.formView.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1).cgColor
-            self.myButton.formView.layer.borderWidth = 1
-            self.nightBar.formView.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1).cgColor
-            self.nightBar.formView.layer.borderWidth = 1
+            self.classicButton.formView.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1).cgColor
+            self.classicButton.formView.layer.borderWidth = 1
+            self.nightButton.formView.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1).cgColor
+            self.nightButton.formView.layer.borderWidth = 1
         }
     }
     
@@ -117,14 +119,15 @@ class ThemesViewController: UIViewController {
         //Сохранение название темы
         UserDefaults.standard.setValue(sender.textLabel.text, forKey: "theme")
         checkSelectedTheme(theme: sender.textLabel.text ?? "Day")
-        
+        //MARK: - HOMEWORK #4.3
+       
         //Замыкание
         themeSelected?(sender.textLabel.text ?? "")
         
         //Делегирование - Для проверки раскомментировать
-//        guard let delegate = delegate else { return }
-//        delegate.changeTheme(name: sender.textLabel.text ?? "vns")
-//
+//        delegate?.changeTheme(name: sender.textLabel.text ?? "vns")
+
+             
         self.createDesign()
         UIApplication.shared.windows.reload()
       
@@ -133,4 +136,11 @@ class ThemesViewController: UIViewController {
     
 }
 
+
+
+//MARK: - HOMEWORK #4.4 Retain cycle
+
+
+/// Retain cycle  может возникнуть через замыкание, если его использовать без захвата [weak self] в классе ConversationsListViewController, в котором ссылались бы на свойтво этого класса
+/// или если в этом классе была бы переменная - var conversationsLVC = ConversationsListViewController(), а в классе ConversationsListViewController    -  var themesVC = ThemesViewController() и они бы имели друг на друга сильные ссылки - что очевидно)
 
