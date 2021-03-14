@@ -87,13 +87,115 @@ class ProfileViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    //MARK: - HOMEWORK #5
+    
+    let userNameTextfiel: UITextField = {
+       let textfield = UITextField()
+        textfield.isHidden = true
+        textfield.placeholder = "FIO"
+        textfield.font = .boldSystemFont(ofSize: 20)
+        textfield.textAlignment = .center
+        textfield.clearButtonMode = .whileEditing
+        textfield.addCornerRadius(14)
+        textfield.addBorderLine(color: .black)
+        textfield.translatesAutoresizingMaskIntoConstraints = false
+        return textfield
+    }()
+    
+    let cityTextfield: UITextField = {
+       let textfield = UITextField()
+        textfield.isHidden = true
+        textfield.placeholder = "City, Country"
+        textfield.font = .boldSystemFont(ofSize: 16)
+        textfield.textAlignment = .center
+        
+        textfield.addCornerRadius(14)
+        textfield.addBorderLine(color: .black)
+        textfield.translatesAutoresizingMaskIntoConstraints = false
+        return textfield
+    }()
+    
 
+    
+    let descriptionTextView: UITextView = {
+        let textView = UITextView()
+        textView.isHidden = true
+        textView.addCornerRadius(14)
+        textView.addBorderLine(color: .black)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
+    }()
+    
+    lazy var saveGcdButton : UIButton = {
+        let button = UIButton()
+
+        button.backgroundColor = Theme.current.buttonBackground
+        button.layer.cornerRadius = 15
+        button.setTitleColor(.darkGray, for: .normal)
+        button.setTitleColor(.lightGray, for: .highlighted)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+      
+        button.setTitle("Save GCD", for: .normal)
+       
+        button.isHidden = true
+       
+        return button
+    }()
+    lazy var saveOperationButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("Save Operations", for: .normal)
+        button.backgroundColor = Theme.current.buttonBackground
+        button.layer.cornerRadius = 15
+        button.setTitleColor(.darkGray, for: .normal)
+        button.setTitleColor(.lightGray, for: .highlighted)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+      
+       
+        button.isHidden = true
+       
+        return button
+    }()
+    
+    
+    lazy var cancelButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("Cancel", for: .normal)
+        button.backgroundColor = Theme.current.buttonBackground
+        button.layer.cornerRadius = 15
+        button.setTitleColor(.darkGray, for: .normal)
+        button.setTitleColor(.lightGray, for: .highlighted)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+      
+       
+        button.isHidden = true
+       
+        return button
+    }()
+    
+    lazy var placeholderLabel: SecondaryLabel = {
+        let label = SecondaryLabel()
+        label.text = "About you: "
+            return label
+        }()
+    
+    var clickEdit: Bool = true
+    
+    
     //MARK: - Lifecycle
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         createDesing()
+        
+        
     }
     
     deinit {
@@ -103,7 +205,6 @@ class ProfileViewController: UIViewController {
     //MARK: - Helpers
     
     private func createDesing(){
-
         self.view.addSubview(avatarImageView)
         self.view.addSubview(shortName)
         self.view.addSubview(descriptionLabel)
@@ -111,10 +212,17 @@ class ProfileViewController: UIViewController {
         self.view.addSubview(editButton)
         self.view.addSubview(closeButton)
         self.view.addSubview(titleLabel)
-
+        self.view.addSubview(userNameTextfiel)
+        self.view.addSubview(descriptionTextView)
+        self.view.addSubview(cityTextfield)
+        self.view.addSubview(saveGcdButton)
+        self.view.addSubview(saveOperationButton)
+        self.view.addSubview(cancelButton)
+        self.view.addSubview(placeholderLabel)
         createConstraints()
         setupColors()
         setupDesign()
+        
     }
     
     
@@ -160,6 +268,7 @@ class ProfileViewController: UIViewController {
             self.descriptionLabel.widthAnchor.constraint(equalTo: self.avatarImageView.widthAnchor),
             self.descriptionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 30),
             self.descriptionLabel.centerXAnchor.constraint(equalTo: self.avatarImageView.centerXAnchor),
+            self.descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: editButton.topAnchor, constant: -20),
 
             self.editButton.topAnchor.constraint(greaterThanOrEqualTo: self.descriptionLabel.bottomAnchor, constant: -30),
             self.editButton.centerXAnchor.constraint(equalTo: self.avatarImageView.centerXAnchor),
@@ -173,7 +282,44 @@ class ProfileViewController: UIViewController {
             self.closeButton.widthAnchor.constraint(equalToConstant: 50),
             
             self.titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            self.titleLabel.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor)
+            self.titleLabel.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
+            
+            self.userNameTextfiel.topAnchor.constraint(equalTo: nameLabel.topAnchor),
+            self.userNameTextfiel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
+            self.userNameTextfiel.widthAnchor.constraint(equalTo: avatarImageView.widthAnchor),
+            
+            self.descriptionTextView.topAnchor.constraint(equalTo: descriptionLabel.topAnchor),
+            self.descriptionTextView.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
+            self.descriptionTextView.widthAnchor.constraint(equalTo: descriptionLabel.widthAnchor),
+            self.descriptionTextView.heightAnchor.constraint(equalToConstant: 100),
+            
+            
+            self.cityTextfield.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 16),
+            self.cityTextfield.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
+            self.cityTextfield.widthAnchor.constraint(equalTo: avatarImageView.widthAnchor),
+            self.cityTextfield.heightAnchor.constraint(equalToConstant: 30),
+
+            self.saveGcdButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 25),
+            self.saveGcdButton.bottomAnchor.constraint(equalTo: editButton.bottomAnchor),
+            self.saveGcdButton.trailingAnchor.constraint(equalTo: saveOperationButton.leadingAnchor, constant: -16),
+            self.saveGcdButton.heightAnchor.constraint(equalToConstant: 60),
+                                        self.saveGcdButton.widthAnchor.constraint(equalTo: saveOperationButton.widthAnchor),
+
+
+            
+            self.saveOperationButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -25),
+            self.saveOperationButton.bottomAnchor.constraint(equalTo: editButton.bottomAnchor),
+            self.saveOperationButton.heightAnchor.constraint(equalToConstant: 60),
+            
+            self.cancelButton.leadingAnchor.constraint(equalTo: saveGcdButton.leadingAnchor),
+            self.cancelButton.trailingAnchor.constraint(equalTo: saveOperationButton.trailingAnchor),
+            self.cancelButton.heightAnchor.constraint(equalToConstant: 60),
+            self.cancelButton.bottomAnchor.constraint(equalTo: editButton.topAnchor, constant: -16),
+
+//            self.placeholderLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+//            self.placeholderLabel.topAnchor.constraint(equalTo:  self.view.topAnchor),
+//            self.placeholderLabel.widthAnchor.constraint(equalTo: descriptionTextView.widthAnchor)
+
 
             
         ])
@@ -203,45 +349,87 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func editProfile(){
-        
-        // +++++ Лишний код - начало +++++
-        let alertController = UIAlertController(title: "Настойка профиля", message: "Введите свои данные:", preferredStyle: .alert)
-        let apply = UIAlertAction(title: "Применить", style: .default, handler: {_ in
-            let text = alertController.textFields?[0].text ?? ""
-            if text.split(separator: " ").count >= 2 {
-                
-                self.nameLabel.text = text
-                self.shortName.text = "\(text.split(separator: " ")[0].first ?? "N")\(text.split(separator: " ")[1].first ?? "N")".uppercased()
-            }else {
-                self.nameLabel.text = "No Name"
-                self.shortName.text =  "\(self.nameLabel.text?.split(separator: " ")[0].first ?? "N")\(self.nameLabel.text?.split(separator: " ")[1].first ?? "N")".uppercased()
-            }
-            let descText = alertController.textFields?[1].text ?? ""
-            let geoText = alertController.textFields?[2].text ?? ""
+        if clickEdit {
+            
+            self.userNameTextfiel.text = ""
+            self.userNameTextfiel.becomeFirstResponder()
+            
+            self.cityTextfield.isHidden = false
+            self.descriptionTextView.isHidden = false
+            self.userNameTextfiel.isHidden = false
+            self.saveOperationButton.isHidden = false
+            self.saveGcdButton.isHidden = false
+            self.cancelButton.isHidden = false
 
-            if descText.count >= 1 {
-                self.descriptionLabel.text = "\(descText)\n\(geoText)"
-            }else{
-                self.descriptionLabel.text = "Opps..."
-            }
-        })
-        
-        let cancel = UIAlertAction(title: "Отменить", style: .cancel)
-        
-        alertController.addAction(apply)
-        alertController.addAction(cancel)
-        alertController.addTextField{ (textField) in
-            textField.placeholder = "Введите имя и фамилию"
+            
+            self.editButton.isHidden = true
+            self.nameLabel.isHidden = true
+            self.descriptionLabel.isHidden = true
+            
+            clickEdit = !clickEdit
+        }else{
+            self.userNameTextfiel.isHidden = true
+            self.descriptionTextView.isHidden = true
+            self.cityTextfield.isHidden = true
+            self.saveOperationButton.isHidden = true
+            self.saveGcdButton.isHidden = true
+            self.cancelButton.isHidden = true
+
+            
+            self.editButton.isHidden = false
+            self.nameLabel.isHidden = false
+            self.descriptionLabel.isHidden = false
+            
+            
+            self.nameLabel.text = userNameTextfiel.text
+            let descText = descriptionTextView.text ?? ""
+            let geoText = cityTextfield.text ?? ""
+            self.descriptionLabel.text = "\(descText)\n\(geoText)"
+            
+            
+            clickEdit = !clickEdit
+            
         }
-        alertController.addTextField{ (textField) in
-            textField.placeholder = "Введите информацию о себе"
-        }
-        alertController.addTextField{ (textField) in
-            textField.placeholder = "Страна, город?"
-        }
         
-        present(alertController, animated: true)
-        // +++++ Лишний код - конец +++++
+        
+//        // +++++ Лишний код - начало +++++
+//        let alertController = UIAlertController(title: "Настойка профиля", message: "Введите свои данные:", preferredStyle: .alert)
+//        let apply = UIAlertAction(title: "Применить", style: .default, handler: {_ in
+//            let text = alertController.textFields?[0].text ?? ""
+//            if text.split(separator: " ").count >= 2 {
+//                
+//                self.nameLabel.text = text
+//                self.shortName.text = "\(text.split(separator: " ")[0].first ?? "N")\(text.split(separator: " ")[1].first ?? "N")".uppercased()
+//            }else {
+//                self.nameLabel.text = "No Name"
+//                self.shortName.text =  "\(self.nameLabel.text?.split(separator: " ")[0].first ?? "N")\(self.nameLabel.text?.split(separator: " ")[1].first ?? "N")".uppercased()
+//            }
+//            let descText = alertController.textFields?[1].text ?? ""
+//            let geoText = alertController.textFields?[2].text ?? ""
+//
+//            if descText.count >= 1 {
+//                self.descriptionLabel.text = "\(descText)\n\(geoText)"
+//            }else{
+//                self.descriptionLabel.text = "Opps..."
+//            }
+//        })
+//        
+//        let cancel = UIAlertAction(title: "Отменить", style: .cancel)
+//        
+//        alertController.addAction(apply)
+//        alertController.addAction(cancel)
+//        alertController.addTextField{ (textField) in
+//            textField.placeholder = "Введите имя и фамилию"
+//        }
+//        alertController.addTextField{ (textField) in
+//            textField.placeholder = "Введите информацию о себе"
+//        }
+//        alertController.addTextField{ (textField) in
+//            textField.placeholder = "Страна, город?"
+//        }
+//        
+//        present(alertController, animated: true)
+//        // +++++ Лишний код - конец +++++
     }
     
     @objc private func closeProfile(){
@@ -263,7 +451,8 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        self.avatarImageView.image = info[.editedImage] as? UIImage
+        //self.avatarImageView.image = info[.editedImage] as? UIImage
+        self.avatarImageView.setImage(image: info[.editedImage] as? UIImage ?? UIImage(), canAnimate: true)
         let imgData = (self.avatarImageView.image ?? UIImage()).jpegData(compressionQuality: 0.3)
         UserDefaults.standard.set(imgData, forKey: "saveImg")
         self.shortName.isHidden = true
