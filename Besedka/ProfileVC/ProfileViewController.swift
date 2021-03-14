@@ -93,12 +93,12 @@ class ProfileViewController: UIViewController {
     let userNameTextfiel: UITextField = {
        let textfield = UITextField()
         textfield.isHidden = true
-        textfield.placeholder = "FIO"
-        textfield.font = .boldSystemFont(ofSize: 20)
+        textfield.placeholder = "ФИО"
+        textfield.font = .boldSystemFont(ofSize: 16)
         textfield.textAlignment = .center
         textfield.clearButtonMode = .whileEditing
-        textfield.addCornerRadius(14)
-        textfield.addBorderLine(color: .black)
+        textfield.addBorderLine(color: Theme.current.secondaryLabelColor)
+        textfield.addCornerRadius(8)
         textfield.translatesAutoresizingMaskIntoConstraints = false
         return textfield
     }()
@@ -106,12 +106,11 @@ class ProfileViewController: UIViewController {
     let cityTextfield: UITextField = {
        let textfield = UITextField()
         textfield.isHidden = true
-        textfield.placeholder = "City, Country"
+        textfield.placeholder = "Город, Страна"
         textfield.font = .boldSystemFont(ofSize: 16)
         textfield.textAlignment = .center
-        
-        textfield.addCornerRadius(14)
-        textfield.addBorderLine(color: .black)
+        textfield.addBorderLine(color: Theme.current.secondaryLabelColor)
+        textfield.addCornerRadius(8)
         textfield.translatesAutoresizingMaskIntoConstraints = false
         return textfield
     }()
@@ -121,8 +120,9 @@ class ProfileViewController: UIViewController {
     let descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.isHidden = true
-        textView.addCornerRadius(14)
-        textView.addBorderLine(color: .black)
+        textView.addCornerRadius(10)
+        textView.font = .systemFont(ofSize: 16)
+        textView.addBorderLine(color: Theme.current.secondaryLabelColor)
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
@@ -181,7 +181,10 @@ class ProfileViewController: UIViewController {
     
     lazy var placeholderLabel: SecondaryLabel = {
         let label = SecondaryLabel()
-        label.text = "About you: "
+        label.font = .systemFont(ofSize: 16)
+        label.isHidden = true
+        label.text = "О себе: "
+        label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
     
@@ -195,7 +198,8 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         createDesing()
         
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTextInputChange), name: UITextView.textDidChangeNotification, object: nil)
+
     }
     
     deinit {
@@ -218,7 +222,7 @@ class ProfileViewController: UIViewController {
         self.view.addSubview(saveGcdButton)
         self.view.addSubview(saveOperationButton)
         self.view.addSubview(cancelButton)
-        self.view.addSubview(placeholderLabel)
+        self.descriptionTextView.addSubview(placeholderLabel)
         createConstraints()
         setupColors()
         setupDesign()
@@ -287,6 +291,8 @@ class ProfileViewController: UIViewController {
             self.userNameTextfiel.topAnchor.constraint(equalTo: nameLabel.topAnchor),
             self.userNameTextfiel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             self.userNameTextfiel.widthAnchor.constraint(equalTo: avatarImageView.widthAnchor),
+            self.userNameTextfiel.heightAnchor.constraint(equalToConstant: 30),
+
             
             self.descriptionTextView.topAnchor.constraint(equalTo: descriptionLabel.topAnchor),
             self.descriptionTextView.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
@@ -316,15 +322,58 @@ class ProfileViewController: UIViewController {
             self.cancelButton.heightAnchor.constraint(equalToConstant: 60),
             self.cancelButton.bottomAnchor.constraint(equalTo: editButton.topAnchor, constant: -16),
 
-//            self.placeholderLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-//            self.placeholderLabel.topAnchor.constraint(equalTo:  self.view.topAnchor),
-//            self.placeholderLabel.widthAnchor.constraint(equalTo: descriptionTextView.widthAnchor)
+     
+            self.placeholderLabel.topAnchor.constraint(equalTo: self.descriptionTextView.topAnchor, constant: 8),
+            self.placeholderLabel.leadingAnchor.constraint(equalTo: self.descriptionTextView.leadingAnchor, constant: 5),
+            self.placeholderLabel.widthAnchor.constraint(equalTo: descriptionTextView.widthAnchor)
 
 
             
         ])
         
     }
+    
+    private func showEditButton(state: Bool = true){
+        
+        self.saveOperationButton.isHidden = !state
+        self.saveGcdButton.isHidden = !state
+        self.cancelButton.isHidden = !state
+        self.editButton.isHidden = state
+      
+    }
+    
+    private func enableEditMode(state: Bool = true){
+        
+        self.userNameTextfiel.becomeFirstResponder()
+
+        //Обнуляем значения
+        if state{
+            self.userNameTextfiel.text = ""
+            self.cityTextfield.text = ""
+            self.descriptionTextView.text = ""
+        }
+        
+        showEditButton(state: state)
+
+        self.cityTextfield.isHidden = !state
+        self.descriptionTextView.isHidden = !state
+        self.userNameTextfiel.isHidden = !state
+        self.saveOperationButton.isHidden = !state
+        self.placeholderLabel.isHidden = !state
+
+        
+        self.nameLabel.isHidden = state
+        self.descriptionLabel.isHidden = state
+        
+        if !state{
+            self.nameLabel.text = userNameTextfiel.text
+            let descText = descriptionTextView.text ?? ""
+            let geoText = cityTextfield.text ?? ""
+            self.descriptionLabel.text = "\(descText)\n\(geoText)"
+        }
+    }
+    
+    
     //MARK: - Selectors
     @objc func selectPhoto(_ sender: UITapGestureRecognizer){
         
@@ -348,45 +397,18 @@ class ProfileViewController: UIViewController {
         
     }
     
+    @objc private func handleTextInputChange(){
+        self.placeholderLabel.isHidden = !self.descriptionTextView.text.isEmpty
+    }
+    
     @objc private func editProfile(){
+        enableEditMode(state: clickEdit)
+        
         if clickEdit {
-            
-            self.userNameTextfiel.text = ""
-            self.userNameTextfiel.becomeFirstResponder()
-            
-            self.cityTextfield.isHidden = false
-            self.descriptionTextView.isHidden = false
-            self.userNameTextfiel.isHidden = false
-            self.saveOperationButton.isHidden = false
-            self.saveGcdButton.isHidden = false
-            self.cancelButton.isHidden = false
-
-            
-            self.editButton.isHidden = true
-            self.nameLabel.isHidden = true
-            self.descriptionLabel.isHidden = true
             
             clickEdit = !clickEdit
         }else{
-            self.userNameTextfiel.isHidden = true
-            self.descriptionTextView.isHidden = true
-            self.cityTextfield.isHidden = true
-            self.saveOperationButton.isHidden = true
-            self.saveGcdButton.isHidden = true
-            self.cancelButton.isHidden = true
 
-            
-            self.editButton.isHidden = false
-            self.nameLabel.isHidden = false
-            self.descriptionLabel.isHidden = false
-            
-            
-            self.nameLabel.text = userNameTextfiel.text
-            let descText = descriptionTextView.text ?? ""
-            let geoText = cityTextfield.text ?? ""
-            self.descriptionLabel.text = "\(descText)\n\(geoText)"
-            
-            
             clickEdit = !clickEdit
             
         }
