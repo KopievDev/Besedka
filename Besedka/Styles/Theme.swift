@@ -51,7 +51,9 @@ extension ThemeProtocol {
         UITableView.appearance().separatorColor = Theme.current.separatorColor
         UITableView.appearance().backgroundColor = Theme.current.backgroundColor
         UITableViewCell.appearance().backgroundColor = .clear
-        
+            
+        UITextField.appearance().textColor = Theme.current.labelColor
+        UITextView.appearance().textColor = Theme.current.labelColor
         UILabel.appearance().textColor = Theme.current.labelColor
         SecondaryLabel.appearance().textColor = Theme.current.secondaryLabelColor
         

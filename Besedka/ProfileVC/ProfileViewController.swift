@@ -93,7 +93,8 @@ class ProfileViewController: UIViewController {
     let userNameTextfiel: UITextField = {
        let textfield = UITextField()
         textfield.isHidden = true
-        textfield.placeholder = "ФИО"
+        textfield.attributedPlaceholder = NSAttributedString(string: "ФИО",
+                                                             attributes: [NSAttributedString.Key.foregroundColor: Theme.current.secondaryLabelColor])
         textfield.font = .boldSystemFont(ofSize: 16)
         textfield.textAlignment = .center
         textfield.clearButtonMode = .whileEditing
@@ -106,9 +107,10 @@ class ProfileViewController: UIViewController {
     let cityTextfield: UITextField = {
        let textfield = UITextField()
         textfield.isHidden = true
-        textfield.placeholder = "Город, Страна"
         textfield.font = .boldSystemFont(ofSize: 16)
         textfield.textAlignment = .center
+        textfield.attributedPlaceholder = NSAttributedString(string: "Город, Страна",
+                                                             attributes: [NSAttributedString.Key.foregroundColor: Theme.current.secondaryLabelColor])
         textfield.addBorderLine(color: Theme.current.secondaryLabelColor)
         textfield.addCornerRadius(8)
         textfield.translatesAutoresizingMaskIntoConstraints = false
@@ -120,6 +122,7 @@ class ProfileViewController: UIViewController {
     let descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.isHidden = true
+        textView.backgroundColor = .clear
         textView.addCornerRadius(10)
         textView.font = .systemFont(ofSize: 16)
         textView.addBorderLine(color: Theme.current.secondaryLabelColor)
@@ -294,7 +297,7 @@ class ProfileViewController: UIViewController {
             self.userNameTextfiel.heightAnchor.constraint(equalToConstant: 30),
 
             
-            self.descriptionTextView.topAnchor.constraint(equalTo: descriptionLabel.topAnchor),
+            self.descriptionTextView.topAnchor.constraint(equalTo: userNameTextfiel.bottomAnchor, constant: 16),
             self.descriptionTextView.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
             self.descriptionTextView.widthAnchor.constraint(equalTo: descriptionLabel.widthAnchor),
             self.descriptionTextView.heightAnchor.constraint(equalToConstant: 100),
@@ -333,8 +336,24 @@ class ProfileViewController: UIViewController {
         
     }
     
+    private func registerForKeyboardNotification(){
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification,  object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification,  object: nil)
+
+    }
+    @objc private func keyboardWillShow(_ notification: Notification){
+        if view.frame.origin.y == 0 {
+//            guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
+            self.view.frame.origin.y -= 88
+        }
+    }
+    @objc private func keyboardWillHide(){
+        if view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
+    
     private func showEditButton(state: Bool = true){
-        
         self.saveOperationButton.isHidden = !state
         self.saveGcdButton.isHidden = !state
         self.cancelButton.isHidden = !state
@@ -343,6 +362,9 @@ class ProfileViewController: UIViewController {
     }
     
     private func enableEditMode(state: Bool = true){
+        self.registerForKeyboardNotification()
+
+        
         
         self.userNameTextfiel.becomeFirstResponder()
 
@@ -478,6 +500,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         let imgData = (self.avatarImageView.image ?? UIImage()).jpegData(compressionQuality: 0.3)
         UserDefaults.standard.set(imgData, forKey: "saveImg")
         self.shortName.isHidden = true
+        showEditButton()
         dismiss(animated: true)
     }
     
