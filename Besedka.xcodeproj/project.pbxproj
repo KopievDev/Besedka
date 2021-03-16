@@ -32,6 +32,7 @@
 		B5CA6EA325FA8D35009939AE /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA6EA225FA8D35009939AE /* UIWindow.swift */; };
 		B5CA6EA625FC9CFA009939AE /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA6EA525FC9CFA009939AE /* UIView.swift */; };
 		B5CA6EB425FCC1FF009939AE /* EditSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA6EB325FCC1FF009939AE /* EditSettingView.swift */; };
+		B5E92D1D25FF86000094DCCC /* UserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E92D1C25FF86000094DCCC /* UserProfileModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		B5CA6EA225FA8D35009939AE /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 		B5CA6EA525FC9CFA009939AE /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		B5CA6EB325FCC1FF009939AE /* EditSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSettingView.swift; sourceTree = "<group>"; };
+		B5E92D1C25FF86000094DCCC /* UserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				B5BD371C25EBF381007AF803 /* UsersModel.swift */,
+				B5E92D1C25FF86000094DCCC /* UserProfileModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				B5CA6E9C25FA7DF9009939AE /* With.swift in Sources */,
 				B5CA6E9625FA7BCE009939AE /* UITableViewCell.swift in Sources */,
 				B54266B125FA375B009BBF2F /* LightTheme.swift in Sources */,
+				B5E92D1D25FF86000094DCCC /* UserProfileModel.swift in Sources */,
 				B5623DA525FA1FA500BFD3D4 /* ProfileViewController.swift in Sources */,
 				B51995BA25F3A1C500576121 /* UITableView.swift in Sources */,
 				B5BD371025EBA938007AF803 /* ConversationsListViewController.swift in Sources */,

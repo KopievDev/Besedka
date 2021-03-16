@@ -95,7 +95,7 @@ class ProfileViewController: UIViewController {
         textfield.isHidden = true
         textfield.attributedPlaceholder = NSAttributedString(string: "ФИО",
                                                              attributes: [NSAttributedString.Key.foregroundColor: Theme.current.secondaryLabelColor])
-        textfield.font = .boldSystemFont(ofSize: 16)
+        textfield.font = .systemFont(ofSize: 16)
         textfield.textAlignment = .center
         textfield.clearButtonMode = .whileEditing
         textfield.addBorderLine(color: Theme.current.secondaryLabelColor)
@@ -107,7 +107,7 @@ class ProfileViewController: UIViewController {
     let cityTextfield: UITextField = {
        let textfield = UITextField()
         textfield.isHidden = true
-        textfield.font = .boldSystemFont(ofSize: 16)
+        textfield.font = .systemFont(ofSize: 16)
         textfield.textAlignment = .center
         textfield.attributedPlaceholder = NSAttributedString(string: "Город, Страна",
                                                              attributes: [NSAttributedString.Key.foregroundColor: Theme.current.secondaryLabelColor])
@@ -137,7 +137,7 @@ class ProfileViewController: UIViewController {
         button.layer.cornerRadius = 15
         button.setTitleColor(.darkGray, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
       
@@ -154,7 +154,7 @@ class ProfileViewController: UIViewController {
         button.layer.cornerRadius = 15
         button.setTitleColor(.darkGray, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
       
@@ -172,7 +172,7 @@ class ProfileViewController: UIViewController {
         button.layer.cornerRadius = 15
         button.setTitleColor(.darkGray, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
       
@@ -192,7 +192,7 @@ class ProfileViewController: UIViewController {
         }()
     
     var clickEdit: Bool = true
-    
+    var constraintTextfieldLest = NSLayoutConstraint()
     
     //MARK: - Lifecycle
     
@@ -267,7 +267,7 @@ class ProfileViewController: UIViewController {
             self.shortName.centerYAnchor.constraint(equalTo: self.avatarImageView.centerYAnchor),
             self.shortName.centerXAnchor.constraint(equalTo: self.avatarImageView.centerXAnchor),
             
-            self.nameLabel.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: 32),
+            self.nameLabel.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: 16),
             self.nameLabel.centerXAnchor.constraint(equalTo: self.avatarImageView.centerXAnchor),
             self.nameLabel.heightAnchor.constraint(equalToConstant: 25),
 
@@ -279,9 +279,13 @@ class ProfileViewController: UIViewController {
 
             self.editButton.topAnchor.constraint(greaterThanOrEqualTo: self.descriptionLabel.bottomAnchor, constant: -30),
             self.editButton.centerXAnchor.constraint(equalTo: self.avatarImageView.centerXAnchor),
-            self.editButton.heightAnchor.constraint(equalToConstant: 60),
-            self.editButton.widthAnchor.constraint(equalTo: self.avatarImageView.widthAnchor),
-            self.editButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -30 ),
+//            self.editButton.heightAnchor.constraint(equalToConstant: 60),
+//            self.editButton.widthAnchor.constraint(equalTo: self.avatarImageView.widthAnchor),
+            self.editButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -25 ),
+            self.editButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
+            self.editButton.widthAnchor.constraint(equalTo: cancelButton.widthAnchor),
+
+
             
             self.closeButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
             self.closeButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
@@ -291,40 +295,92 @@ class ProfileViewController: UIViewController {
             self.titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10),
             self.titleLabel.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
             
+            //HOMEWORK 5 Edit mode
+            
+            //new
             self.userNameTextfiel.topAnchor.constraint(equalTo: nameLabel.topAnchor),
-            self.userNameTextfiel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             self.userNameTextfiel.widthAnchor.constraint(equalTo: avatarImageView.widthAnchor),
-            self.userNameTextfiel.heightAnchor.constraint(equalToConstant: 30),
-
+            self.userNameTextfiel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             
             self.descriptionTextView.topAnchor.constraint(equalTo: userNameTextfiel.bottomAnchor, constant: 16),
             self.descriptionTextView.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
             self.descriptionTextView.widthAnchor.constraint(equalTo: descriptionLabel.widthAnchor),
-            self.descriptionTextView.heightAnchor.constraint(equalToConstant: 100),
-            
+            self.descriptionTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 20),
+            self.descriptionTextView.heightAnchor.constraint(lessThanOrEqualToConstant: 100),
+//                        self.descriptionTextView.heightAnchor.constraint(equalToConstant: 40),
+
             
             self.cityTextfield.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 16),
             self.cityTextfield.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             self.cityTextfield.widthAnchor.constraint(equalTo: avatarImageView.widthAnchor),
-            self.cityTextfield.heightAnchor.constraint(equalToConstant: 30),
+            
+            
+            
+            self.cancelButton.topAnchor.constraint(greaterThanOrEqualTo: cityTextfield.bottomAnchor, constant: 16),
+            self.cancelButton.leadingAnchor.constraint(equalTo: saveGcdButton.leadingAnchor),
+            self.cancelButton.trailingAnchor.constraint(equalTo: saveOperationButton.trailingAnchor),
+//            self.cancelButton.heightAnchor.constraint(equalToConstant: 60),
 
+            self.cancelButton.heightAnchor.constraint(lessThanOrEqualToConstant: 60),
+            self.cancelButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 50),
+
+            
+            self.saveGcdButton.topAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: 16),
             self.saveGcdButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 25),
             self.saveGcdButton.bottomAnchor.constraint(equalTo: editButton.bottomAnchor),
             self.saveGcdButton.trailingAnchor.constraint(equalTo: saveOperationButton.leadingAnchor, constant: -16),
-            self.saveGcdButton.heightAnchor.constraint(equalToConstant: 60),
-                                        self.saveGcdButton.widthAnchor.constraint(equalTo: saveOperationButton.widthAnchor),
-
-
+            self.saveGcdButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
             
+            self.saveGcdButton.widthAnchor.constraint(equalTo: saveOperationButton.widthAnchor),
+            
+            self.saveOperationButton.topAnchor.constraint(equalTo: saveGcdButton.topAnchor),
             self.saveOperationButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -25),
-            self.saveOperationButton.bottomAnchor.constraint(equalTo: editButton.bottomAnchor),
-            self.saveOperationButton.heightAnchor.constraint(equalToConstant: 60),
-            
-            self.cancelButton.leadingAnchor.constraint(equalTo: saveGcdButton.leadingAnchor),
-            self.cancelButton.trailingAnchor.constraint(equalTo: saveOperationButton.trailingAnchor),
-            self.cancelButton.heightAnchor.constraint(equalToConstant: 60),
-            self.cancelButton.bottomAnchor.constraint(equalTo: editButton.topAnchor, constant: -16),
+            self.saveOperationButton.bottomAnchor.constraint(equalTo: saveGcdButton.bottomAnchor),
+            self.saveOperationButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
 
+            
+            
+//            self.userNameTextfiel.topAnchor.constraint(equalTo: nameLabel.topAnchor),
+////            self.userNameTextfiel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor, constant: -self.view.frame.width),
+//            self.userNameTextfiel.widthAnchor.constraint(equalTo: avatarImageView.widthAnchor),
+//            self.userNameTextfiel.heightAnchor.constraint(equalToConstant: 30),
+
+            
+//            self.descriptionTextView.topAnchor.constraint(equalTo: userNameTextfiel.bottomAnchor, constant: 16),
+//            self.descriptionTextView.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
+//            self.descriptionTextView.widthAnchor.constraint(equalTo: descriptionLabel.widthAnchor),
+//            self.descriptionTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 30),
+            
+//
+//            self.cityTextfield.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 16),
+//            self.cityTextfield.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
+//            self.cityTextfield.widthAnchor.constraint(equalTo: avatarImageView.widthAnchor),
+//            self.cityTextfield.heightAnchor.constraint(equalToConstant: 30),
+        
+//            self.cancelButton.topAnchor.constraint(greaterThanOrEqualTo: cityTextfield.bottomAnchor, constant: 16),
+//            self.cancelButton.leadingAnchor.constraint(equalTo: saveGcdButton.leadingAnchor),
+//            self.cancelButton.trailingAnchor.constraint(equalTo: saveOperationButton.trailingAnchor),
+////            self.cancelButton.heightAnchor.constraint(gre
+//            self.cancelButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/12),
+
+//            self.cancelButton.bottomAnchor.constraint(equalTo: editButton.topAnchor, constant: -16),
+//
+//            self.saveGcdButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 25),
+//            self.saveGcdButton.bottomAnchor.constraint(equalTo: editButton.bottomAnchor),
+//            self.saveGcdButton.trailingAnchor.constraint(equalTo: saveOperationButton.leadingAnchor, constant: -16),
+////            self.saveGcdButton.heightAnchor.constraint(equalToConstant: 60),
+//            self.saveGcdButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/12),
+//
+//            self.saveGcdButton.widthAnchor.constraint(equalTo: saveOperationButton.widthAnchor),
+//
+//
+//
+//            self.saveOperationButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -25),
+//            self.saveOperationButton.bottomAnchor.constraint(equalTo: editButton.bottomAnchor),
+////            self.saveOperationButton.heightAnchor.constraint(equalToConstant: 60),
+//            self.saveOperationButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/12),
+
+          
      
             self.placeholderLabel.topAnchor.constraint(equalTo: self.descriptionTextView.topAnchor, constant: 8),
             self.placeholderLabel.leadingAnchor.constraint(equalTo: self.descriptionTextView.leadingAnchor, constant: 5),
@@ -334,24 +390,34 @@ class ProfileViewController: UIViewController {
             
         ])
         
+//        constraintTextfieldLest = userNameTextfiel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor, constant: -self.view.frame.width)
+//
+//        constraintTextfieldLest.isActive = true
     }
-    
+    //  Обработка появления клавиатуры
     private func registerForKeyboardNotification(){
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification,  object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification,  object: nil)
-
+        
     }
     @objc private func keyboardWillShow(_ notification: Notification){
-        if view.frame.origin.y == 0 {
-//            guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
-            self.view.frame.origin.y -= 88
+        
+        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
+        
+        if view.bounds.origin.y == 0 && view.frame.height - cityTextfield.frame.maxY <= keyboardFrame.height {
+            self.view.bounds.origin.y += keyboardFrame.height - (view.frame.height - cityTextfield.frame.maxY) + 16
         }
     }
+    
     @objc private func keyboardWillHide(){
-        if view.frame.origin.y != 0 {
-            self.view.frame.origin.y = 0
+        if view.bounds.origin.y != 0 {
+            self.view.bounds.origin.y = 0
         }
+        
+        
     }
+    
+    
     
     private func showEditButton(state: Bool = true){
         self.saveOperationButton.isHidden = !state
@@ -363,6 +429,22 @@ class ProfileViewController: UIViewController {
     
     private func enableEditMode(state: Bool = true){
         self.registerForKeyboardNotification()
+        //animation textfield
+//        UIView.animate(withDuration: 0.5) {
+//            self.constraintTextfieldLest.constant = 30
+//            self.view.layoutIfNeeded()
+//        }
+//        UIView.animate(withDuration: 0.5) {
+//            self.constraintTextfieldLest.constant = 30
+//            self.view.layoutIfNeeded()
+//        } completion: { (state) in
+//            if state{
+//                UIView.animate(withDuration: 0.2) {
+//                    self.constraintTextfieldLest.constant = 0
+//                    self.view.layoutIfNeeded()
+//                }
+//            }
+//        }
 
         
         
