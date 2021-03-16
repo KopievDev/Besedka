@@ -10,6 +10,8 @@ import UIKit
 class ProfileViewController: UIViewController {
     //MARK: - Properties
     lazy var radius = CGFloat()
+    
+    var user = UserProfileModel()
     //UI
     lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
@@ -138,7 +140,7 @@ class ProfileViewController: UIViewController {
         button.setTitleColor(.darkGray, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
         button.titleLabel?.font = .boldSystemFont(ofSize: 15)
-        button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
+        button.addTarget(self, action: #selector(saveGCD), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
       
         button.setTitle("Save GCD", for: .normal)
@@ -199,10 +201,11 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        createDesing()
         
+        self.user.initFromFile()
+        createDesing()
         NotificationCenter.default.addObserver(self, selector: #selector(handleTextInputChange), name: UITextView.textDidChangeNotification, object: nil)
-
+        print(user)
     }
     
     deinit {
@@ -235,6 +238,13 @@ class ProfileViewController: UIViewController {
     
     private func setupDesign(){
         
+        let descText = user.aboutMe ?? ""
+        let geoText = user.city ?? ""
+        self.descriptionLabel.text = "\(descText)\n\(geoText)"
+        self.nameLabel.text = user.name ?? ""
+
+
+
         //Get short name from name
         if let name = self.nameLabel.text{
             self.shortName.text = "\(name.split(separator: " ")[0].first ?? "n")\(name.split(separator: " ")[1].first ?? "n")".uppercased()
@@ -469,12 +479,12 @@ class ProfileViewController: UIViewController {
         self.nameLabel.isHidden = state
         self.descriptionLabel.isHidden = state
         
-        if !state{
-            self.nameLabel.text = userNameTextfiel.text
-            let descText = descriptionTextView.text ?? ""
-            let geoText = cityTextfield.text ?? ""
-            self.descriptionLabel.text = "\(descText)\n\(geoText)"
-        }
+//        if !state{
+//            self.nameLabel.text = userNameTextfiel.text
+//            let descText = descriptionTextView.text ?? ""
+//            let geoText = cityTextfield.text ?? ""
+//            self.descriptionLabel.text = "\(descText)\n\(geoText)"
+//        }
     }
     
     
@@ -556,6 +566,29 @@ class ProfileViewController: UIViewController {
 //        
 //        present(alertController, animated: true)
 //        // +++++ Лишний код - конец +++++
+    }
+    //MARK:- Save GCD selector
+    @objc private func saveGCD(){
+        print(checkEditData())
+        checkEditData().saveToFile(name: "userProfile")
+        user.initFromFile()
+        setupDesign()
+        enableEditMode(state: false)
+    }
+    
+    private func checkEditData() -> UserProfileModel{
+        var newUser = self.user
+        
+        if userNameTextfiel.text != "" {
+            newUser.name = userNameTextfiel.text
+        }
+        if descriptionTextView.text != "" {
+            newUser.aboutMe = descriptionTextView.text
+        }
+        if cityTextfield.text != "" {
+            newUser.city = cityTextfield.text
+        }
+        return newUser
     }
     
     @objc private func closeProfile(){
