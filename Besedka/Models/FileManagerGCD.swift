@@ -12,8 +12,9 @@ class FileManagerGCD {
     let queue = DispatchQueue.global(qos: .utility)
     let main = DispatchQueue.main
     
-    public func saveImageToFile(_ image: UIImage?, byName name: String, completion: @escaping ()->Void){
-        
+    public func saveImageToFile(_ image: UIImage?,
+                                byName name: String,
+                                completion: @escaping ()->Void){
         queue.async {
             guard let pngData = image?.pngData(),
                   let filePath = self.filePath(forKey: name) else { return }
@@ -23,15 +24,12 @@ class FileManagerGCD {
     }
     
     public func deleteFile(name: String){
-        
         let fileNameToDelete = name
         var filePath = ""
         queue.async {
-            
             let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
             let documentDirectory = paths[0]
             filePath = documentDirectory.appendingFormat("/" + fileNameToDelete)
-            
             do {
                 let fileManager = FileManager.default
                 if fileManager.fileExists(atPath: filePath) {
@@ -39,7 +37,6 @@ class FileManagerGCD {
                 } else {
                     print("File does not exist")
                 }
-
             }
             catch let error as NSError {
                 print("An error took place: \(error)")
@@ -59,7 +56,8 @@ class FileManagerGCD {
             completionQueue.async {completion(image)}
         }
     }
-    public func getUserFromFile(name: String, completion: @escaping (UserProfileModel?)->Void){
+    public func getUserFromFile(name: String,
+                                completion: @escaping (UserProfileModel?)->Void){
         queue.async {
             guard let path = Bundle.main.path(forResource: name, ofType: "json")  else {return}
             let url = URL(fileURLWithPath: path)
@@ -69,14 +67,19 @@ class FileManagerGCD {
         }
     }
     
-    public func saveUserToFile(name: String, user: UserProfileModel?, completion: @escaping (()->Void) ){
+    public func saveUserToFile(name: String,
+                               user: UserProfileModel?,
+                               completion: @escaping ((Error?)->Void) ){
         queue.async {
-            sleep(5)
             guard  let path = Bundle.main.path(forResource: name, ofType: "json") else { return}
             let url = URL(fileURLWithPath: path)
             guard let user = user  else {return}
-            try? JSONEncoder().encode(user).write(to: url)
-            self.main.async {completion()}
+            do{
+                try JSONEncoder().encode(user).write(to: url)
+                self.main.async {completion(nil)}
+            }catch let error{
+                self.main.async {completion(error)}
+            }
         }
     }
     
@@ -109,10 +112,3 @@ class FileManagerGCD {
     }
 }
 
-
-class FileManagerOperation: Operation {
-    
-    
-    
-    
-}

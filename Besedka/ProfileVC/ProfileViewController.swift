@@ -138,9 +138,8 @@ class ProfileViewController: UIViewController {
         return textView
     }()
     
-    lazy var saveGcdButton : UIButton = {
+    lazy var saveGCDButton : UIButton = {
         let button = UIButton()
-
         button.backgroundColor = Theme.current.buttonBackground
         button.layer.cornerRadius = 15
         button.setTitleColor(.darkGray, for: .normal)
@@ -148,15 +147,7 @@ class ProfileViewController: UIViewController {
         button.titleLabel?.font = .boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(saveGCD), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-      
         button.setTitle("Save GCD", for: .normal)
-        var disable = false {
-            didSet{
-                if disable{
-                    button.backgroundColor = .red
-                }
-            }
-        }
         button.isHidden = true
        
         return button
@@ -169,10 +160,8 @@ class ProfileViewController: UIViewController {
         button.setTitleColor(.darkGray, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
         button.titleLabel?.font = .boldSystemFont(ofSize: 15)
-        button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
+        button.addTarget(self, action: #selector(saveOperation), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-      
-       
         button.isHidden = true
        
         return button
@@ -187,7 +176,7 @@ class ProfileViewController: UIViewController {
         button.setTitleColor(.darkGray, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
         button.titleLabel?.font = .boldSystemFont(ofSize: 15)
-        button.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
+        button.addTarget(self, action: #selector(cancelEditing), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
       
        
@@ -241,11 +230,11 @@ class ProfileViewController: UIViewController {
         self.view.addSubview(editButton)
         self.view.addSubview(closeButton)
         self.view.addSubview(titleLabel)
-        
+    
         self.view.addSubview(userNameTextfiel)
         self.view.addSubview(descriptionTextView)
         self.view.addSubview(cityTextfield)
-        self.view.addSubview(saveGcdButton)
+        self.view.addSubview(saveGCDButton)
         self.view.addSubview(saveOperationButton)
         self.view.addSubview(cancelButton)
         self.view.addSubview(activityIndicator)
@@ -327,8 +316,6 @@ class ProfileViewController: UIViewController {
 
             self.editButton.topAnchor.constraint(greaterThanOrEqualTo: self.descriptionLabel.bottomAnchor, constant: -30),
             self.editButton.centerXAnchor.constraint(equalTo: self.avatarImageView.centerXAnchor),
-//            self.editButton.heightAnchor.constraint(equalToConstant: 60),
-//            self.editButton.widthAnchor.constraint(equalTo: self.avatarImageView.widthAnchor),
             self.editButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -25 ),
             self.editButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
             self.editButton.widthAnchor.constraint(equalTo: cancelButton.widthAnchor),
@@ -366,25 +353,22 @@ class ProfileViewController: UIViewController {
             
             
             self.cancelButton.topAnchor.constraint(greaterThanOrEqualTo: cityTextfield.bottomAnchor, constant: 16),
-            self.cancelButton.leadingAnchor.constraint(equalTo: saveGcdButton.leadingAnchor),
+            self.cancelButton.leadingAnchor.constraint(equalTo: saveGCDButton.leadingAnchor),
             self.cancelButton.trailingAnchor.constraint(equalTo: saveOperationButton.trailingAnchor),
-            //            self.cancelButton.heightAnchor.constraint(equalToConstant: 60),
-            
             self.cancelButton.heightAnchor.constraint(lessThanOrEqualToConstant: 60),
             self.cancelButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 50),
             
             
-            self.saveGcdButton.topAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: 16),
-            self.saveGcdButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 25),
-            self.saveGcdButton.bottomAnchor.constraint(equalTo: editButton.bottomAnchor),
-            self.saveGcdButton.trailingAnchor.constraint(equalTo: saveOperationButton.leadingAnchor, constant: -16),
-            self.saveGcdButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
+            self.saveGCDButton.topAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: 16),
+            self.saveGCDButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 25),
+            self.saveGCDButton.bottomAnchor.constraint(equalTo: editButton.bottomAnchor),
+            self.saveGCDButton.trailingAnchor.constraint(equalTo: saveOperationButton.leadingAnchor, constant: -16),
+            self.saveGCDButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
+            self.saveGCDButton.widthAnchor.constraint(equalTo: saveOperationButton.widthAnchor),
             
-            self.saveGcdButton.widthAnchor.constraint(equalTo: saveOperationButton.widthAnchor),
-            
-            self.saveOperationButton.topAnchor.constraint(equalTo: saveGcdButton.topAnchor),
+            self.saveOperationButton.topAnchor.constraint(equalTo: saveGCDButton.topAnchor),
             self.saveOperationButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -25),
-            self.saveOperationButton.bottomAnchor.constraint(equalTo: saveGcdButton.bottomAnchor),
+            self.saveOperationButton.bottomAnchor.constraint(equalTo: saveGCDButton.bottomAnchor),
             self.saveOperationButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
             
             self.activityIndicator.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
@@ -422,11 +406,9 @@ class ProfileViewController: UIViewController {
         
     }
     
-    
-    
     private func showEditButton(state: Bool = true){
         self.saveOperationButton.isHidden = !state
-        self.saveGcdButton.isHidden = !state
+        self.saveGCDButton.isHidden = !state
         self.cancelButton.isHidden = !state
         self.editButton.isHidden = state
       
@@ -467,6 +449,41 @@ class ProfileViewController: UIViewController {
         
         disableButton(state: formIsValid)
     }
+    
+    private func showAlert(state: Bool = true, from: String = "gcd"){
+        let alertView = UIAlertController(title: nil, message: "Данные сохранены", preferredStyle: .alert)
+        let doneAction = UIAlertAction(title: "Ok", style: .default, handler: {[weak self]  _ in
+            guard let self = self else {return}
+            self.enableEditMode(state: false)
+            
+        })
+        
+        alertView.addAction(doneAction)
+        let errorAlert = UIAlertController(title: "Ошибка", message: "Не удалось сохранить данные", preferredStyle: .alert)
+        let repetAction = UIAlertAction(title: "Повторить", style: .destructive) {[weak self] _ in
+            guard let self = self else {return}
+            switch from{
+            case "operation":
+                self.saveOperation()
+            default:
+                self.saveGCD()
+            }
+        }
+        let doneActionError = UIAlertAction(title: "Ok", style: .default, handler: {[weak self]  _ in
+            guard let self = self else {return}
+            self.enableEditMode(state: false)
+            
+        })
+        errorAlert.addAction(doneActionError)
+        errorAlert.addAction(repetAction)
+
+        if state{
+            present(alertView, animated: true)
+        }else{
+            present(errorAlert, animated: true)
+
+        }
+    }
 
     //MARK: - Selectors
     @objc func selectPhoto(_ sender: UITapGestureRecognizer){
@@ -495,29 +512,29 @@ class ProfileViewController: UIViewController {
         self.placeholderLabel.isHidden = !self.descriptionTextView.text.isEmpty
     }
     
+    @objc private func cancelEditing(){
+        enableEditMode(state: false)
+        let oldSetting = FileManagerGCD()
+        oldSetting.saveUserToFile(name: "UserProfile", user: self.user, completion: {_ in })
+
+    }
+    
     @objc private func editProfile(){
         enableEditMode(state: clickEdit)
-       
-        if clickEdit {
-            clickEdit = !clickEdit
-        }else{
-            clickEdit = !clickEdit
-        }
-       
     }
     
     private func disableButton( state: Bool = true){
-        self.saveGcdButton.isEnabled = !state
+        self.saveGCDButton.isEnabled = !state
         self.saveOperationButton.isEnabled = !state
-        self.saveGcdButton.backgroundColor = Theme.current.buttonDisable
+        self.saveGCDButton.backgroundColor = Theme.current.buttonDisable
         self.saveOperationButton.backgroundColor = Theme.current.buttonDisable
-        self.saveGcdButton.setTitleColor(Theme.current.subtleLabelColor, for: .normal)
+        self.saveGCDButton.setTitleColor(Theme.current.subtleLabelColor, for: .normal)
         self.saveOperationButton.setTitleColor(Theme.current.subtleLabelColor, for: .normal)
 
         if !state {
-            self.saveGcdButton.backgroundColor = Theme.current.buttonBackground
+            self.saveGCDButton.backgroundColor = Theme.current.buttonBackground
             self.saveOperationButton.backgroundColor = Theme.current.buttonBackground
-            self.saveGcdButton.setTitleColor(Theme.current.secondaryLabelColor, for: .normal)
+            self.saveGCDButton.setTitleColor(Theme.current.secondaryLabelColor, for: .normal)
             self.saveOperationButton.setTitleColor(Theme.current.secondaryLabelColor, for: .normal)
         }
     }
@@ -536,21 +553,53 @@ class ProfileViewController: UIViewController {
             saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar") {[weak self] in
                 guard let self = self else { return }
                 self.activityIndicator.stopAnimating()
-                self.enableEditMode(state: false)
-
+                self.showAlert()
             }
         }else{
             // Если изменены фото и данные
-            saver.saveUserToFile(name: "UserProfile", user: user) {[weak self] in
+            saver.saveUserToFile(name: "UserProfile", user: user) {[weak self] error in
                 guard let self = self else {return}
                 self.setupDesign()
-                self.enableEditMode(state: false)
                 self.activityIndicator.stopAnimating()
+                if error != nil {self.showAlert(state: false); return}
+                self.showAlert(state: true)
             }
-            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar", completion: {})
+            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar", completion: {
+
+            })
         }
-        
     }
+    
+    @objc private func saveOperation(){
+        
+        let saver = FileManagerOperation()
+        let user = returnModifiedData()
+        
+        self.activityIndicator.startAnimating()
+        self.activityIndicator.isHidden = false
+        self.disableButton()
+        // Если изменено только фото
+        if userNameTextfiel.isHidden{
+            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar") {[weak self] in
+                guard let self = self else { return }
+                self.activityIndicator.stopAnimating()
+                self.showAlert()
+            }
+        }else{
+            // Если изменены фото и данные
+            saver.saveUserToFile(name: "UserProfile", user: user) {[weak self] error in
+                guard let self = self else {return}
+                self.setupDesign()
+                self.activityIndicator.stopAnimating()
+                if error != nil {self.showAlert(state: false, from: "operation"); return}
+                self.showAlert(state: true)
+            }
+            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar", completion: {
+
+            })
+        }
+    }
+    
     
     
     private func returnModifiedData() -> UserProfileModel{
