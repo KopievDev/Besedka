@@ -29,6 +29,7 @@ protocol ThemeProtocol {
     var bubbleToMe: UIColor {get}
     
     var buttonBackground: UIColor {get}
+    var buttonDisable: UIColor {get}
     var textFromMe: UIColor {get}
     
     func apply(for application: UIApplication)

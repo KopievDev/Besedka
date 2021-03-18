@@ -187,6 +187,9 @@ extension UITextView {
         toolBar.setItems([flexible, barButton], animated: false)
         self.inputAccessoryView = toolBar
     }
+    func isEmpty() -> Bool {
+        return self.text == ""
+    }
 }
 
 

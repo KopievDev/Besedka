@@ -12,13 +12,15 @@ struct DarkTheme: ThemeProtocol {
     let tint: UIColor = .white
     let secondaryTint: UIColor = UIColor(red: 0.44, green: 0.50, blue: 0.56, alpha: 0.6)
 
-    var buttonBackground: UIColor = UIColor(red: 0.106, green: 0.106, blue: 0.106, alpha: 1)
+    let buttonBackground: UIColor = UIColor(red: 0.106, green: 0.106, blue: 0.106, alpha: 1)
+    let buttonDisable: UIColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+
     let backgroundColor: UIColor = .black
     let separatorColor: UIColor = .darkGray
     let selectionColor: UIColor = .init(red: 38/255, green: 38/255, blue: 40/255, alpha: 1)
 
     let labelColor: UIColor = .white
-    let secondaryLabelColor: UIColor = .lightGray
+    let secondaryLabelColor: UIColor = .darkGray
     let subtleLabelColor: UIColor = .darkGray
     var textFromMe: UIColor = .white
 

@@ -62,25 +62,22 @@ class ConversationsListViewController: UIViewController {
     //MARK: - Helpers
     
     fileprivate func updateImageProfile() {
-        let defaults = UserDefaults.standard
-        if let image = defaults.data(forKey: "saveImg"){
-            self.avatarImage = UIImage(data: image, scale: 0.2) ?? UIImage()
-        } else {
-            self.avatarImage = UIImage(named: "Anonymous") ?? UIImage()
-        }
-        
-        
         let barButtonView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40 ))
         barButtonView.backgroundColor = .black
         barButtonView.layer.cornerRadius = 20
-        let imageForButton = UIImageView(image: self.avatarImage)
+        let imageForButton = UIImageView(image: UIImage(named: "Anonymous"))
         barButtonView.addSubview(imageForButton)
         imageForButton.frame = barButtonView.frame
         imageForButton.contentMode = .scaleAspectFill
-        let reconizer = UITapGestureRecognizer(target: self, action: #selector(showProfile))
+        let reconizer = UITapGestureRecognizer(target: self, action: #selector(self.showProfile))
         imageForButton.addGestureRecognizer(reconizer)
         imageForButton.isUserInteractionEnabled = true
         barButtonView.clipsToBounds = true
+        let fileOpener = FileManagerGCD()
+        fileOpener.getImageFromFile(name: "Avatar",
+                                    runQueue: .global(qos: .utility), completionQueue: .main) {(image) in
+            imageForButton.image = image
+        }
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: barButtonView)
     }
     
