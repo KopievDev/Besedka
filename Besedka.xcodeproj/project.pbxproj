@@ -10,7 +10,6 @@
 		B50855C9260235150086ACB4 /* FileManagerGCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50855C8260235150086ACB4 /* FileManagerGCD.swift */; };
 		B51995B725F3A16C00576121 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51995B625F3A16C00576121 /* Date.swift */; };
 		B51995BA25F3A1C500576121 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51995B925F3A1C500576121 /* UITableView.swift */; };
-		B52570172603738F0095D260 /* Theme.plist in Resources */ = {isa = PBXBuildFile; fileRef = B52570162603738F0095D260 /* Theme.plist */; };
 		B534FAC925EE374900C70403 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B534FAC825EE374900C70403 /* ConversationViewController.swift */; };
 		B534FAD025EE3A8D00C70403 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B534FACF25EE3A8D00C70403 /* MessageCell.swift */; };
 		B534FAD525EEA6C900C70403 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B534FAD425EEA6C800C70403 /* UIViewController.swift */; };
@@ -34,16 +33,13 @@
 		B5CA6E9C25FA7DF9009939AE /* With.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA6E9B25FA7DF9009939AE /* With.swift */; };
 		B5CA6EA325FA8D35009939AE /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA6EA225FA8D35009939AE /* UIWindow.swift */; };
 		B5CA6EA625FC9CFA009939AE /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA6EA525FC9CFA009939AE /* UIView.swift */; };
-		B5CA6EB425FCC1FF009939AE /* EditSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA6EB325FCC1FF009939AE /* EditSettingView.swift */; };
 		B5E92D1D25FF86000094DCCC /* UserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E92D1C25FF86000094DCCC /* UserProfileModel.swift */; };
-		B5E92D2B2600E1AC0094DCCC /* UserProfile.json in Resources */ = {isa = PBXBuildFile; fileRef = B5E92D2A2600E1AC0094DCCC /* UserProfile.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B50855C8260235150086ACB4 /* FileManagerGCD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerGCD.swift; sourceTree = "<group>"; };
 		B51995B625F3A16C00576121 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		B51995B925F3A1C500576121 /* UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
-		B52570162603738F0095D260 /* Theme.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Theme.plist; sourceTree = "<group>"; };
 		B534FAC825EE374900C70403 /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		B534FACF25EE3A8D00C70403 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		B534FAD425EEA6C800C70403 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -69,9 +65,7 @@
 		B5CA6E9B25FA7DF9009939AE /* With.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = With.swift; sourceTree = "<group>"; };
 		B5CA6EA225FA8D35009939AE /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 		B5CA6EA525FC9CFA009939AE /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
-		B5CA6EB325FCC1FF009939AE /* EditSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSettingView.swift; sourceTree = "<group>"; };
 		B5E92D1C25FF86000094DCCC /* UserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileModel.swift; sourceTree = "<group>"; };
-		B5E92D2A2600E1AC0094DCCC /* UserProfile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = UserProfile.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,9 +161,7 @@
 				B5EAC50B25F114D5002E3BDB /* Other */,
 				B557FE5325D84D1800BF0F06 /* Assets.xcassets */,
 				B557FE5525D84D1800BF0F06 /* LaunchScreen.storyboard */,
-				B5E92D2A2600E1AC0094DCCC /* UserProfile.json */,
 				B557FE5825D84D1800BF0F06 /* Info.plist */,
-				B52570162603738F0095D260 /* Theme.plist */,
 			);
 			path = Besedka;
 			sourceTree = "<group>";
@@ -179,7 +171,6 @@
 			children = (
 				B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */,
 				B55E052625F4DA7500B59502 /* ThemeButton.swift */,
-				B5CA6EB325FCC1FF009939AE /* EditSettingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -276,9 +267,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B52570172603738F0095D260 /* Theme.plist in Resources */,
 				B557FE5725D84D1800BF0F06 /* LaunchScreen.storyboard in Resources */,
-				B5E92D2B2600E1AC0094DCCC /* UserProfile.json in Resources */,
 				B557FE5425D84D1800BF0F06 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -312,7 +301,6 @@
 				B557FE4B25D84D1600BF0F06 /* AppDelegate.swift in Sources */,
 				B5623D7B25F9237E00BFD3D4 /* Theme.swift in Sources */,
 				B50855C9260235150086ACB4 /* FileManagerGCD.swift in Sources */,
-				B5CA6EB425FCC1FF009939AE /* EditSettingView.swift in Sources */,
 				B5623D8125FA049500BFD3D4 /* SecondaryLabel.swift in Sources */,
 				B5BD371D25EBF382007AF803 /* UsersModel.swift in Sources */,
 				B5623D7E25F9255900BFD3D4 /* DarkTheme.swift in Sources */,

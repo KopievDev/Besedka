@@ -24,6 +24,19 @@ class FileManagerOperation: Operation {
         }
     }
     
+    public func saveUser(user: UserProfileModel?, completion: @escaping ((Error?)->Void)){
+        operationQueue.addOperation {
+            guard let user = user,
+                  let filePath = self.filePath(forKey: "UserProfile.json") else { return }
+            do{
+                try JSONEncoder().encode(user).write(to: filePath)
+                OperationQueue.main.addOperation {completion(nil)}
+            }catch let error{
+                OperationQueue.main.addOperation {completion(error)}
+            }
+        }
+    }
+    
     public func saveUserToFile(name: String,
                                user: UserProfileModel?,
                                completion: @escaping ((Error?)->Void) ){
@@ -44,7 +57,7 @@ class FileManagerOperation: Operation {
         let fileManager = FileManager.default
         guard let documentURL = fileManager.urls(for: .documentDirectory,
                                                  in: .userDomainMask).first else {return nil}
-        return documentURL.appendingPathComponent(key + ".png")
+        return documentURL.appendingPathComponent(key)
     }
     
 }

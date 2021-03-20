@@ -56,59 +56,57 @@ class FileManagerGCD {
             completionQueue.async {completion(image)}
         }
     }
-    public func getUserFromFile(name: String,
-                                completion: @escaping (UserProfileModel?)->Void){
-        queue.async {
-            guard let path = Bundle.main.path(forResource: name, ofType: "json")  else {return}
-            let url = URL(fileURLWithPath: path)
-            guard let jsonDataFile = try? Data(contentsOf: url),
-                  let user = try? JSONDecoder().decode(UserProfileModel.self, from: jsonDataFile) else {return}
-            self.main.async {completion(user)}
-        }
-    }
     
-    public func saveUserToFile(name: String,
-                               user: UserProfileModel?,
-                               completion: @escaping ((Error?)->Void) ){
+    public func saveUser(_ user: UserProfileModel?, completion: @escaping ((Error?)->Void)){
         queue.async {
-            guard  let path = Bundle.main.path(forResource: name, ofType: "json") else { return}
-            let url = URL(fileURLWithPath: path)
-            guard let user = user  else {return}
+            guard let user = user,
+                  let filePath = self.filePath(forKey: "UserProfile.json") else { return }
             do{
-                try JSONEncoder().encode(user).write(to: url)
-                self.main.async {completion(nil)}
+                try JSONEncoder().encode(user).write(to: filePath)
+                OperationQueue.main.addOperation {completion(nil)}
             }catch let error{
-                self.main.async {completion(error)}
+                OperationQueue.main.addOperation {completion(error)}
             }
         }
     }
     
-    public func getThemeFromFile(completion: @escaping (String?)->Void){
+    public func getUser(_ completion: @escaping (UserProfileModel?)->Void){
         queue.async {
-            guard let path = Bundle.main.path(forResource: "Theme", ofType: "plist")  else {return}
-            let url = URL(fileURLWithPath: path)
-            guard let object = NSDictionary(contentsOf: url),
-                  let theme = object.value(forKey: "name") as? String else {return}
+            guard let filePath = self.filePath(forKey: "UserProfile.json"),
+                  let jsonDataFile = try? Data(contentsOf: filePath),
+                  let user = try? JSONDecoder().decode(UserProfileModel.self, from: jsonDataFile) else {return}
+            self.main.async {completion(user)}
+        }
+    }
+
+    
+    public func saveTheme(name theme: String?){
+        queue.async {
+            guard let name = theme,
+                  let filePath = self.filePath(forKey: "Theme.plist")  else {return}
+            let dict = NSMutableDictionary()
+            dict.setValue(name, forKey: "name")
+            dict.write(to: filePath, atomically: true)
+        }
+    }
+    
+    public func getTheme(_ completion: @escaping (String?)->Void){
+        DispatchQueue.global(qos: .userInteractive).async {
+            guard let filePath = self.filePath(forKey: "Theme.plist"),
+                  let object = NSDictionary(contentsOf: filePath),
+                  let theme = object.value(forKey: "name") as? String else {
+                self.main.async {completion("Day")}
+                return
+            }
             self.main.async {completion(theme)}
         }
     }
     
-    public func saveThemeFromFile(name theme: String?){
-        queue.async {
-            guard let name = theme else {return}
-            let dict = NSMutableDictionary()
-            guard let path = Bundle.main.path(forResource: "Theme", ofType: "plist")  else {return}
-            let url = URL(fileURLWithPath: path)
-            dict.setValue(name, forKey: "name")
-            dict.write(to: url, atomically: true)
-        }
-    }
-
     private func filePath(forKey key: String) -> URL? {
         let fileManager = FileManager.default
         guard let documentURL = fileManager.urls(for: .documentDirectory,
                                                  in: .userDomainMask).first else {return nil}
-        return documentURL.appendingPathComponent(key + ".png")
+        return documentURL.appendingPathComponent(key)
     }
 }
 

@@ -70,7 +70,7 @@ class ThemesViewController: UIViewController {
             stackView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor)
         ])
         let fileOpener = FileManagerGCD()
-        fileOpener.getThemeFromFile { [weak self] (name) in
+        fileOpener.getTheme{ [weak self] (name) in
             guard let theme = name else {return}
             guard let self = self else {return}
             switch theme {
@@ -120,8 +120,8 @@ class ThemesViewController: UIViewController {
     @objc func changeMode(sender: ThemeButton) {
         //Сохранение название темы
         let fileSaver = FileManagerGCD()
-        fileSaver.saveThemeFromFile(name: sender.textLabel.text)
-        
+        fileSaver.saveTheme(name: sender.textLabel.text)
+
         checkSelectedTheme(theme: sender.textLabel.text ?? "Day")
         //MARK: - HOMEWORK #4.3
        

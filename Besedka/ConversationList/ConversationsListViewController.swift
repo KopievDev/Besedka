@@ -74,7 +74,7 @@ class ConversationsListViewController: UIViewController {
         imageForButton.isUserInteractionEnabled = true
         barButtonView.clipsToBounds = true
         let fileOpener = FileManagerGCD()
-        fileOpener.getImageFromFile(name: "Avatar",
+        fileOpener.getImageFromFile(name: "Avatar.png",
                                     runQueue: .global(qos: .utility), completionQueue: .main) {(image) in
             imageForButton.image = image
         }

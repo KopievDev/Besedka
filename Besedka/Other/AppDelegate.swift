@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let fileOpener = FileManagerGCD()
         
-        fileOpener.getThemeFromFile { (theme) in
+        fileOpener.getTheme { (theme) in
             guard let name = theme else {return}
             switch name {
                     case "Classic":

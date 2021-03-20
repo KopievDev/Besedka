@@ -202,6 +202,8 @@ class ProfileViewController: UIViewController {
     }()
     
     var clickEdit: Bool = true
+    var keyboardDismissTapGesture: UIGestureRecognizer?
+
     
     //MARK: - Lifecycle
     
@@ -251,19 +253,17 @@ class ProfileViewController: UIViewController {
         
         let fileOpener = FileManagerGCD()
         
-        fileOpener.getImageFromFile(name: "Avatar",
+        fileOpener.getImageFromFile(name: "Avatar.png",
                                     runQueue: .global(qos: .utility),
                                     completionQueue: .main) { [weak self] (image) in
             guard let self = self else {return}
             guard let  image = image else {return}
             self.avatarImageView.image = image
             self.shortName.isHidden = true
-            
-            
-            
+
         }
-        
-        fileOpener.getUserFromFile(name: "UserProfile") { [weak self] (user) in
+
+        fileOpener.getUser {[weak self] (user) in
             guard let newUser = user else{return}
             guard let self = self else {return}
             print(newUser)
@@ -280,7 +280,6 @@ class ProfileViewController: UIViewController {
             }else {
                 self.shortName.text = text.first?.uppercased()
             }
-
         }
     }
     
@@ -396,14 +395,26 @@ class ProfileViewController: UIViewController {
         if view.bounds.origin.y == 0 && view.frame.height - cityTextfield.frame.maxY <= keyboardFrame.height {
             self.view.bounds.origin.y += keyboardFrame.height - (view.frame.height - cityTextfield.frame.maxY) + 16
         }
+        
+        if keyboardDismissTapGesture == nil{
+            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(sender:)))
+            keyboardDismissTapGesture?.cancelsTouchesInView = false
+            self.view.addGestureRecognizer(keyboardDismissTapGesture!)
+        }
+        
+    }
+    @objc func dismissKeyboard(sender: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
     
     @objc private func keyboardWillHide(){
         if view.bounds.origin.y != 0 {
             self.view.bounds.origin.y = 0
+            if keyboardDismissTapGesture != nil {
+                self.view.removeGestureRecognizer(keyboardDismissTapGesture!)
+                keyboardDismissTapGesture = nil
+            }
         }
-        
-        
     }
     
     private func showEditButton(state: Bool = true){
@@ -415,12 +426,11 @@ class ProfileViewController: UIViewController {
     }
     
     private func enableEditMode(state: Bool = true){
-        self.registerForKeyboardNotification()
-
-        self.userNameTextfiel.becomeFirstResponder()
-
+        
         //Обнуляем значения
         if state{
+            self.registerForKeyboardNotification()
+            self.userNameTextfiel.becomeFirstResponder()
             self.userNameTextfiel.text = ""
             self.cityTextfield.text = ""
             self.descriptionTextView.text = ""
@@ -515,7 +525,7 @@ class ProfileViewController: UIViewController {
     @objc private func cancelEditing(){
         enableEditMode(state: false)
         let oldSetting = FileManagerGCD()
-        oldSetting.saveUserToFile(name: "UserProfile", user: self.user, completion: {_ in })
+        oldSetting.saveUser(self.user, completion: {_ in })
 
     }
     
@@ -550,21 +560,21 @@ class ProfileViewController: UIViewController {
         self.disableButton()
         // Если изменено только фото
         if userNameTextfiel.isHidden{
-            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar") {[weak self] in
+            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar.png") {[weak self] in
                 guard let self = self else { return }
                 self.activityIndicator.stopAnimating()
                 self.showAlert()
             }
         }else{
             // Если изменены фото и данные
-            saver.saveUserToFile(name: "UserProfile", user: user) {[weak self] error in
+            saver.saveUser(user) {[weak self] error in
                 guard let self = self else {return}
                 self.setupDesign()
                 self.activityIndicator.stopAnimating()
                 if error != nil {self.showAlert(state: false); return}
                 self.showAlert(state: true)
             }
-            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar", completion: {
+            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar.png", completion: {
 
             })
         }
@@ -580,21 +590,21 @@ class ProfileViewController: UIViewController {
         self.disableButton()
         // Если изменено только фото
         if userNameTextfiel.isHidden{
-            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar") {[weak self] in
+            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar.png") {[weak self] in
                 guard let self = self else { return }
                 self.activityIndicator.stopAnimating()
                 self.showAlert()
             }
         }else{
             // Если изменены фото и данные
-            saver.saveUserToFile(name: "UserProfile", user: user) {[weak self] error in
+            saver.saveUser(user: user) {[weak self] (error) in
                 guard let self = self else {return}
                 self.setupDesign()
                 self.activityIndicator.stopAnimating()
                 if error != nil {self.showAlert(state: false, from: "operation"); return}
                 self.showAlert(state: true)
             }
-            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar", completion: {
+            saver.saveImageToFile(self.avatarImageView.image, byName: "Avatar.png", completion: {
 
             })
         }
@@ -640,6 +650,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
 
         self.shortName.isHidden = true
         showEditButton()
+        disableButton(state: false)
         dismiss(animated: true)
     }
     
