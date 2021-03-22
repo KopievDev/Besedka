@@ -111,13 +111,12 @@ struct FirebaseService {
         }
     }
     
-    public func rename(_ channel: Channel, to name: String){
+    public func rename(_ channel: Channel, to name: String) {
         guard let channelId = channel.identifier else {return}
         
         reference.document(channelId).setData([ "name": name ], merge: true)
         
     }
-    
     
     public func delete(_ channel: Channel) {
         guard let channelId = channel.identifier else {return}

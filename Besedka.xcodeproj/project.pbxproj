@@ -37,6 +37,7 @@
 		B5CA6EA625FC9CFA009939AE /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA6EA525FC9CFA009939AE /* UIView.swift */; };
 		B5DC345C26089452004A1B86 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5DC345B26089452004A1B86 /* GoogleService-Info.plist */; };
 		B5DC348426089DC1004A1B86 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC348326089DC1004A1B86 /* FirebaseService.swift */; };
+		B5DC34882608ECFD004A1B86 /* CustomInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC34872608ECFD004A1B86 /* CustomInputView.swift */; };
 		B5E92D1D25FF86000094DCCC /* UserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E92D1C25FF86000094DCCC /* UserProfileModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +76,7 @@
 		B5CA6EA525FC9CFA009939AE /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		B5DC345B26089452004A1B86 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B5DC348326089DC1004A1B86 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
+		B5DC34872608ECFD004A1B86 /* CustomInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputView.swift; sourceTree = "<group>"; };
 		B5E92D1C25FF86000094DCCC /* UserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -187,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */,
+				B5DC34872608ECFD004A1B86 /* CustomInputView.swift */,
 				B55E052625F4DA7500B59502 /* ThemeButton.swift */,
 			);
 			path = View;
@@ -382,6 +385,7 @@
 				B5B767332607A618007CF846 /* Channel.swift in Sources */,
 				B51995B725F3A16C00576121 /* Date.swift in Sources */,
 				B534FAC925EE374900C70403 /* ConversationViewController.swift in Sources */,
+				B5DC34882608ECFD004A1B86 /* CustomInputView.swift in Sources */,
 				B534FAD025EE3A8D00C70403 /* MessageCell.swift in Sources */,
 				B54266B425FA3765009BBF2F /* DayTheme.swift in Sources */,
 				B5CA6E9C25FA7DF9009939AE /* With.swift in Sources */,

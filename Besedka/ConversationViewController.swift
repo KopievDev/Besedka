@@ -9,9 +9,6 @@ import UIKit
 
 class ConversationViewController: UIViewController {
     // MARK: - Propetries
-    var user: User? {
-        didSet {configure()}
-    }
     var channel: Channel? {
         didSet {configure()}
     }
@@ -32,15 +29,27 @@ class ConversationViewController: UIViewController {
         return table
     }()
     
+    private lazy var  customInputView: CustomInputAccesoryView = {
+        let iv = CustomInputAccesoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50 ))
+        return iv
+    }()
+    
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.addSubview(messageTableView)
-        navigationItem.largeTitleDisplayMode = .never
+        createdDesign()
         listenMessages()
-        
     }
+    
+    override var inputAccessoryView: UIView? {
+         return customInputView
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
     deinit {
         print("deinit MessageView")
     }
@@ -51,16 +60,38 @@ class ConversationViewController: UIViewController {
         title = channel.name
     }
     
-    func listenMessages() {
+    fileprivate func createdDesign() {
+        view.backgroundColor = Theme.current.backgroundColor
+        view.addSubview(messageTableView)
+        navigationItem.largeTitleDisplayMode = .never
+        customInputView.messageInputTextView.delegate = self
+        messageTableView.frame = CGRect(x: 0, y: 0,
+                                        width: self.view.frame.width,
+                                        height: self.view.frame.height - customInputView.frame.height - 5)
+        customInputView.sendButton.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
+    }
+    
+    fileprivate func listenMessages() {
         guard let channelId = channel?.identifier else {return}
         firebase.addSortedMessageListener(from: channelId) {[weak self] (message) in
             guard let self = self else {return}
             self.messages = message
             self.messageTableView.reloadData()
             self.messageTableView.scrollToLastRow(animated: false)
-
         }
     }
+    // MARK: - Selectors
+    
+    @objc private func sendMessage() {
+        guard let content = self.customInputView.messageInputTextView.text else {
+            print("empty")
+            return
+        }
+        guard let channelId = channel?.identifier else {return}
+        firebase.addNew(message: Message(content: content), to: channelId)
+        self.customInputView.messageInputTextView.text = ""
+    }
+    
 }
 
 // MARK: - Extensions ConversationViewController TableViewDataSource
@@ -91,4 +122,17 @@ extension ConversationViewController: UITableViewDelegate {
 
     }
 
+}
+
+extension ConversationViewController: UITextViewDelegate {
+        
+    func textViewDidChange(_ textView: UITextView) {
+        
+        UIView.animate(withDuration: 0.1) {
+            self.messageTableView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - self.customInputView.frame.height)
+            self.messageTableView.scrollToLastRow(animated: true)
+            self.customInputView.placeholderLabel.isHidden = !self.customInputView.messageInputTextView.isEmpty()
+        }
+       
+    }
 }

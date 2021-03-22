@@ -61,7 +61,7 @@ extension ThemeProtocol {
             $0.backgroundColor = .clear
             $0.selectionColor = selectionColor
         }
-
+        
         self.extend()
         
         UIApplication.shared.windows.reload()

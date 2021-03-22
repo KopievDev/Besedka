@@ -47,13 +47,14 @@ class ConversationsListViewController: UIViewController {
             }
         }
     }
-
+   
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print(#function)
         self.channelsTableView.reloadData()
         updateImageProfile()
-
+        addButtonChannels()
+        
     }
     // MARK: - Selectors
     @objc func showProfile() {
@@ -64,6 +65,15 @@ class ConversationsListViewController: UIViewController {
     }
   
     // MARK: - Helpers
+    
+    fileprivate func addButtonChannels() {
+        let button = UIButton(type: .system)
+        self.view.addSubview(button)
+        button.frame = CGRect(x: self.view.frame.width - 70, y: self.view.frame.height - 70, width: 50, height: 50)
+        button.addCornerRadius(25)
+        button.backgroundColor = .green
+        button.addTarget(self, action: #selector(addNewChannel), for: .touchUpInside)
+    }
     
     fileprivate func updateImageProfile() {
         let barButtonView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40 ))
@@ -90,11 +100,6 @@ class ConversationsListViewController: UIViewController {
         title = "Tinckoff Chat"
         self.view.addSubview(channelsTableView)
         self.view.addSubview(addChannelButton)
-        self.addChannelButton = UIButton(frame: CGRect(x: self.view.frame.maxX - 70,
-                                                       y: self.view.frame.maxY - 70,
-                                                       width: 50,
-                                                       height: 50))
-        addChannelButton.backgroundColor = .green
         updateImageProfile()
         addSettingButton()
         
@@ -107,9 +112,32 @@ class ConversationsListViewController: UIViewController {
         navigationController?.pushViewController(chatView, animated: true)
     }
     
+    // MARK: - Selectors
+    
+    @objc func addNewChannel() {
+        let alert = UIAlertController(title: "New channel", message: "Введите название канала:", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.placeholder = "Название"
+        }
+        
+        let applyButton = UIAlertAction(title: "Создать", style: .default) {[weak self] (_) in
+            guard let name = alert.textFields?.first?.text else {return}
+            guard let self = self else { return }
+            if name != "" {
+                self.firebase.addNew(channel: Channel(name: name))
+            }
+        }
+        let cancel = UIAlertAction(title: "Отменить", style: .cancel)
+        alert.addAction(applyButton)
+        alert.addAction(cancel)
+        
+        present(alert, animated: true)
+        
+    }
+    
 }
 
-    // MARK: - Extensions TableView DataSource
+// MARK: - Extensions TableView DataSource
     
 extension ConversationsListViewController: UITableViewDataSource {
     
