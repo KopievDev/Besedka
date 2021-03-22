@@ -17,7 +17,7 @@ struct DarkTheme: ThemeProtocol {
 
     let backgroundColor: UIColor = .black
     let separatorColor: UIColor = .darkGray
-    let selectionColor: UIColor = .init(red: 38/255, green: 38/255, blue: 40/255, alpha: 1)
+    let selectionColor: UIColor = .init(red: 38 / 255, green: 38 / 255, blue: 40 / 255, alpha: 1)
 
     let labelColor: UIColor = .white
     let secondaryLabelColor: UIColor = .darkGray
@@ -25,17 +25,13 @@ struct DarkTheme: ThemeProtocol {
     var textFromMe: UIColor = .white
 
     let barStyle: UIBarStyle = .blackOpaque
-    let bubbleFromMe : UIColor = UIColor(red: 0.361, green: 0.361, blue: 0.361, alpha: 1)
-    let bubbleToMe : UIColor = UIColor(red: 0.18, green: 0.18, blue: 0.18, alpha: 1)
-    
+    let bubbleFromMe: UIColor = UIColor(red: 0.361, green: 0.361, blue: 0.361, alpha: 1)
+    let bubbleToMe: UIColor = UIColor(red: 0.18, green: 0.18, blue: 0.18, alpha: 1)
        
 }
 
-
-extension DarkTheme{
-    func extend(){
+extension DarkTheme {
+    func extend() {
         UILabel.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self]).textColor = Theme.current.labelColor
     }
 }
-
-

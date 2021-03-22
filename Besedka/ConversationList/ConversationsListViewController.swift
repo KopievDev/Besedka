@@ -11,7 +11,7 @@ class ConversationsListViewController: UIViewController {
 
     // MARK: - Properties
     private let cellId = "cell"
-    private lazy var userTableView : UITableView = {
+    private lazy var channelsTableView: UITableView = {
         let table = UITableView(frame: view.frame, style: .plain)
         table.register(UserCell.self, forCellReuseIdentifier: cellId)
         table.delegate = self
@@ -19,47 +19,51 @@ class ConversationsListViewController: UIViewController {
         return table
     }()
     
-    var users = [User]()
-    var historyArray = [User]()
-    var onlineArray = [User]()
-    var avatarImage = UIImage()
+    lazy var channels = [Channel]()
+    lazy var addChannelButton: UIButton = {
+       let button = UIButton()
+        button.backgroundColor = Theme.current.secondaryTint
+        button.layer.cornerRadius = 25
         
-    //MARK: - LifeCycle
+        return button
+    }()
+    
+    let firebase = FirebaseService()
+    
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getData()
         createUI()
+        let firebase = FirebaseService()
+        
+        firebase.addChannelListener { (channels) in
+            self.channels = channels
+            self.channelsTableView.reloadData()
+            self.channels.forEach { channel in
+                print(channel.identifier!, channel.name)
+                print(channel.lastMessage!)
+                print()
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print(#function)
-        self.userTableView.reloadData()
+        self.channelsTableView.reloadData()
         updateImageProfile()
 
     }
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        print(#function)
-
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print(#function)
-
-    }
-    //MARK: - Selectors
-    @objc func showProfile(){
+    // MARK: - Selectors
+    @objc func showProfile() {
         let profileViewController = ProfileViewController()
         profileViewController.radius = (self.view.frame.width - 140) * 0.5
         profileViewController.modalPresentationStyle = .fullScreen
         self.navigationController?.present(profileViewController, animated: true)
     }
-    
   
-    //MARK: - Helpers
+    // MARK: - Helpers
     
     fileprivate func updateImageProfile() {
         let barButtonView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40 ))
@@ -82,105 +86,45 @@ class ConversationsListViewController: UIViewController {
     }
     
     func createUI() {
-        
         navigationController?.navigationBar.prefersLargeTitles = true
-        title = "Tinkoff Chat"
-        
-        self.view.addSubview(userTableView)
-
+        title = "Tinckoff Chat"
+        self.view.addSubview(channelsTableView)
+        self.view.addSubview(addChannelButton)
+        self.addChannelButton = UIButton(frame: CGRect(x: self.view.frame.maxX - 70,
+                                                       y: self.view.frame.maxY - 70,
+                                                       width: 50,
+                                                       height: 50))
+        addChannelButton.backgroundColor = .green
         updateImageProfile()
         addSettingButton()
-    }
-
         
-    func getData(){
-        users.append(tonyStark)
-        users.append(lebowski)
-        users.append(LebronJames)
-        users.append(subZero)
-        users.append(walterWhite)
-        users.append(myDog)
-        users.append(jessyPinkman)
-        users.append(ilonMask)
-        users.append(spam)
-        users.append(sber)
-        users.append(frodo)
-        users.append(batman)
-        users.append(deadpool)
-        users.append(nogotochki)
-        users.append(joker)
-        users.append(morfeus)
-        users.append(prapor)
-        users.append(gagarin)
-        users.append(anonym)
-
     }
     
-    // Метод для перехода к собщениям контакта
-    func wantToTalk(to user: User){
-        
-        if user.hasUnreadMessages{updateUsersData(user: user, state: .hasUnreadMessages, value: false)}
-        
+//     Метод для перехода к собщениям контакта
+    func wantToTalk(in channel: Channel) {
         let chatView = ConversationViewController()
-        chatView.user = user
-        
+        chatView.channel = channel
         navigationController?.pushViewController(chatView, animated: true)
-    }
-    // Обновление состояниий пользователей
-    func updateUsersData(user: User, state: User.ValueState, value: Bool){
-        switch state {
-        case .isOnline:
-            if let index = self.users.firstIndex(where: { $0.name == user.name}){ self.users[index].isOnline = value }
-        case .hasUnreadMessages:
-            if let index = self.users.firstIndex(where: { $0.name == user.name}){ self.users[index].hasUnreadMessages = value }
-        case .delete:
-            if let index = self.users.firstIndex(where: { $0.name == user.name}){ self.users.remove(at: index)}
-        case .isArchive:
-            if let index = self.users.firstIndex(where: { $0.name == user.name}){ self.users[index].isArchive = value }
-        
-        }
     }
     
 }
 
-    //MARK: - Extensions TableView DataSource
+    // MARK: - Extensions TableView DataSource
     
-extension ConversationsListViewController:UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
+extension ConversationsListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "Беседы"
-        default:
-            return "Архив"
-        }
+        return "Channels"
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        onlineArray = users.filter({user in !user.isArchive}).sorted(by: {$0.hasUnreadMessages == true && $1.hasUnreadMessages == false}).sorted(by: {$0.isOnline == true && $1.isOnline == false})
-        historyArray = users.filter({user in user.isArchive}).sorted(by: {$0.hasUnreadMessages == true && $1.hasUnreadMessages == false}).sorted(by: {$0.isOnline == true && $1.isOnline == false})
-        switch section {
-        case 0:
-            return onlineArray.count
-        default:
-            return historyArray.count
-        }
-        
+        return channels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? UserCell else {return UITableViewCell()}
         cell.backgroundColor = .clear
-        switch indexPath.section {
-        case 0:
-            cell.configureCell(user: onlineArray[indexPath.row])
-        default:
-            cell.configureCell(user: historyArray[indexPath.row])
-        }
-        
+        cell.configureCell(self.channels[indexPath.row])
         return cell
     }
     
@@ -188,12 +132,10 @@ extension ConversationsListViewController:UITableViewDataSource {
         return true
     }
     
-    
 }
 
-//MARK: - Extension TableView Delegate
+// MARK: - Extension TableView Delegate
 extension ConversationsListViewController: UITableViewDelegate {
-    
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30
@@ -205,70 +147,43 @@ extension ConversationsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        switch indexPath.section {
-        case 0:
-            wantToTalk(to: onlineArray[indexPath.row])
-        default:
-            wantToTalk(to: historyArray[indexPath.row])
-        }
+        wantToTalk(in: self.channels[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let toHasUnreadMessage = UITableViewRowAction(style: .default, title: "Пометить непрочитанным"){ _,_  in
-
-            switch indexPath.section {
-            case 0:
-                self.updateUsersData(user: self.onlineArray[indexPath.row], state: .hasUnreadMessages, value: true)
-            default:
-                self.updateUsersData(user: self.historyArray[indexPath.row], state: .hasUnreadMessages, value: true)
-            }
-            self.userTableView.reloadData()
-
-        }
-        let toArchiveButton = UITableViewRowAction(style: .default, title: "В архив") {_,_ in
-            switch indexPath.section {
-            case 0:
-                self.updateUsersData(user: self.onlineArray[indexPath.row], state: .isArchive, value: true)
-            default:
-                self.updateUsersData(user: self.historyArray[indexPath.row], state: .isArchive, value: false)
-            }
-
-            self.userTableView.reloadData()
-
+        let deleteChannel = UITableViewRowAction(style: .default, title: "Удалить") { _, _  in
+            self.firebase.delete(self.channels[indexPath.row])
         }
         
-        toArchiveButton.backgroundColor = .systemGray
-        
-        if indexPath.section == 1 {
-            toArchiveButton.title = "Вернуть"
-            toArchiveButton.backgroundColor = .systemPurple
+        let renameChannel = UITableViewRowAction(style: .default, title: "Переименовать") {_, _ in
+            self.firebase.rename(self.channels[indexPath.row], to: "Флудилка #")
         }
-        return [toArchiveButton, toHasUnreadMessage]
+        
+        deleteChannel.backgroundColor = .systemPurple
+        renameChannel.backgroundColor = .systemGray
+        
+        return [deleteChannel, renameChannel]
     }
-
-  
+    
 }
 
-
-//MARK: - Homework #4.2
+// MARK: - Homework #4.2
 
 extension ConversationsListViewController {
     
-    func addSettingButton(){
+    func addSettingButton() {
         self.navigationItem.setLeftBarButton(UIBarButtonItem(image: UIImage(named: "gear"), style: .plain, target: self, action: #selector(goToSetting)), animated: true)
     }
     
-    
-    @objc func goToSetting(){
+    @objc func goToSetting() {
         let settingView = ThemesViewController()
         
-        //Clouser
+        // Clouser
         settingView.themeSelected = {[weak self] theme in
             self?.changeTheme(name: theme)
         }
         
-        //Delegate
+        // Delegate
         settingView.delegate = self
         
         navigationController?.pushViewController(settingView, animated: true)
@@ -276,8 +191,8 @@ extension ConversationsListViewController {
     }
 }
 
-//MARK: - Delegate ThemeProtocol  - Homework #4.3
-extension ConversationsListViewController: ThemeDelegateProtocol{
+// MARK: - Delegate ThemeProtocol  - Homework #4.3
+extension ConversationsListViewController: ThemeDelegateProtocol {
     
     func changeTheme(name: String) {
         switch name {
@@ -294,5 +209,3 @@ extension ConversationsListViewController: ThemeDelegateProtocol{
         Theme.current.apply(for: UIApplication.shared)
     }
 }
-
-

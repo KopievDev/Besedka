@@ -17,7 +17,7 @@ struct LightTheme: ThemeProtocol {
 
     let backgroundColor: UIColor = .white
     let separatorColor: UIColor = .darkGray
-    let selectionColor: UIColor = UIColor(red: 237/255, green: 237/255, blue: 240/255, alpha: 1)
+    let selectionColor: UIColor = UIColor(red: 237 / 255, green: 237 / 255, blue: 240 / 255, alpha: 1)
     
     let labelColor: UIColor = .black
     let secondaryLabelColor: UIColor = .darkGray
@@ -25,8 +25,7 @@ struct LightTheme: ThemeProtocol {
     var textFromMe: UIColor = .black
 
     let barStyle: UIBarStyle = .default
-    let bubbleFromMe : UIColor = UIColor(red: 0.863, green: 0.969, blue: 0.773, alpha: 1)
-    let bubbleToMe : UIColor = UIColor(red: 0.875, green: 0.875, blue: 0.875, alpha: 1)
-    
+    let bubbleFromMe: UIColor = UIColor(red: 0.863, green: 0.969, blue: 0.773, alpha: 1)
+    let bubbleToMe: UIColor = UIColor(red: 0.875, green: 0.875, blue: 0.875, alpha: 1)
     
 }

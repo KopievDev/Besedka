@@ -11,23 +11,22 @@ protocol ThemeDelegateProtocol: class {
     func changeTheme(name: String)
 }
 
-//MARK: - HOMEWORK #4.1
+// MARK: - HOMEWORK #4.1
 class ThemesViewController: UIViewController {
-    //MARK: - Properties
+    // MARK: - Properties
     
-    weak var delegate : ThemeDelegateProtocol?
-    var themeSelected: ((String)->())?
+    weak var delegate: ThemeDelegateProtocol?
+    var themeSelected: ((String) -> Void)?
     
-    
-    //UI objects
-    lazy var dayButton : ThemeButton = {
+    // UI objects
+    lazy var dayButton: ThemeButton = {
         let button = ThemeButton()
         button.formView.backgroundColor = UIColor(red: 1.00, green: 0.98, blue: 0.98, alpha: 1.00)
         button.bubbleViewTwo.backgroundColor = UIColor(red: 0.263, green: 0.537, blue: 0.976, alpha: 1)
         button.textLabel.text = "Day"
         return button
     }()
-    lazy  var nightButton  : ThemeButton = {
+    lazy  var nightButton: ThemeButton = {
         let button = ThemeButton()
         button.formView.backgroundColor = .black
         button.textLabel.text = "Night"
@@ -37,8 +36,7 @@ class ThemesViewController: UIViewController {
     }()
     let classicButton = ThemeButton()
     
-    
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +49,7 @@ class ThemesViewController: UIViewController {
         print("deinit theme view ")
     }
     
-    
-    //MARK: - Helpers
+    // MARK: - Helpers
     
     fileprivate func createDesign() {
         view.backgroundColor = Theme.current.backgroundColor
@@ -70,7 +67,7 @@ class ThemesViewController: UIViewController {
             stackView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor)
         ])
         let fileOpener = FileManagerGCD()
-        fileOpener.getTheme{ [weak self] (name) in
+        fileOpener.getTheme { [weak self] (name) in
             guard let theme = name else {return}
             guard let self = self else {return}
             switch theme {
@@ -89,11 +86,10 @@ class ThemesViewController: UIViewController {
         nightButton.addTarget(self, action: #selector(changeMode(sender:)), for: .touchUpInside)
         classicButton.addTarget(self, action: #selector(changeMode(sender:)), for: .touchUpInside)
         dayButton.addTarget(self, action: #selector(changeMode(sender:)), for: .touchUpInside)
-      
 
     }
     
-    private func checkSelectedTheme(theme: String){
+    private func checkSelectedTheme(theme: String) {
         switch theme {
         case "Classic":
             self.dayButton.formView.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1).cgColor
@@ -115,36 +111,25 @@ class ThemesViewController: UIViewController {
         }
     }
     
-  //MARK: - Selectors
+  // MARK: - Selectors
 
     @objc func changeMode(sender: ThemeButton) {
-        //Сохранение название темы
+        // Сохранение название темы
         let fileSaver = FileManagerGCD()
         fileSaver.saveTheme(name: sender.textLabel.text)
 
         checkSelectedTheme(theme: sender.textLabel.text ?? "Day")
-        //MARK: - HOMEWORK #4.3
+        // MARK: - HOMEWORK #4.3
        
-        //Замыкание
+        // Замыкание
         themeSelected?(sender.textLabel.text ?? "")
         
-        //Делегирование - Для проверки раскомментировать
+        // Делегирование - Для проверки раскомментировать
 //        delegate?.changeTheme(name: sender.textLabel.text ?? "vns")
-
              
         self.createDesign()
         UIApplication.shared.windows.reload()
       
     }
-   
     
 }
-
-
-
-//MARK: - HOMEWORK #4.4 Retain cycle
-
-
-/// Retain cycle  может возникнуть через замыкание, если его использовать без захвата [weak self] в классе ConversationsListViewController, в котором ссылались бы на свойтво этого класса
-/// или если в этом классе была бы переменная - var conversationsLVC = ConversationsListViewController(), а в классе ConversationsListViewController    -  var themesVC = ThemesViewController() и они бы имели друг на друга сильные ссылки - что очевидно)
-

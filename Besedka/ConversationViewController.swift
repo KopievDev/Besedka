@@ -8,12 +8,18 @@
 import UIKit
 
 class ConversationViewController: UIViewController {
-    //MARK: - Propetries
-    var user : User? {
-        didSet{configure()}
+    // MARK: - Propetries
+    var user: User? {
+        didSet {configure()}
     }
+    var channel: Channel? {
+        didSet {configure()}
+    }
+    let firebase = FirebaseService()
+    var messages = [Message]()
+    
     private let cellId = "cellMessage"
-    private lazy var messageTableView : UITableView = {
+    private lazy var messageTableView: UITableView = {
         let table = UITableView(frame: view.frame, style: .plain)
         table.register(MessageCell.self, forCellReuseIdentifier: cellId)
         table.dataSource = self
@@ -25,35 +31,43 @@ class ConversationViewController: UIViewController {
         table.backgroundColor = Theme.current.backgroundColor
         return table
     }()
-   
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.addSubview(messageTableView)
         navigationItem.largeTitleDisplayMode = .never
-        messageTableView.scrollToLastRow(animated: false)
-
+        listenMessages()
+        
     }
     deinit {
         print("deinit MessageView")
     }
-
     
-    //MARK: - Helpers
-    func configure(){
-        guard let user = user else {return}
-        configureNavigationBar(withTitle: user.name ?? "Неизвестный", image: UIImage(named: user.image ?? "Anonymous") ?? UIImage())
+    // MARK: - Helpers
+    func configure() {
+        guard let channel = channel else {return}
+        title = channel.name
+    }
+    
+    func listenMessages() {
+        guard let channelId = channel?.identifier else {return}
+        firebase.addSortedMessageListener(from: channelId) {[weak self] (message) in
+            guard let self = self else {return}
+            self.messages = message
+            self.messageTableView.reloadData()
+            self.messageTableView.scrollToLastRow(animated: false)
 
+        }
     }
 }
 
-//MARK: - Extensions ConversationViewController TableViewDataSource
-extension ConversationViewController: UITableViewDataSource{
+// MARK: - Extensions ConversationViewController TableViewDataSource
+extension ConversationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return user?.messages?.count ?? 0
+        return self.messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -61,16 +75,16 @@ extension ConversationViewController: UITableViewDataSource{
         cell.widthMessage = self.view.bounds.width * 0.75 - 12
         cell.leftBubble.isActive = false
         cell.rightBubble.isActive = false
-        //cell.transform = CGAffineTransform(scaleX: 1, y: -1) //Переворот ячейки
-        cell.configureCell(message: user?.messages?[indexPath.row])
+        cell.textViewTopFromMe.isActive = false
+        cell.configureCell(message: self.messages[indexPath.row])
         
         return cell
     }
     
 }
-//MARK: - Extensions ConversationViewController TableViewDelegate
+// MARK: - Extensions ConversationViewController TableViewDelegate
 
-extension ConversationViewController: UITableViewDelegate{
+extension ConversationViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)

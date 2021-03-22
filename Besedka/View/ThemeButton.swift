@@ -9,7 +9,7 @@ import UIKit
 
 class ThemeButton: UIButton {
     
-    //MARK: - Properties
+    // MARK: - Properties
     lazy var formView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +33,7 @@ class ThemeButton: UIButton {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = false
-        view.backgroundColor =  UIColor(red: 0.863, green: 0.969, blue: 0.773, alpha: 1)
+        view.backgroundColor = UIColor(red: 0.863, green: 0.969, blue: 0.773, alpha: 1)
         view.layer.cornerRadius = 10
         return view
     }()
@@ -58,8 +58,8 @@ class ThemeButton: UIButton {
         createDesign()
     }
     
-    //MARK: - Helpers
-   private func createDesign(){
+    // MARK: - Helpers
+   private func createDesign() {
         addSubview(formView)
         addSubview(textLabel)
         self.formView.addSubview(bubbleViewOne)
@@ -68,7 +68,7 @@ class ThemeButton: UIButton {
         
     }
     
-    private func createConstraints(){
+    private func createConstraints() {
         NSLayoutConstraint.activate([
             formView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             formView.trailingAnchor.constraint(equalTo: self.trailingAnchor),

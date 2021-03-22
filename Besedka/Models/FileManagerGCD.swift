@@ -14,7 +14,7 @@ class FileManagerGCD {
     
     public func saveImageToFile(_ image: UIImage?,
                                 byName name: String,
-                                completion: @escaping ()->Void){
+                                completion: @escaping () -> Void) {
         queue.async {
             guard let pngData = image?.pngData(),
                   let filePath = self.filePath(forKey: name) else { return }
@@ -23,7 +23,7 @@ class FileManagerGCD {
         }
     }
     
-    public func deleteFile(name: String){
+    public func deleteFile(name: String) {
         let fileNameToDelete = name
         var filePath = ""
         queue.async {
@@ -37,18 +37,16 @@ class FileManagerGCD {
                 } else {
                     print("File does not exist")
                 }
-            }
-            catch let error as NSError {
+            } catch let error as NSError {
                 print("An error took place: \(error)")
             }
         }
     }
     
-    
     public func getImageFromFile(name: String,
                                  runQueue: DispatchQueue,
                                  completionQueue: DispatchQueue,
-                                 completion: @escaping (UIImage?) -> Void){
+                                 completion: @escaping (UIImage?) -> Void) {
         runQueue.async {
             guard let filePath = self.filePath(forKey: name) else {return}
             guard let fileData = FileManager.default.contents(atPath: filePath.path) else {return}
@@ -57,20 +55,20 @@ class FileManagerGCD {
         }
     }
     
-    public func saveUser(_ user: UserProfileModel?, completion: @escaping ((Error?)->Void)){
+    public func saveUser(_ user: UserProfileModel?, completion: @escaping ((Error?) -> Void)) {
         queue.async {
             guard let user = user,
                   let filePath = self.filePath(forKey: "UserProfile.json") else { return }
-            do{
+            do {
                 try JSONEncoder().encode(user).write(to: filePath)
                 OperationQueue.main.addOperation {completion(nil)}
-            }catch let error{
+            } catch let error {
                 OperationQueue.main.addOperation {completion(error)}
             }
         }
     }
     
-    public func getUser(_ completion: @escaping (UserProfileModel?)->Void){
+    public func getUser(_ completion: @escaping (UserProfileModel?) -> Void) {
         queue.async {
             guard let filePath = self.filePath(forKey: "UserProfile.json"),
                   let jsonDataFile = try? Data(contentsOf: filePath),
@@ -78,9 +76,8 @@ class FileManagerGCD {
             self.main.async {completion(user)}
         }
     }
-
     
-    public func saveTheme(name theme: String?){
+    public func saveTheme(name theme: String?) {
         queue.async {
             guard let name = theme,
                   let filePath = self.filePath(forKey: "Theme.plist")  else {return}
@@ -90,7 +87,7 @@ class FileManagerGCD {
         }
     }
     
-    public func getTheme(_ completion: @escaping (String?)->Void){
+    public func getTheme(_ completion: @escaping (String?) -> Void) {
         DispatchQueue.global(qos: .userInteractive).async {
             guard let filePath = self.filePath(forKey: "Theme.plist"),
                   let object = NSDictionary(contentsOf: filePath),
@@ -109,4 +106,3 @@ class FileManagerGCD {
         return documentURL.appendingPathComponent(key)
     }
 }
-

@@ -7,7 +7,7 @@
 
 import UIKit
 
-//MARK: - Extensions TableView
+// MARK: - Extensions TableView
 
 extension UITableView {
     func setOffsetToBottom(animated: Bool) {
@@ -21,5 +21,3 @@ extension UITableView {
     }
     
 }
-
-

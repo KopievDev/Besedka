@@ -19,7 +19,7 @@ class UserCell: UITableViewCell {
         return label
     }()
     
-    //Last message
+    // Last message
     private let messageLabel: SecondaryLabel = {
         let label = SecondaryLabel()
         label.text = "Hi Bro! How are you??"
@@ -30,7 +30,7 @@ class UserCell: UITableViewCell {
 
         return label
     }()
-    //Date label
+    // Date label
     private let dateLabel: SecondaryLabel = {
         let label = SecondaryLabel()
         label.text = "25.01.21"
@@ -40,7 +40,7 @@ class UserCell: UITableViewCell {
         return label
     }()
     
-    //Image of contacts
+    // Image of contacts
     private let contactImageView: UIImageView = {
         let iv = UIImageView()
         iv.clipsToBounds = true
@@ -52,7 +52,7 @@ class UserCell: UITableViewCell {
     
         return iv
     }()
-    //status
+    // status
     private let isOnline: UIView = {
         let view = UIView()
         view.clipsToBounds = true
@@ -66,10 +66,7 @@ class UserCell: UITableViewCell {
         return view
     }()
     
-    
-    
-    
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createUI()
@@ -79,10 +76,8 @@ class UserCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
 
-     //MARK: - Helpers
+     // MARK: - Helpers
     
     func createUI() {
 
@@ -94,62 +89,43 @@ class UserCell: UITableViewCell {
         createConstrains()
       
     }
-    func configureCell(user: User?)  {
+    
+    func configureCell(_ channel: Channel?) {
         self.backgroundColor = .clear
-        //self.isOnline.backgroundColor = .darkGray
         self.messageLabel.font = UIFont.systemFont(ofSize: 14)
         self.contactImageView.image = UIImage(named: "Anonymous")
         
-        guard let user = user else {return}
-        if user.image != nil {
-            self.contactImageView.image = UIImage(named: user.image ?? "Anonymous")
-        }
-        fullNameLabel.text = user.name ?? "Незвестный"
-        if user.lastMessage != nil{
-            messageLabel.text = user.lastMessage
-        }else {
+        guard let channel = channel else {return}
+        
+        fullNameLabel.text = channel.name
+        if channel.lastMessage != "" {
+            messageLabel.text = channel.lastMessage
+        } else {
             messageLabel.font = UIFont.italicSystemFont(ofSize: 14)
             messageLabel.text = "No messages yet"
         }
-        dateLabel.text = user.date?.formatedDate()
-        if !user.isOnline{
-            self.isOnline.backgroundColor = .darkGray
-
-//            self.isOnline.isHidden = true
-        }else{
-           // self.isOnline.isHidden = false
-            self.isOnline.backgroundColor = UIColor(red: 0.353, green: 0.831, blue: 0.224, alpha: 1)
-
-        }
-        if user.hasUnreadMessages {
-            self.messageLabel.font = UIFont.boldSystemFont(ofSize: 14)
-            self.backgroundColor = Theme.current.selectionColor
-        }
-        
-        
+        dateLabel.text = channel.lastActivity?.formatedDate()
     }
         
-    func createConstrains(){
-        
+    func createConstrains() {
 
         NSLayoutConstraint.activate([
             
             dateLabel.leadingAnchor.constraint(greaterThanOrEqualTo: fullNameLabel.trailingAnchor, constant: 6),
             dateLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             dateLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            dateLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),// Работа над ошибками
+            dateLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 50), // Работа над ошибками
             
             fullNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 70),
             fullNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
             
             messageLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 36),
-            messageLabel.leadingAnchor.constraint(equalTo:self.leadingAnchor, constant: 70),
+            messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 70),
             messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             messageLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
             
-            
             contactImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            contactImageView.leadingAnchor.constraint(equalTo:self.leadingAnchor, constant: 10),
+            contactImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             contactImageView.heightAnchor.constraint(equalToConstant: 48),
             contactImageView.widthAnchor.constraint(equalToConstant: 48),
             
@@ -161,6 +137,3 @@ class UserCell: UITableViewCell {
     
     }
 }
-
-
-

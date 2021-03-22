@@ -7,9 +7,9 @@
 
 import UIKit
 
-extension Date{
+extension Date {
     
-    func formatedDate() -> String{
+    func formatedDate() -> String {
         let now = Date()
         let calendar = Calendar.current
         let day = calendar.component(.day, from: self)
@@ -20,10 +20,10 @@ extension Date{
         let yearNow = calendar.component(.year, from: now)
         let dateFormatter = DateFormatter()
         
-        if month < monthNow || month == monthNow && day < dayNow || year < yearNow{
+        if month < monthNow || month == monthNow && day < dayNow || year < yearNow {
             dateFormatter.dateFormat = "dd MMM"
             return dateFormatter.string(from: self)
-        }else {
+        } else {
             dateFormatter.dateFormat = "HH:mm"
             return dateFormatter.string(from: self)
         }

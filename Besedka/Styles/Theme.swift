@@ -37,7 +37,6 @@ protocol ThemeProtocol {
 
 }
 
-
 extension ThemeProtocol {
     func apply(for application: UIApplication) {
     
@@ -62,7 +61,6 @@ extension ThemeProtocol {
             $0.backgroundColor = .clear
             $0.selectionColor = selectionColor
         }
-        
 
         self.extend()
         
@@ -74,5 +72,3 @@ extension ThemeProtocol {
         // Optionally extend theme
     }
 }
-
-

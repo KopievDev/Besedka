@@ -7,14 +7,13 @@
 
 import UIKit
 
-
 class FileManagerOperation: Operation {
     
     let operationQueue = OperationQueue()
     
     public func saveImageToFile(_ image: UIImage?,
                                 byName name: String,
-                                completion: @escaping ()->Void){
+                                completion: @escaping () -> Void) {
         
         operationQueue.addOperation {
             guard let pngData = image?.pngData(),
@@ -24,14 +23,14 @@ class FileManagerOperation: Operation {
         }
     }
     
-    public func saveUser(user: UserProfileModel?, completion: @escaping ((Error?)->Void)){
+    public func saveUser(user: UserProfileModel?, completion: @escaping ((Error?) -> Void)) {
         operationQueue.addOperation {
             guard let user = user,
                   let filePath = self.filePath(forKey: "UserProfile.json") else { return }
-            do{
+            do {
                 try JSONEncoder().encode(user).write(to: filePath)
                 OperationQueue.main.addOperation {completion(nil)}
-            }catch let error{
+            } catch let error {
                 OperationQueue.main.addOperation {completion(error)}
             }
         }
@@ -39,15 +38,15 @@ class FileManagerOperation: Operation {
     
     public func saveUserToFile(name: String,
                                user: UserProfileModel?,
-                               completion: @escaping ((Error?)->Void) ){
+                               completion: @escaping ((Error?) -> Void) ) {
         operationQueue.addOperation {
             guard  let path = Bundle.main.path(forResource: name, ofType: "json") else { return}
             let url = URL(fileURLWithPath: path)
             guard let user = user  else {return}
-            do{
+            do {
                 try JSONEncoder().encode(user).write(to: url)
                 OperationQueue.main.addOperation {completion(nil)}
-            }catch let error{
+            } catch let error {
                 OperationQueue.main.addOperation {completion(error)}
             }
         }
