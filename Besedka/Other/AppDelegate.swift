@@ -21,6 +21,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     //Сообщает делегату, что процесс запуска начался
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool{
+      
+        let defaults = UserDefaults.standard
+        if let theme = defaults.string(forKey: "theme") {
+            switch theme {
+                    case "Classic":
+                        Theme.current = LightTheme()
+                    case "Night":
+                        Theme.current = DarkTheme()
+                    default:
+                        Theme.current = DayTheme()
+                    }
+        }else {
+            Theme.current = DayTheme()
+        }
+        Theme.current.apply(for: application)
         
         if showLog {
             print("#Run DEBUG scheme")
@@ -45,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         let startController = ConversationsListViewController()
         let navigationController = UINavigationController(rootViewController: startController)
-        navigationController.navigationBar.tintColor = UIColor.darkGray
+
 
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()

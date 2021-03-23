@@ -34,22 +34,34 @@ class ConversationsListViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print(#function)
         self.userTableView.reloadData()
-        updImageProfile()
+        updateImageProfile()
+
+    }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        print(#function)
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print(#function)
 
     }
     //MARK: - Selectors
     @objc func showProfile(){
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        storyboard.instantiateViewController(withIdentifier: "profile")
-        guard  let secondViewController = (storyboard.instantiateViewController(withIdentifier: "profile"))  as? ProfileViewController else {return}
-        secondViewController.modalPresentationStyle = .fullScreen
-        self.navigationController?.present(secondViewController, animated: true, completion: nil)
-
+        let profileViewController = ProfileViewController()
+        profileViewController.radius = (self.view.frame.width - 140) * 0.5
+        profileViewController.modalPresentationStyle = .fullScreen
+        self.navigationController?.present(profileViewController, animated: true)
     }
+    
+  
     //MARK: - Helpers
     
-    fileprivate func updImageProfile() {
+    fileprivate func updateImageProfile() {
         let defaults = UserDefaults.standard
         if let image = defaults.data(forKey: "saveImg"){
             self.avatarImage = UIImage(data: image, scale: 0.2) ?? UIImage()
@@ -78,11 +90,12 @@ class ConversationsListViewController: UIViewController {
         title = "Tinkoff Chat"
         
         self.view.addSubview(userTableView)
- 
-        updImageProfile()
+
+        updateImageProfile()
+        addSettingButton()
     }
 
-    
+        
     func getData(){
         users.append(tonyStark)
         users.append(lebowski)
@@ -109,9 +122,7 @@ class ConversationsListViewController: UIViewController {
     // Метод для перехода к собщениям контакта
     func wantToTalk(to user: User){
         
-        if user.hasUnreadMessages{
-            updateUsersData(user: user, state: .hasUnreadMessages, value: false)
-        }
+        if user.hasUnreadMessages{updateUsersData(user: user, state: .hasUnreadMessages, value: false)}
         
         let chatView = ConversationViewController()
         chatView.user = user
@@ -135,7 +146,7 @@ class ConversationsListViewController: UIViewController {
     
 }
 
-    //MARK: - Extensions
+    //MARK: - Extensions TableView DataSource
     
 extension ConversationsListViewController:UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -164,17 +175,16 @@ extension ConversationsListViewController:UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? UserCell {
-            cell.backgroundColor = .clear
-            if indexPath.section == 0 {
-                cell.user = onlineArray[indexPath.row]
-            }else{
-                cell.user = historyArray[indexPath.row]
-            }
-            return cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? UserCell else {return UITableViewCell()}
+        cell.backgroundColor = .clear
+        switch indexPath.section {
+        case 0:
+            cell.configureCell(user: onlineArray[indexPath.row])
+        default:
+            cell.configureCell(user: historyArray[indexPath.row])
         }
-        return UITableViewCell()
         
+        return cell
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -208,41 +218,84 @@ extension ConversationsListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let toHasUnreadMessage = UITableViewRowAction(style: .default, title: "Пометить непрочитанным"){ _, indexPath   in
-            
-            if indexPath.section == 0{
+        let toHasUnreadMessage = UITableViewRowAction(style: .default, title: "Пометить непрочитанным"){ _,_  in
+
+            switch indexPath.section {
+            case 0:
                 self.updateUsersData(user: self.onlineArray[indexPath.row], state: .hasUnreadMessages, value: true)
-                self.userTableView.reloadData()
-            }
-            
-            if indexPath.section == 1 {
+            default:
                 self.updateUsersData(user: self.historyArray[indexPath.row], state: .hasUnreadMessages, value: true)
-                self.userTableView.reloadData()
             }
+            self.userTableView.reloadData()
+
         }
-        let toArchiveButton = UITableViewRowAction(style: .default, title: "В архив") {_, indexpath in
-            if indexPath.section == 0{
-                self.updateUsersData(user: self.onlineArray[indexpath.row], state: .isArchive, value: true)
-                self.userTableView.reloadData()
+        let toArchiveButton = UITableViewRowAction(style: .default, title: "В архив") {_,_ in
+            switch indexPath.section {
+            case 0:
+                self.updateUsersData(user: self.onlineArray[indexPath.row], state: .isArchive, value: true)
+            default:
+                self.updateUsersData(user: self.historyArray[indexPath.row], state: .isArchive, value: false)
             }
-            
-            if indexPath.section == 1 {
-                self.updateUsersData(user: self.historyArray[indexpath.row], state: .isArchive, value: false)
-                self.userTableView.reloadData()
-            }
-            
+
+            self.userTableView.reloadData()
+
         }
         
         toArchiveButton.backgroundColor = .systemGray
-
+        
         if indexPath.section == 1 {
             toArchiveButton.title = "Вернуть"
             toArchiveButton.backgroundColor = .systemPurple
         }
         return [toArchiveButton, toHasUnreadMessage]
     }
-    
+
   
+}
+
+
+//MARK: - Homework #4.2
+
+extension ConversationsListViewController {
+    
+    func addSettingButton(){
+        self.navigationItem.setLeftBarButton(UIBarButtonItem(image: UIImage(named: "gear"), style: .plain, target: self, action: #selector(goToSetting)), animated: true)
+    }
+    
+    
+    @objc func goToSetting(){
+        let settingView = ThemesViewController()
+        
+        //Clouser
+        settingView.themeSelected = {[weak self] theme in
+            self?.changeTheme(name: theme)
+        }
+        
+        //Delegate
+        settingView.delegate = self
+        
+        navigationController?.pushViewController(settingView, animated: true)
+
+    }
+}
+
+//MARK: - Delegate ThemeProtocol  - Homework #4.3
+extension ConversationsListViewController: ThemeDelegateProtocol{
+    
+    func changeTheme(name: String) {
+        switch name {
+        case "Classic":
+            Theme.current = LightTheme()
+            print("Light Theme On")
+        case "Day":
+            Theme.current = DayTheme()
+            print("Day Theme On")
+        default:
+            Theme.current = DarkTheme()
+            print("Night Theme On")
+        }
+        Theme.current.apply(for: UIApplication.shared)
+    }
 }
 
 

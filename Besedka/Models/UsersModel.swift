@@ -36,7 +36,7 @@ struct Messages {
     var toMe : Bool = false
 }
 //MARK: - data to test
-let tonyStark = User(name: "Tony Stark", isOnline: true, isArchive: false, hasUnreadMessages: false, image: "Tony",
+let tonyStark = User(name: "Tony Starkfghshsrthhsfgghfhhjfggjfggjfhjmfhmfdmndfhmnd", isOnline: true, isArchive: false, hasUnreadMessages: false, image: "Tony",
                      messages: [
                         Messages(message: "Привет!", date: Date(timeIntervalSinceNow: -2000), toMe: true),
                         Messages(message: "Здорова) чо как ты?", date: Date(timeIntervalSinceNow: -1000), toMe: false),
