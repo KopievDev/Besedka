@@ -21,10 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     //Сообщает делегату, что процесс запуска начался
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool{
-      
-        let defaults = UserDefaults.standard
-        if let theme = defaults.string(forKey: "theme") {
-            switch theme {
+        
+        let fileOpener = FileManagerGCD()
+        
+        fileOpener.getTheme { (theme) in
+            guard let name = theme else {return}
+            switch name {
                     case "Classic":
                         Theme.current = LightTheme()
                     case "Night":
@@ -32,11 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     default:
                         Theme.current = DayTheme()
                     }
-        }else {
-            Theme.current = DayTheme()
+            Theme.current.apply(for: application)
         }
-        Theme.current.apply(for: application)
-        
+
         if showLog {
             print("#Run DEBUG scheme")
             state = #function

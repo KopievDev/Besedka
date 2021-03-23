@@ -137,10 +137,10 @@ class UserCell: UITableViewCell {
             dateLabel.leadingAnchor.constraint(greaterThanOrEqualTo: fullNameLabel.trailingAnchor, constant: 6),
             dateLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             dateLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+            dateLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),// Работа над ошибками
             
             fullNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 70),
             fullNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            fullNameLabel.widthAnchor.constraint(equalToConstant: self.frame.width - dateLabel.frame.width - 76), // Работа над ошибками
             
             messageLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 36),
             messageLabel.leadingAnchor.constraint(equalTo:self.leadingAnchor, constant: 70),

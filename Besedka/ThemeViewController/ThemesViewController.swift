@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ThemeDelegateProtocol {
+protocol ThemeDelegateProtocol: class {
     func changeTheme(name: String)
 }
 
@@ -15,7 +15,7 @@ protocol ThemeDelegateProtocol {
 class ThemesViewController: UIViewController {
     //MARK: - Properties
     
-    var delegate : ThemeDelegateProtocol?
+    weak var delegate : ThemeDelegateProtocol?
     var themeSelected: ((String)->())?
     
     
@@ -69,8 +69,10 @@ class ThemesViewController: UIViewController {
             stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
             stackView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor)
         ])
-        
-        if let theme = UserDefaults.standard.string(forKey: "theme") {
+        let fileOpener = FileManagerGCD()
+        fileOpener.getTheme{ [weak self] (name) in
+            guard let theme = name else {return}
+            guard let self = self else {return}
             switch theme {
             case "Classic":
                 self.classicButton.formView.layer.borderColor = UIColor(red: 0, green: 0.55, blue: 0.55, alpha: 1).cgColor
@@ -117,7 +119,9 @@ class ThemesViewController: UIViewController {
 
     @objc func changeMode(sender: ThemeButton) {
         //Сохранение название темы
-        UserDefaults.standard.setValue(sender.textLabel.text, forKey: "theme")
+        let fileSaver = FileManagerGCD()
+        fileSaver.saveTheme(name: sender.textLabel.text)
+
         checkSelectedTheme(theme: sender.textLabel.text ?? "Day")
         //MARK: - HOMEWORK #4.3
        

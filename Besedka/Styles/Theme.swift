@@ -29,6 +29,7 @@ protocol ThemeProtocol {
     var bubbleToMe: UIColor {get}
     
     var buttonBackground: UIColor {get}
+    var buttonDisable: UIColor {get}
     var textFromMe: UIColor {get}
     
     func apply(for application: UIApplication)
@@ -51,7 +52,9 @@ extension ThemeProtocol {
         UITableView.appearance().separatorColor = Theme.current.separatorColor
         UITableView.appearance().backgroundColor = Theme.current.backgroundColor
         UITableViewCell.appearance().backgroundColor = .clear
-        
+            
+        UITextField.appearance().textColor = Theme.current.labelColor
+        UITextView.appearance().textColor = Theme.current.labelColor
         UILabel.appearance().textColor = Theme.current.labelColor
         SecondaryLabel.appearance().textColor = Theme.current.secondaryLabelColor
         
