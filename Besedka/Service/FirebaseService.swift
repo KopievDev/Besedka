@@ -34,6 +34,25 @@ struct FirebaseService {
         }
         
     }
+    
+    public  func addSortedChannelListener(_ completion: @escaping ([Channel]) -> Void) {
+        reference.order(by: "lastActivity", descending: true).addSnapshotListener { (snapshot, _) in
+            guard let document = snapshot?.documents else {
+                print("no channels")
+                return
+            }
+            // Channels out
+            let channels = document.compactMap({ (snap) -> Channel? in
+                let data = snap.data()
+                return Channel(dictionary: data, documentId: snap.documentID )
+            })
+            
+            DispatchQueue.main.async {
+                completion(channels)
+            }
+        }
+        
+    }
 
     public  func listenerMessages(from channel: String, listener: @escaping FIRQuerySnapshotBlock) {
         reference.document(channel).collection("messages").addSnapshotListener(listener)
@@ -112,16 +131,14 @@ struct FirebaseService {
     }
     
     public func rename(_ channel: Channel, to name: String) {
-        guard let channelId = channel.identifier else {return}
         
-        reference.document(channelId).setData([ "name": name ], merge: true)
+        reference.document(channel.identifier).setData([ "name": name ], merge: true)
         
     }
     
     public func delete(_ channel: Channel) {
-        guard let channelId = channel.identifier else {return}
         
-        reference.document(channelId).delete { error in
+        reference.document(channel.identifier).delete { error in
             if let error = error {
                 print("Error removing document: \(error)")
             } else {

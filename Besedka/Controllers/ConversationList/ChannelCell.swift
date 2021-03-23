@@ -52,18 +52,14 @@ class UserCell: UITableViewCell {
     
         return iv
     }()
-    // status
-    private let isOnline: UIView = {
-        let view = UIView()
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 8
-        view.backgroundColor = UIColor(red: 0.353, green: 0.831, blue: 0.224, alpha: 1)
-        view.layer.borderWidth = 3
-        view.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-      
-        return view
+
+    let shortName: UILabel = {
+        let label = SecondaryLabel()
+        label.text = "N"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 40)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     // MARK: - Lifecycle
@@ -85,7 +81,7 @@ class UserCell: UITableViewCell {
         addSubview(fullNameLabel)
         addSubview(dateLabel)
         addSubview(messageLabel)
-        addSubview(isOnline)
+        contactImageView.addSubview(shortName)
         createConstrains()
       
     }
@@ -93,8 +89,7 @@ class UserCell: UITableViewCell {
     func configureCell(_ channel: Channel?) {
         self.backgroundColor = .clear
         self.messageLabel.font = UIFont.systemFont(ofSize: 14)
-        self.contactImageView.image = UIImage(named: "Anonymous")
-        
+        self.shortName.text = channel?.name.first?.uppercased()
         guard let channel = channel else {return}
         
         fullNameLabel.text = channel.name
@@ -128,11 +123,10 @@ class UserCell: UITableViewCell {
             contactImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             contactImageView.heightAnchor.constraint(equalToConstant: 48),
             contactImageView.widthAnchor.constraint(equalToConstant: 48),
-            
-            isOnline.topAnchor.constraint(equalTo: self.contactImageView.topAnchor, constant: 4),
-            isOnline.leadingAnchor.constraint(equalTo: self.contactImageView.leadingAnchor, constant: 37),
-            isOnline.heightAnchor.constraint(equalToConstant: 16),
-            isOnline.widthAnchor.constraint(equalToConstant: 16)
+
+            shortName.centerYAnchor.constraint(equalTo: contactImageView.centerYAnchor),
+            shortName.centerXAnchor.constraint(equalTo: contactImageView.centerXAnchor)
+
         ])
     
     }

@@ -17,8 +17,8 @@ struct LightTheme: ThemeProtocol {
 
     let backgroundColor: UIColor = .white
     let separatorColor: UIColor = .darkGray
-    let selectionColor: UIColor = UIColor(red: 237 / 255, green: 237 / 255, blue: 240 / 255, alpha: 1)
-    
+    let selectionColor: UIColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+
     let labelColor: UIColor = .black
     let secondaryLabelColor: UIColor = .darkGray
     let subtleLabelColor: UIColor = .lightText

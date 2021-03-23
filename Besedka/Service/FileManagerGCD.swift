@@ -105,4 +105,8 @@ class FileManagerGCD {
                                                  in: .userDomainMask).first else {return nil}
         return documentURL.appendingPathComponent(key)
     }
+    
+    deinit {
+        print("deinit FileGCD")
+    }
 }

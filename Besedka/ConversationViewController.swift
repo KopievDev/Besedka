@@ -14,6 +14,7 @@ class ConversationViewController: UIViewController {
     }
     let firebase = FirebaseService()
     var messages = [Message]()
+    var myName: String = ""
     
     private let cellId = "cellMessage"
     private lazy var messageTableView: UITableView = {
@@ -23,7 +24,6 @@ class ConversationViewController: UIViewController {
         table.delegate = self
         table.separatorStyle = .none
         table.estimatedRowHeight = 100
-       // table.transform = CGAffineTransform(scaleX: 1, y: -1) // Переворот таблицы
         table.remembersLastFocusedIndexPath = true
         table.backgroundColor = Theme.current.backgroundColor
         return table
@@ -31,6 +31,7 @@ class ConversationViewController: UIViewController {
     
     private lazy var  customInputView: CustomInputAccesoryView = {
         let iv = CustomInputAccesoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50 ))
+        iv.messageInputTextView.becomeFirstResponder()
         return iv
     }()
     
@@ -38,16 +39,16 @@ class ConversationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getMyName()
         createdDesign()
         listenMessages()
     }
+    override var canBecomeFirstResponder: Bool {
+           return true
+       }
     
     override var inputAccessoryView: UIView? {
-         return customInputView
-    }
-    
-    override var canBecomeFirstResponder: Bool {
-        return true
+        return customInputView
     }
     
     deinit {
@@ -58,6 +59,15 @@ class ConversationViewController: UIViewController {
     func configure() {
         guard let channel = channel else {return}
         title = channel.name
+    }
+    
+    private func getMyName() {
+        let fileOpener = FileManagerGCD()
+        fileOpener.getUser {[weak self] (user) in
+            guard let self = self else {return}
+            guard let name = user?.name else {return}
+            self.myName = name
+        }
     }
     
     fileprivate func createdDesign() {
@@ -78,18 +88,24 @@ class ConversationViewController: UIViewController {
             self.messages = message
             self.messageTableView.reloadData()
             self.messageTableView.scrollToLastRow(animated: false)
+            
+            message.forEach { (mes) in
+                print(mes.senderName, " ", mes.content)
+            }
         }
     }
     // MARK: - Selectors
     
     @objc private func sendMessage() {
-        guard let content = self.customInputView.messageInputTextView.text else {
+        guard let content = self.customInputView.messageInputTextView.text,
+              content.filter({ $0 != " " }).count > 0 else {
             print("empty")
             return
         }
         guard let channelId = channel?.identifier else {return}
-        firebase.addNew(message: Message(content: content), to: channelId)
+        firebase.addNew(message: Message(content: content, name: self.myName), to: channelId)
         self.customInputView.messageInputTextView.text = ""
+        print(self.myName)
     }
     
 }
@@ -133,6 +149,5 @@ extension ConversationViewController: UITextViewDelegate {
             self.messageTableView.scrollToLastRow(animated: true)
             self.customInputView.placeholderLabel.isHidden = !self.customInputView.messageInputTextView.isEmpty()
         }
-       
     }
 }

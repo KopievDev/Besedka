@@ -50,6 +50,8 @@ class CustomInputAccesoryView: UIView {
     }
     
     required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        createDesign()
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -85,7 +87,7 @@ class CustomInputAccesoryView: UIView {
             messageInputTextView.topAnchor.constraint(equalTo: self.topAnchor, constant: 12),
             messageInputTextView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 4),
             messageInputTextView.trailingAnchor.constraint(equalTo: self.sendButton.leadingAnchor, constant: -10),
-            messageInputTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),
+            messageInputTextView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             // Placeholder
             placeholderLabel.leadingAnchor.constraint(equalTo: messageInputTextView.leadingAnchor, constant: 4),
             placeholderLabel.centerYAnchor.constraint(equalTo: messageInputTextView.centerYAnchor)

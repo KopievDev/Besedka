@@ -124,6 +124,7 @@ class MessageCell: UITableViewCell {
             // BubbleView
             bubbleContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
             bubbleContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+            bubbleContainer.widthAnchor.constraint(greaterThanOrEqualTo: self.widthAnchor, multiplier: 0.3),
             // name
             name.topAnchor.constraint(equalTo: bubbleContainer.topAnchor, constant: 5),
             name.leadingAnchor.constraint(equalTo: bubbleContainer.leadingAnchor, constant: 6),

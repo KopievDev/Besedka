@@ -35,16 +35,9 @@ class ConversationsListViewController: UIViewController {
         super.viewDidLoad()
         
         createUI()
-        let firebase = FirebaseService()
-        
-        firebase.addChannelListener { (channels) in
+        firebase.addSortedChannelListener { (channels) in
             self.channels = channels
             self.channelsTableView.reloadData()
-            self.channels.forEach { channel in
-                print(channel.identifier!, channel.name)
-                print(channel.lastMessage!)
-                print()
-            }
         }
     }
    
@@ -69,9 +62,14 @@ class ConversationsListViewController: UIViewController {
     fileprivate func addButtonChannels() {
         let button = UIButton(type: .system)
         self.view.addSubview(button)
-        button.frame = CGRect(x: self.view.frame.width - 70, y: self.view.frame.height - 70, width: 50, height: 50)
-        button.addCornerRadius(25)
-        button.backgroundColor = .green
+        button.frame = CGRect(x: self.view.frame.width - self.view.frame.width / 5 - 20,
+                              y: self.view.frame.height - self.view.frame.width / 5 - 50,
+                              width: self.view.frame.width / 5, height: self.view.frame.width / 5)
+        button.tintColor = .systemPurple
+        button.addCornerRadius(button.frame.width / 2)
+        button.backgroundColor = .white
+
+        button.setImage(UIImage(named: "add"), for: .normal)
         button.addTarget(self, action: #selector(addNewChannel), for: .touchUpInside)
     }
     
@@ -79,18 +77,36 @@ class ConversationsListViewController: UIViewController {
         let barButtonView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40 ))
         barButtonView.backgroundColor = .black
         barButtonView.layer.cornerRadius = 20
-        let imageForButton = UIImageView(image: UIImage(named: "Anonymous"))
+        let imageForButton = UIImageView()
+        imageForButton.backgroundColor = UIColor(red: 0.894, green: 0.908, blue: 0.17, alpha: 1)
+        imageForButton.tintColor = Theme.current.tint
         barButtonView.addSubview(imageForButton)
         imageForButton.frame = barButtonView.frame
         imageForButton.contentMode = .scaleAspectFill
-        let reconizer = UITapGestureRecognizer(target: self, action: #selector(self.showProfile))
+        let shortName = UILabel()
+        shortName.frame = imageForButton.frame
+        shortName.font = .boldSystemFont(ofSize: 20)
+        shortName.textAlignment = .center
+        imageForButton.addSubview(shortName)
+        let reconizer = UITapGestureRecognizer(target: self, action: #selector(showProfile))
         imageForButton.addGestureRecognizer(reconizer)
         imageForButton.isUserInteractionEnabled = true
         barButtonView.clipsToBounds = true
         let fileOpener = FileManagerGCD()
+        fileOpener.getUser { (user) in
+            // Get short name from name
+            let text = user?.name ?? ""
+            if text.split(separator: " ").count >= 2 {
+                shortName.text = "\(text.split(separator: " ")[0].first ?? "n")\(text.split(separator: " ")[1].first ?? "n")".uppercased()
+            } else {
+                shortName.text = text.first?.uppercased()
+            }
+            
+        }
         fileOpener.getImageFromFile(name: "Avatar.png",
                                     runQueue: .global(qos: .utility), completionQueue: .main) {(image) in
             imageForButton.image = image
+            shortName.isHidden = true
         }
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: barButtonView)
     }
@@ -105,6 +121,17 @@ class ConversationsListViewController: UIViewController {
         
     }
     
+    private func animateView(_ viewToAnimate: UIView) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.5, options: .curveEaseIn) {
+            viewToAnimate.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+//            viewToAnimate.transform = CGAffineTransform(rotationAngle: CGFloat(CGFloat.pi * -3 / 4))
+        }
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 1, options: .curveEaseIn) {
+            viewToAnimate.transform = .identity
+            
+        }
+    }
+    
 //     Метод для перехода к собщениям контакта
     func wantToTalk(in channel: Channel) {
         let chatView = ConversationViewController()
@@ -114,8 +141,10 @@ class ConversationsListViewController: UIViewController {
     
     // MARK: - Selectors
     
-    @objc func addNewChannel() {
-        let alert = UIAlertController(title: "New channel", message: "Введите название канала:", preferredStyle: .alert)
+    @objc func addNewChannel(sender: UIButton) {
+        animateView(sender)
+
+        let alert = UIAlertController(title: nil, message: "Введите название канала:", preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.placeholder = "Название"
         }
@@ -125,6 +154,28 @@ class ConversationsListViewController: UIViewController {
             guard let self = self else { return }
             if name != "" {
                 self.firebase.addNew(channel: Channel(name: name))
+            }
+        }
+        let cancel = UIAlertAction(title: "Отменить", style: .cancel)
+        alert.addAction(applyButton)
+        alert.addAction(cancel)
+        
+        present(alert, animated: true)
+        
+    }
+    
+    func rename(channel: Channel) {
+        let alert = UIAlertController(title: nil, message: "Введите новое название канала:", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.placeholder = channel.name
+            
+        }
+        
+        let applyButton = UIAlertAction(title: "Переименовать", style: .default) {[weak self] (_) in
+            guard let name = alert.textFields?.first?.text else {return}
+            guard let self = self else { return }
+            if name != "" {
+                self.firebase.rename(channel, to: name)
             }
         }
         let cancel = UIAlertAction(title: "Отменить", style: .cancel)
@@ -179,16 +230,16 @@ extension ConversationsListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteChannel = UITableViewRowAction(style: .default, title: "Удалить") { _, _  in
+        let deleteChannel = UITableViewRowAction(style: .default, title: "delete") { _, _  in
             self.firebase.delete(self.channels[indexPath.row])
         }
         
-        let renameChannel = UITableViewRowAction(style: .default, title: "Переименовать") {_, _ in
-            self.firebase.rename(self.channels[indexPath.row], to: "Флудилка #")
+        let renameChannel = UITableViewRowAction(style: .default, title: "rename") {_, _ in
+            self.rename(channel: self.channels[indexPath.row])
         }
         
-        deleteChannel.backgroundColor = .systemPurple
-        renameChannel.backgroundColor = .systemGray
+        deleteChannel.backgroundColor = .systemRed
+        renameChannel.backgroundColor = .systemPurple
         
         return [deleteChannel, renameChannel]
     }

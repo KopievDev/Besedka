@@ -17,7 +17,7 @@ struct DarkTheme: ThemeProtocol {
 
     let backgroundColor: UIColor = .black
     let separatorColor: UIColor = .darkGray
-    let selectionColor: UIColor = .init(red: 38 / 255, green: 38 / 255, blue: 40 / 255, alpha: 1)
+    let selectionColor: UIColor = UIColor(red: 0.106, green: 0.106, blue: 0.106, alpha: 1)
 
     let labelColor: UIColor = .white
     let secondaryLabelColor: UIColor = .darkGray

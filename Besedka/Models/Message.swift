@@ -38,7 +38,13 @@ extension Message {
         self.created = Date()
         self.senderName = "Ivan"
         self.senderId = myId
-
-//        "EC144FF2-9802-4A3D-A5DD-7008DDA4D431
+    }
+    
+    init?(content: String, name: String) {
+        self.content = content
+        self.created = Date()
+        self.senderName = name
+        self.senderId = myId
+        
     }
 }
