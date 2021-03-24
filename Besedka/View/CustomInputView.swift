@@ -28,7 +28,6 @@ class CustomInputAccesoryView: UIView {
         button.setTitleColor(Theme.current.secondaryLabelColor, for: .highlighted)
         button.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-
         return button
     }()
     
@@ -38,10 +37,11 @@ class CustomInputAccesoryView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Enter message"
         label.font = UIFont.systemFont(ofSize: 16)
-        
         return label
     }()
     
+    lazy var heightText = self.messageInputTextView.heightAnchor.constraint(equalToConstant: 100)
+
     // MARK: - Lifecycle
     
     override init(frame: CGRect) {
@@ -56,7 +56,7 @@ class CustomInputAccesoryView: UIView {
     }
     
     override var intrinsicContentSize: CGSize {
-        return .zero
+        return textViewContentSize()
     }
     
     // MARK: - Helpers
@@ -79,7 +79,7 @@ class CustomInputAccesoryView: UIView {
         
         NSLayoutConstraint.activate([
             // Button
-            sendButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
+            sendButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 4),
             sendButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
             sendButton.widthAnchor.constraint(equalToConstant: 50),
             sendButton.heightAnchor.constraint(equalToConstant: 50),
@@ -93,6 +93,14 @@ class CustomInputAccesoryView: UIView {
             placeholderLabel.centerYAnchor.constraint(equalTo: messageInputTextView.centerYAnchor)
             
         ])
+    }
+    
+    func textViewContentSize() -> CGSize {
+        let size = CGSize(width: messageInputTextView.bounds.width,
+                          height: CGFloat.greatestFiniteMagnitude)
+     
+        let textSize = messageInputTextView.sizeThatFits(size)
+        return CGSize(width: bounds.width, height: textSize.height)
     }
     
     // MARK: - Selectors

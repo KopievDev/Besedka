@@ -33,18 +33,13 @@ class ConversationsListViewController: UIViewController {
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         createUI()
-        firebase.addSortedChannelListener { (channels) in
-            self.channels = channels
-            self.channelsTableView.reloadData()
-        }
+        addListener()
     }
-   
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(#function)
-        self.channelsTableView.reloadData()
+        channelsTableView.reloadData()
         updateImageProfile()
         addButtonChannels()
         
@@ -59,12 +54,19 @@ class ConversationsListViewController: UIViewController {
   
     // MARK: - Helpers
     
+    private func addListener() {
+        firebase.addSortedChannelListener { (channels) in
+            self.channels = channels
+            self.channelsTableView.reloadData()
+        }
+    }
+    
     fileprivate func addButtonChannels() {
         let button = UIButton(type: .system)
         self.view.addSubview(button)
         button.frame = CGRect(x: self.view.frame.width - self.view.frame.width / 5 - 20,
                               y: self.view.frame.height - self.view.frame.width / 5 - 50,
-                              width: self.view.frame.width / 5, height: self.view.frame.width / 5)
+                              width: self.view.frame.width / 6, height: self.view.frame.width / 6)
         button.tintColor = .systemPurple
         button.addCornerRadius(button.frame.width / 2)
         button.backgroundColor = .white
@@ -124,7 +126,7 @@ class ConversationsListViewController: UIViewController {
     private func animateView(_ viewToAnimate: UIView) {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.5, options: .curveEaseIn) {
             viewToAnimate.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-//            viewToAnimate.transform = CGAffineTransform(rotationAngle: CGFloat(CGFloat.pi * -3 / 4))
+            viewToAnimate.transform = CGAffineTransform(rotationAngle: CGFloat(CGFloat.pi * -3 / 4))
         }
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 1, options: .curveEaseIn) {
             viewToAnimate.transform = .identity
@@ -148,7 +150,6 @@ class ConversationsListViewController: UIViewController {
         alert.addTextField { (textField) in
             textField.placeholder = "Название"
         }
-        
         let applyButton = UIAlertAction(title: "Создать", style: .default) {[weak self] (_) in
             guard let name = alert.textFields?.first?.text else {return}
             guard let self = self else { return }
@@ -159,18 +160,14 @@ class ConversationsListViewController: UIViewController {
         let cancel = UIAlertAction(title: "Отменить", style: .cancel)
         alert.addAction(applyButton)
         alert.addAction(cancel)
-        
         present(alert, animated: true)
-        
     }
     
     func rename(channel: Channel) {
         let alert = UIAlertController(title: nil, message: "Введите новое название канала:", preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.placeholder = channel.name
-            
         }
-        
         let applyButton = UIAlertAction(title: "Переименовать", style: .default) {[weak self] (_) in
             guard let name = alert.textFields?.first?.text else {return}
             guard let self = self else { return }
@@ -181,9 +178,7 @@ class ConversationsListViewController: UIViewController {
         let cancel = UIAlertAction(title: "Отменить", style: .cancel)
         alert.addAction(applyButton)
         alert.addAction(cancel)
-        
         present(alert, animated: true)
-        
     }
     
 }

@@ -97,7 +97,6 @@ class MessageCell: UITableViewCell {
             dateLabel.textColor = Theme.current.textFromMe
         } else {
             leftBubble.isActive = true
-//            textViewTopToMe.isActive = true
             name.isHidden = false
             bubbleContainer.backgroundColor = Theme.current.bubbleToMe
         }

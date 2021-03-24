@@ -28,7 +28,6 @@ class ProfileViewController: UIViewController {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 26)
-        label.numberOfLines = 1
         label.text = "My Profile"
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false

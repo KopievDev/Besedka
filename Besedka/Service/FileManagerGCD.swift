@@ -106,7 +106,4 @@ class FileManagerGCD {
         return documentURL.appendingPathComponent(key)
     }
     
-    deinit {
-        print("deinit FileGCD")
-    }
 }

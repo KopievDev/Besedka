@@ -31,10 +31,9 @@ class ConversationViewController: UIViewController {
     
     private lazy var  customInputView: CustomInputAccesoryView = {
         let iv = CustomInputAccesoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50 ))
-        iv.messageInputTextView.becomeFirstResponder()
         return iv
     }()
-    
+    var keyboardDismissTapGesture: UIGestureRecognizer?
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -42,10 +41,16 @@ class ConversationViewController: UIViewController {
         getMyName()
         createdDesign()
         listenMessages()
+        registerForKeyboardNotification()
     }
+    
     override var canBecomeFirstResponder: Bool {
            return true
        }
+    
+    override var canResignFirstResponder: Bool {
+        return true
+    }
     
     override var inputAccessoryView: UIView? {
         return customInputView
@@ -105,7 +110,6 @@ class ConversationViewController: UIViewController {
         guard let channelId = channel?.identifier else {return}
         firebase.addNew(message: Message(content: content, name: self.myName), to: channelId)
         self.customInputView.messageInputTextView.text = ""
-        print(self.myName)
     }
     
 }
@@ -127,7 +131,7 @@ extension ConversationViewController: UITableViewDataSource {
         
         return cell
     }
-    
+
 }
 // MARK: - Extensions ConversationViewController TableViewDelegate
 
@@ -137,17 +141,68 @@ extension ConversationViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
 
     }
-
+    
 }
 
 extension ConversationViewController: UITextViewDelegate {
         
     func textViewDidChange(_ textView: UITextView) {
-        
         UIView.animate(withDuration: 0.1) {
             self.messageTableView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - self.customInputView.frame.height)
             self.messageTableView.scrollToLastRow(animated: true)
             self.customInputView.placeholderLabel.isHidden = !self.customInputView.messageInputTextView.isEmpty()
         }
+
+        if customInputView.textViewContentSize().height >= 100 {
+            customInputView.messageInputTextView.isScrollEnabled = true
+            customInputView.heightText.isActive = true
+        } else {
+            
+            customInputView.messageInputTextView.isScrollEnabled = false
+            customInputView.heightText.constant = customInputView.textViewContentSize().height
+
+        }
     }
+        
+    //  Обработка появления клавиатуры
+    private func registerForKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
+        
+        let content = messageTableView.contentSize.height
+        let placeBeforeKeyboard = view.frame.height - keyboardFrame.height - customInputView.frame.height
+        
+        if view.bounds.origin.y == 0 && keyboardFrame.height > 100 && content > placeBeforeKeyboard {
+            if content > view.frame.height {
+                self.view.bounds.origin.y += keyboardFrame.height - 50
+            } else {
+                self.view.bounds.origin.y += content - placeBeforeKeyboard
+            }
+        }
+
+        if keyboardDismissTapGesture == nil {
+            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(sender:)))
+            keyboardDismissTapGesture?.cancelsTouchesInView = false
+            self.messageTableView.addGestureRecognizer(keyboardDismissTapGesture!)
+        }
+
+    }
+
+    @objc func dismissKeyboard(sender: UITapGestureRecognizer) {
+//        customInputView.messageInputTextView.resignFirstResponder()
+    }
+
+    @objc private func keyboardWillHide() {
+        if view.bounds.origin.y != 0 {
+            self.view.bounds.origin.y = 0
+            if keyboardDismissTapGesture != nil {
+                self.view.removeGestureRecognizer(keyboardDismissTapGesture!)
+                keyboardDismissTapGesture = nil
+            }
+        }
+    }
+
 }

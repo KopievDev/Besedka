@@ -93,8 +93,8 @@
 		B51995B425F3A12F00576121 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				B534FAD425EEA6C800C70403 /* UIViewController.swift */,
 				B5DC3495260A4F41004A1B86 /* ProfileVC.swift */,
+				B534FAD425EEA6C800C70403 /* UIViewController.swift */,
 				B5CA6EA525FC9CFA009939AE /* UIView.swift */,
 				B51995B625F3A16C00576121 /* Date.swift */,
 				B51995B925F3A1C500576121 /* UITableView.swift */,
@@ -567,7 +567,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ru.tinkoff.TinkoffChat;
+				PRODUCT_BUNDLE_IDENTIFIER = mustdev.Besedka;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -588,7 +588,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ru.tinkoff.TinkoffChat;
+				PRODUCT_BUNDLE_IDENTIFIER = mustdev.Besedka;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

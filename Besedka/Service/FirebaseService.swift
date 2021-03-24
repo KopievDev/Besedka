@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 
-struct FirebaseService {
+class FirebaseService {
     
     let reference = Firestore.firestore().collection("channels")
     
@@ -135,6 +135,12 @@ struct FirebaseService {
         reference.document(channel.identifier).setData([ "name": name ], merge: true)
         
     }
+    // Todo
+//    public func change(_ message: Message?, text content: String) {
+//        
+//        reference.document(channel.identifier).setData([ "name": name ], merge: true)
+//        
+//    }
     
     public func delete(_ channel: Channel) {
         
@@ -147,4 +153,7 @@ struct FirebaseService {
         }
     }
     
+    deinit {
+        print("Deinit firebase")
+    }
 }

@@ -46,10 +46,8 @@ class UserCell: UITableViewCell {
         iv.clipsToBounds = true
         iv.layer.cornerRadius = 48 / 2
         iv.contentMode = .scaleAspectFill
-        iv.backgroundColor = .gray
-        iv.image = UIImage(named: "Anonimous")
+        iv.backgroundColor = UIColor(red: 0.40, green: 0.80, blue: 0.67, alpha: 1.00)
         iv.translatesAutoresizingMaskIntoConstraints = false
-    
         return iv
     }()
 
@@ -66,7 +64,6 @@ class UserCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createUI()
-        
     }
     
     required init?(coder: NSCoder) {
