@@ -219,7 +219,6 @@ class ProfileViewController: UIViewController {
         fileOpener.getUser {[weak self] (user) in
             guard let newUser = user else {return}
             guard let self = self else {return}
-            print(newUser)
             self.user = newUser // резерв для отмены
             // Get user data
             let descText = newUser.aboutMe ?? ""

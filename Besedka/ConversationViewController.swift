@@ -33,7 +33,6 @@ class ConversationViewController: UIViewController {
         let iv = CustomInputAccesoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50 ))
         return iv
     }()
-    var keyboardDismissTapGesture: UIGestureRecognizer?
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -48,10 +47,6 @@ class ConversationViewController: UIViewController {
            return true
        }
     
-    override var canResignFirstResponder: Bool {
-        return true
-    }
-    
     override var inputAccessoryView: UIView? {
         return customInputView
     }
@@ -64,6 +59,7 @@ class ConversationViewController: UIViewController {
     func configure() {
         guard let channel = channel else {return}
         title = channel.name
+        
     }
     
     private func getMyName() {
@@ -84,6 +80,7 @@ class ConversationViewController: UIViewController {
                                         width: self.view.frame.width,
                                         height: self.view.frame.height - customInputView.frame.height - 5)
         customInputView.sendButton.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
+        messageTableView.keyboardDismissMode = .interactive
     }
     
     fileprivate func listenMessages() {
@@ -93,10 +90,6 @@ class ConversationViewController: UIViewController {
             self.messages = message
             self.messageTableView.reloadData()
             self.messageTableView.scrollToLastRow(animated: false)
-            
-            message.forEach { (mes) in
-                print(mes.senderName, " ", mes.content)
-            }
         }
     }
     // MARK: - Selectors
@@ -110,6 +103,8 @@ class ConversationViewController: UIViewController {
         guard let channelId = channel?.identifier else {return}
         firebase.addNew(message: Message(content: content, name: self.myName), to: channelId)
         self.customInputView.messageInputTextView.text = ""
+        self.messageTableView.scrollToLastRow(animated: false)
+
     }
     
 }
@@ -176,32 +171,17 @@ extension ConversationViewController: UITextViewDelegate {
         let placeBeforeKeyboard = view.frame.height - keyboardFrame.height - customInputView.frame.height
         
         if view.bounds.origin.y == 0 && keyboardFrame.height > 100 && content > placeBeforeKeyboard {
-            if content > view.frame.height {
+            if content > (view.frame.height - 100) {
                 self.view.bounds.origin.y += keyboardFrame.height - 50
             } else {
                 self.view.bounds.origin.y += content - placeBeforeKeyboard
             }
         }
-
-        if keyboardDismissTapGesture == nil {
-            keyboardDismissTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(sender:)))
-            keyboardDismissTapGesture?.cancelsTouchesInView = false
-            self.messageTableView.addGestureRecognizer(keyboardDismissTapGesture!)
-        }
-
-    }
-
-    @objc func dismissKeyboard(sender: UITapGestureRecognizer) {
-//        customInputView.messageInputTextView.resignFirstResponder()
     }
 
     @objc private func keyboardWillHide() {
         if view.bounds.origin.y != 0 {
             self.view.bounds.origin.y = 0
-            if keyboardDismissTapGesture != nil {
-                self.view.removeGestureRecognizer(keyboardDismissTapGesture!)
-                keyboardDismissTapGesture = nil
-            }
         }
     }
 
