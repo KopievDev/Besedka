@@ -19,7 +19,18 @@ class ConversationsListViewController: UIViewController {
         return table
     }()
     
-    lazy var channels = [Channel]()
+    lazy var channels: [Channel] = [] {
+        didSet {
+            CoreDataStack.defaultStack.performSave { [channels] context in
+                channels.forEach { channel in
+                    _ = ChannelDB(channel, context: context)
+                }
+                
+                CoreDataStack.defaultStack.printChannelsCount()
+            }
+        }
+    }
+    
     lazy var addChannelButton: UIButton = {
        let button = UIButton()
         button.backgroundColor = Theme.current.secondaryTint

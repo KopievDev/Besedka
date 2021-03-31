@@ -13,7 +13,19 @@ class ConversationViewController: UIViewController {
         didSet {configure()}
     }
     let firebase = FirebaseService()
-    var messages = [Message]()
+    var messages: [Message] = [] {
+        didSet {
+            CoreDataStack.defaultStack.performSave { context in
+                messages.forEach { message in
+                    let message = MessageDB(message, context: context)
+                    let channelDB = ChannelDB(self.channel!, context: context)
+                    channelDB.addToMessages(message)
+                }
+                
+                CoreDataStack.defaultStack.printMessagesCount()
+            }
+        }
+    }
     var myName: String = ""
     
     private let cellId = "cellMessage"
