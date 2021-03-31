@@ -29,4 +29,10 @@ extension Date {
         }
     }
     
+    func toString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss dd MMM yy"
+        return dateFormatter.string(from: self)
+
+    }
 }

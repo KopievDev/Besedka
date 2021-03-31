@@ -15,6 +15,7 @@ struct Message {
     let created: Date
     let senderId: String
     let senderName: String
+    let identifier: String
     var dictionary: [String: Any] {
         return [
             "content": content,
@@ -25,12 +26,12 @@ struct Message {
     }}
 
 extension Message {
-    init?(dictionary: [String: Any]) {
+    init?(dictionary: [String: Any], document id: String) {
         let content = dictionary["content"] as? String ?? ""
         let senderName = dictionary["senderName"] as? String ?? ""
         let senderId = dictionary["senderId"] as? String ?? ""
         let created = dictionary["created"] as? Timestamp ?? Timestamp(date: Date())
-        self.init(content: content, created: created.dateValue(), senderId: senderId, senderName: senderName)
+        self.init(content: content, created: created.dateValue(), senderId: senderId, senderName: senderName, identifier: id)
     }
     
     init?(content: String) {
@@ -38,6 +39,7 @@ extension Message {
         self.created = Date()
         self.senderName = "Ivan"
         self.senderId = myId
+        self.identifier = "simple id"
     }
     
     init?(content: String, name: String) {
@@ -45,6 +47,7 @@ extension Message {
         self.created = Date()
         self.senderName = name
         self.senderId = myId
-        
+        self.identifier = "simple id"
+
     }
 }

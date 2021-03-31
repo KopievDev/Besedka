@@ -103,6 +103,27 @@ class ConversationViewController: UIViewController {
 
         }
     }
+    
+    private func edit(message: Message) {
+
+        let alert = UIAlertController(title: nil, message: "\(message.senderName)\n \(message.created.toString())", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.text = message.content
+        }
+        let applyButton = UIAlertAction(title: "Изменить", style: .default) {[weak self] (_) in
+            guard let content = alert.textFields?.first?.text else {return}
+            guard let self = self else { return }
+            guard let channelId = self.channel?.identifier else {return}
+            if content != "" {
+                self.firebase.change(message, text: content, in: channelId)
+            }
+        }
+        let cancel = UIAlertAction(title: "Отменить", style: .cancel)
+        alert.addAction(applyButton)
+        alert.addAction(cancel)
+        present(alert, animated: true)
+    }
+    
     // MARK: - Selectors
     
     @objc private func sendMessage() {
@@ -138,6 +159,10 @@ extension ConversationViewController: UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
 
 }
 // MARK: - Extensions ConversationViewController TableViewDelegate
@@ -146,6 +171,26 @@ extension ConversationViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteChannel = UITableViewRowAction(style: .default, title: "delete") { _, _  in
+            guard let channelId = self.channel?.identifier else {return}
+
+            self.firebase.delete(self.messages[indexPath.row], in: channelId)
+        }
+        
+        let renameChannel = UITableViewRowAction(style: .default, title: "edit") { _, _ in
+            
+            if self.messages[indexPath.row].senderId == myId {
+                self.edit(message: self.messages[indexPath.row])
+            }
+        }
+
+        deleteChannel.backgroundColor = .systemRed
+        renameChannel.backgroundColor = .systemPurple
+        
+        return [deleteChannel, renameChannel]
     }
     
 //    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
