@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ConversationViewController: UIViewController {
     // MARK: - Propetries
@@ -16,13 +17,33 @@ class ConversationViewController: UIViewController {
     var messages: [Message] = [] {
         didSet {
             CoreDataStack.defaultStack.performSave { context in
-                messages.forEach { message in
-                    let message = MessageDB(message, context: context)
-                    let channelDB = ChannelDB(self.channel!, context: context)
-                    channelDB.addToMessages(message)
+                guard let id = self.channel?.identifier else {return}
+                // Удаляем канал и каскадно все его сообщения
+                // Для актуальности базы данных, чтобы при удалении сообщения в чате - оно удалялось и в памяти телефона
+                // Вариант не из лучших, но зато быстрый
+                let request: NSFetchRequest = ChannelDB.fetchRequest()
+                request.predicate = NSPredicate(format: "identifier = %@", id)
+                
+                do {
+                    let currentChannel = try context.fetch(request)
+                    if let entityToDelete = currentChannel.first {
+                        context.delete(entityToDelete)
+                    }
+                } catch {
+                    print(error)
                 }
                 
+                // Добавляем канал и сообщения
+                messages.forEach { message in
+                    guard let channel = self.channel else { return }
+                    let messageDB = MessageDB(message, context: context)
+                    let channelDB = ChannelDB(channel, context: context)
+                    channelDB.addToMessages(messageDB)
+                }
+                
+                CoreDataStack.defaultStack.сountMessages(from: self.channel)
                 CoreDataStack.defaultStack.printMessagesCount()
+                
             }
         }
     }

@@ -140,23 +140,23 @@ class CoreDataStack {
             do {
                 let count = try self.mainContext.count(for: MessageDB.fetchRequest())
                 print("\(count) сообщений")
-//                let array = try self.mainContext.fetch(MessageDB.fetchRequest()) as? [MessageDB] ?? []
-//                array.forEach {
-//                    print($0.content ?? "nil")
-//                }
+                let array = try self.mainContext.fetch(MessageDB.fetchRequest()) as? [MessageDB] ?? []
+                array.forEach {
+                    print($0.content ?? "nil")
+                }
             } catch {
                 fatalError(error.localizedDescription)
             }
         }
     }
-
+    
     func printChannelsCount() {
         mainContext.perform {
             do {
                 let count = try self.mainContext.count(for: ChannelDB.fetchRequest())
                 print("\(count) каналов в mainContext.")
             } catch {
-                print("Ошибка чтения каналов в mainContext.")
+                fatalError(error.localizedDescription)
             }
         }
     }
@@ -166,9 +166,29 @@ class CoreDataStack {
                 let count = try self.mainContext.count(for: MessageDB.fetchRequest())
                 print("\(count) сообщений в mainContext.")
             } catch {
-                print("Ошибка чтения сообщений в mainContext.")
+                fatalError(error.localizedDescription)
             }
         }
     }
     
+    func сountMessages(from channel: Channel?) {
+        guard let channelInScope = channel else {return}
+        mainContext.perform {
+            let request: NSFetchRequest = ChannelDB.fetchRequest()
+            request.predicate = NSPredicate(format: "identifier = %@", "\(channelInScope.identifier)")
+            do {
+                let channel = try self.mainContext.fetch(request)
+                print("В канале \(channel.first?.name ?? "NIL") сохранено -  \(channel.first?.messages?.count ?? 0) сообщения(й)")
+                
+                // Вывод сообщений канала
+//                channel.first?.messages?.forEach { message in
+//                    guard let mes = message as? MessageDB else { return }
+//                    print(mes.content ?? "dnil")
+//                }
+            } catch {
+                
+            }
+
+        }
+    }
 }
