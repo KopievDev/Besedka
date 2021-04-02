@@ -166,7 +166,7 @@ class CoreDataStack {
         }
     }
     func printMessagesCount() {
-        mainContext.perform { [weak self] in
+        mainContext.perform { [weak self] in //-  Скорее всего это лишнее(захват слабой ссылки)
             guard let self = self else {return}
             do {
                 let count = try self.mainContext.count(for: MessageDB.fetchRequest())
