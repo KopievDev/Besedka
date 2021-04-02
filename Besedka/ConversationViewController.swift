@@ -40,7 +40,7 @@ class ConversationViewController: UIViewController {
                     let channelDB = ChannelDB(channel, context: context)
                     channelDB.addToMessages(messageDB)
                 }
-                
+                print()
                 CoreDataStack.shared.сountMessages(from: self.channel)
                 CoreDataStack.shared.printMessagesCount()
             }

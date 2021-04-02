@@ -42,7 +42,7 @@ class ConversationsListViewController: UIViewController {
                     _ = ChannelDB(channel, context: context)
                 }
                 // Выводим информацию о добавленных каналах
-                CoreDataStack.shared.printChannelsCount()
+                CoreDataStack.shared.printStatistics()
             }
         }
     }

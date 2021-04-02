@@ -119,6 +119,12 @@ class CoreDataStack {
         }
     }
     
+    func printStatistics() {
+        print()
+        printChannelsCount()
+        printMessagesCount()
+        
+    }
     func printChannelsCount() {
         mainContext.perform {[weak self] in
             guard let self = self else {return}
