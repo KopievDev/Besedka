@@ -10,7 +10,7 @@ import CoreData
 class CoreDataStack {
     
     static let defaultStack = CoreDataStack()
-    
+    private init() { }
     private var storeUrl: URL = {
         guard let documentsUrl = FileManager.default.urls(for: .documentDirectory,
                                                           in: .userDomainMask).last else {
@@ -78,12 +78,14 @@ class CoreDataStack {
 
     // MARK: - Save Context
     
-    func performSave(_ block: (NSManagedObjectContext) -> Void) {
+    func performSave(_ block: @escaping (NSManagedObjectContext) -> Void) {
         let context = saveContext()
-        context.performAndWait {
+        context.performAndWait { [weak self] in
+            guard let self = self else {return}
+
             block(context)
             if context.hasChanges {
-                performSave(in: context)
+                self.performSave(in: context)
             }
         }
     }
@@ -102,7 +104,8 @@ class CoreDataStack {
     // MARK: - Core Data Logs
     
     func printAllMessages() {
-        mainContext.perform {
+        mainContext.perform {[weak self] in
+            guard let self = self else {return}
             do {
                 let count = try self.mainContext.count(for: MessageDB.fetchRequest())
                 print("\(count) сообщений")
@@ -117,7 +120,8 @@ class CoreDataStack {
     }
     
     func printChannelsCount() {
-        mainContext.perform {
+        mainContext.perform {[weak self] in
+            guard let self = self else {return}
             do {
                 let count = try self.mainContext.count(for: ChannelDB.fetchRequest())
                 print("\(count) channels saved.")
@@ -127,7 +131,8 @@ class CoreDataStack {
         }
     }
     func printMessagesCount() {
-        mainContext.perform {
+        mainContext.perform {[weak self] in
+            guard let self = self else {return}
             do {
                 let count = try self.mainContext.count(for: MessageDB.fetchRequest())
                 print("\(count) messages saved.")
@@ -139,7 +144,8 @@ class CoreDataStack {
     
     func сountMessages(from channel: Channel?) {
         guard let channelInScope = channel else {return}
-        mainContext.perform {
+        mainContext.perform { [weak self] in
+            guard let self = self else {return}
             let request: NSFetchRequest = ChannelDB.fetchRequest()
             request.predicate = NSPredicate(format: "identifier = %@", "\(channelInScope.identifier)")
             do {

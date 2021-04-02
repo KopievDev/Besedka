@@ -34,7 +34,7 @@ class ConversationViewController: UIViewController {
                 }
                 
                 // Добавляем канал и сообщения
-                messages.forEach { message in
+                self.messages.forEach { message in
                     guard let channel = self.channel else { return }
                     let messageDB = MessageDB(message, context: context)
                     let channelDB = ChannelDB(channel, context: context)
