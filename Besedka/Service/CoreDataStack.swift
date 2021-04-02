@@ -78,11 +78,10 @@ class CoreDataStack {
 
     // MARK: - Save Context
     
-    func performSave(_ block: @escaping (NSManagedObjectContext) -> Void) {
+    func performSave(_ block: (NSManagedObjectContext) -> Void) {
         let context = saveContext()
         context.performAndWait { [weak self] in
             guard let self = self else {return}
-
             block(context)
             if context.hasChanges {
                 self.performSave(in: context)
@@ -99,6 +98,36 @@ class CoreDataStack {
             }
         }
         if let parent = context.parent { performSave(in: parent) }
+    }
+    
+    // MARK: - CoreData Observers
+    
+    func enableObservers() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self,
+                                       selector: #selector(managedObjectContextObjectsDidChange(notification:)),
+                                       name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
+                                       object: mainContext)
+    }
+    
+    @objc
+    private func managedObjectContextObjectsDidChange(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+                
+        if let inserts = userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject>,
+           inserts.count > 0 {
+            print("Добавлено объектов: ", inserts.count)
+        }
+        
+        if let updates = userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>,
+           updates.count > 0 {
+            print("Обновлено объектов: ", updates.count)
+        }
+        
+        if let deletes = userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>,
+           deletes.count > 0 {
+            print("Удалено объектов: ", deletes.count)
+        }
     }
     
     // MARK: - Core Data Logs
@@ -137,7 +166,7 @@ class CoreDataStack {
         }
     }
     func printMessagesCount() {
-        mainContext.perform {[weak self] in
+        mainContext.perform { [weak self] in
             guard let self = self else {return}
             do {
                 let count = try self.mainContext.count(for: MessageDB.fetchRequest())
@@ -156,12 +185,12 @@ class CoreDataStack {
             request.predicate = NSPredicate(format: "identifier = %@", "\(channelInScope.identifier)")
             do {
                 let channel = try self.mainContext.fetch(request)
-                print("В канале \(channel.first?.name ?? "") сохранено -  \(channel.first?.messages?.count ?? 0) сообщения(й)")
+                print("В канале \(channel.first?.name ?? "")  -  \(channel.first?.messages?.count ?? 0) сообщения(й)")
                 
-                // Вывод сообщений канала
+//                 Вывод сообщений канала
 //                channel.first?.messages?.forEach { message in
 //                    guard let mes = message as? MessageDB else { return }
-//                    print(mes.content ?? "dnil")
+//                    print(mes.content )
 //                }
             } catch {
                 fatalError(error.localizedDescription)
