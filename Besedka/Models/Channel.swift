@@ -37,8 +37,8 @@ extension Channel {
         
     }
     init?(_ channelDB: ChannelDB) {
-        self.identifier = channelDB.identifier ?? " nil"
-        self.name = channelDB.name ?? "nil"
+        self.identifier = channelDB.identifier
+        self.name = channelDB.name
         self.lastMessage = channelDB.lastMessage
         self.lastActivity = channelDB.lastActivity
     }

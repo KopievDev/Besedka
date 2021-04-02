@@ -10,8 +10,6 @@ import CoreData
 class CoreDataStack {
     
     static let defaultStack = CoreDataStack()
-
-    var didUpdateDataBase: ((CoreDataStack) -> Void)?
     
     private var storeUrl: URL = {
         guard let documentsUrl = FileManager.default.urls(for: .documentDirectory,
@@ -101,48 +99,16 @@ class CoreDataStack {
         if let parent = context.parent { performSave(in: parent) }
     }
     
-    // MARK: - CoreData Observers
-    
-    func enableObservers() {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self,
-                                       selector: #selector(managedObjectContextObjectsDidChange(notification:)),
-                                       name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
-                                       object: mainContext)
-    }
-    
-    @objc
-    private func managedObjectContextObjectsDidChange(notification: NSNotification) {
-        guard let userInfo = notification.userInfo else { return }
-        
-        didUpdateDataBase?(self)
-        
-        if let inserts = userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject>,
-           inserts.count > 0 {
-            print("Добавлено объектов: ", inserts.count)
-        }
-        
-        if let updates = userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>,
-           updates.count > 0 {
-            print("Обновлено объектов: ", updates.count)
-        }
-        
-        if let deletes = userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>,
-           deletes.count > 0 {
-            print("Удалено объектов: ", deletes.count)
-        }
-    }
-
     // MARK: - Core Data Logs
     
-    func printDatabaseStatistice() {
+    func printAllMessages() {
         mainContext.perform {
             do {
                 let count = try self.mainContext.count(for: MessageDB.fetchRequest())
                 print("\(count) сообщений")
                 let array = try self.mainContext.fetch(MessageDB.fetchRequest()) as? [MessageDB] ?? []
                 array.forEach {
-                    print($0.content ?? "nil")
+                    print($0.content, $0.senderName)
                 }
             } catch {
                 fatalError(error.localizedDescription)
@@ -154,7 +120,7 @@ class CoreDataStack {
         mainContext.perform {
             do {
                 let count = try self.mainContext.count(for: ChannelDB.fetchRequest())
-                print("\(count) каналов в mainContext.")
+                print("\(count) channels saved.")
             } catch {
                 fatalError(error.localizedDescription)
             }
@@ -164,7 +130,7 @@ class CoreDataStack {
         mainContext.perform {
             do {
                 let count = try self.mainContext.count(for: MessageDB.fetchRequest())
-                print("\(count) сообщений в mainContext.")
+                print("\(count) messages saved.")
             } catch {
                 fatalError(error.localizedDescription)
             }
@@ -178,7 +144,7 @@ class CoreDataStack {
             request.predicate = NSPredicate(format: "identifier = %@", "\(channelInScope.identifier)")
             do {
                 let channel = try self.mainContext.fetch(request)
-                print("В канале \(channel.first?.name ?? "NIL") сохранено -  \(channel.first?.messages?.count ?? 0) сообщения(й)")
+                print("В канале \(channel.first?.name ?? "") сохранено -  \(channel.first?.messages?.count ?? 0) сообщения(й)")
                 
                 // Вывод сообщений канала
 //                channel.first?.messages?.forEach { message in

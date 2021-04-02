@@ -15,10 +15,10 @@ extension ChannelDB {
         return NSFetchRequest<ChannelDB>(entityName: "ChannelDB")
     }
 
-    @NSManaged public var identifier: String?
+    @NSManaged public var identifier: String
     @NSManaged public var lastActivity: Date?
     @NSManaged public var lastMessage: String?
-    @NSManaged public var name: String?
+    @NSManaged public var name: String
     @NSManaged public var messages: NSSet?
 
 }

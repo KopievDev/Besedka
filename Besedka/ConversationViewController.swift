@@ -43,7 +43,6 @@ class ConversationViewController: UIViewController {
                 
                 CoreDataStack.defaultStack.сountMessages(from: self.channel)
                 CoreDataStack.defaultStack.printMessagesCount()
-                
             }
         }
     }
