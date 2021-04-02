@@ -208,8 +208,9 @@ extension ConversationViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteChannel = UITableViewRowAction(style: .default, title: "delete") { _, _  in
             guard let channelId = self.channel?.identifier else {return}
-
-            self.firebase.delete(self.messages[indexPath.row], in: channelId)
+            if self.messages[indexPath.row].senderId == myId {
+                self.firebase.delete(self.messages[indexPath.row], in: channelId)
+            }
         }
         
         let renameChannel = UITableViewRowAction(style: .default, title: "edit") { _, _ in
@@ -230,6 +231,7 @@ extension ConversationViewController: UITableViewDelegate {
 //    }
 }
 
+// MARK: - Extension TextView
 extension ConversationViewController: UITextViewDelegate {
         
     func textViewDidChange(_ textView: UITextView) {
