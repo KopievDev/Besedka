@@ -21,15 +21,14 @@ class ConversationsListViewController: UIViewController {
     
     lazy var channels: [Channel] = [] {
         didSet {
-            CoreDataStack.shared.performSave {[channels] context in
+            CoreDataStack.shared.performSave { context in
                 // Создаем запрос для получения всех каналов из памяти
                 let request: NSFetchRequest = ChannelDB.fetchRequest()
                 do {
                     let currentChannel = try context.fetch(request)
                     // Перебираем массив каналов из памяти и сравниваем с каналами из сервера (удаляем каналы, которых уже нет на сервере)
                     currentChannel.forEach {
-                        guard let channelFromBD = Channel($0) else {return}
-                        if !channels.contains(channelFromBD) {
+                        if !self.channels.contains(Channel($0)) {
                             context.delete($0)
                         }
                     }
@@ -38,9 +37,9 @@ class ConversationsListViewController: UIViewController {
                 }
             }
             
-            CoreDataStack.shared.performSave { [channels] context in
+            CoreDataStack.shared.performSave { context in
                 // Добавляем/обновляем каналы с сервера
-                channels.forEach { channel in
+                self.channels.forEach { channel in
                     _ = ChannelDB(channel, context: context)
                 }
                 CoreDataStack.shared.printChannelsCount()

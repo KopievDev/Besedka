@@ -36,7 +36,7 @@ extension Channel {
         self.init(identifier: documentId, name: name, lastMessage: lastMessage, lastActivity: lastActivity?.dateValue())
         
     }
-    init?(_ channelDB: ChannelDB) {
+    init(_ channelDB: ChannelDB) {
         self.identifier = channelDB.identifier
         self.name = channelDB.name
         self.lastMessage = channelDB.lastMessage

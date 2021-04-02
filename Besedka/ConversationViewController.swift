@@ -16,7 +16,7 @@ class ConversationViewController: UIViewController {
     let firebase = FirebaseService()
     var messages: [Message] = [] {
         didSet {
-            CoreDataStack.shared.performSave { [channel] context in
+            CoreDataStack.shared.performSave { context in
                 guard let id = channel?.identifier else {return}
                 // Удаляем канал и каскадно все его сообщения
                 // Для актуальности базы данных, чтобы при удалении сообщения в чате - оно удалялось и в памяти телефона
@@ -34,10 +34,10 @@ class ConversationViewController: UIViewController {
                 }
             }
             // Решил разбить операции на разные контексты ( но не знаю - хорошо ли это)
-            CoreDataStack.shared.performSave { [messages, channel] context in
+            CoreDataStack.shared.performSave { context in
                 // Добавляем канал и сообщения
                 messages.forEach { message in
-                    guard let channel = channel else { return }
+                    guard let channel = self.channel else { return }
                     let messageDB = MessageDB(message, context: context)
                     let channelDB = ChannelDB(channel, context: context)
                     channelDB.addToMessages(messageDB)
