@@ -9,7 +9,7 @@ import CoreData
 
 class CoreDataStack {
     
-    static let defaultStack = CoreDataStack()
+    static let shared = CoreDataStack()
     private init() { }
     private var storeUrl: URL = {
         guard let documentsUrl = FileManager.default.urls(for: .documentDirectory,
@@ -158,7 +158,7 @@ class CoreDataStack {
 //                    print(mes.content ?? "dnil")
 //                }
             } catch {
-                
+                fatalError(error.localizedDescription)
             }
 
         }

@@ -21,7 +21,7 @@ class ConversationsListViewController: UIViewController {
     
     lazy var channels: [Channel] = [] {
         didSet {
-            CoreDataStack.defaultStack.performSave {[weak self] context in
+            CoreDataStack.shared.performSave {[weak self] context in
                 guard let self = self else {return}
                 // Создаем запрос для получения всех каналов из памяти
                 let request: NSFetchRequest = ChannelDB.fetchRequest()
@@ -42,7 +42,7 @@ class ConversationsListViewController: UIViewController {
                     _ = ChannelDB(channel, context: context)
                 }
                 // Выводим информацию о добавленных каналах
-                CoreDataStack.defaultStack.printChannelsCount()
+                CoreDataStack.shared.printChannelsCount()
             }
         }
     }

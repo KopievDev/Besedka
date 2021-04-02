@@ -16,7 +16,7 @@ class ConversationViewController: UIViewController {
     let firebase = FirebaseService()
     var messages: [Message] = [] {
         didSet {
-            CoreDataStack.defaultStack.performSave { context in
+            CoreDataStack.shared.performSave { context in
                 guard let id = self.channel?.identifier else {return}
                 // Удаляем канал и каскадно все его сообщения
                 // Для актуальности базы данных, чтобы при удалении сообщения в чате - оно удалялось и в памяти телефона
@@ -41,8 +41,8 @@ class ConversationViewController: UIViewController {
                     channelDB.addToMessages(messageDB)
                 }
                 
-                CoreDataStack.defaultStack.сountMessages(from: self.channel)
-                CoreDataStack.defaultStack.printMessagesCount()
+                CoreDataStack.shared.сountMessages(from: self.channel)
+                CoreDataStack.shared.printMessagesCount()
             }
         }
     }
