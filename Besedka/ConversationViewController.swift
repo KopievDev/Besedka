@@ -8,52 +8,124 @@
 import UIKit
 
 class ConversationViewController: UIViewController {
-    //MARK: - Propetries
-    var user : User? {
-        didSet{configure()}
+    // MARK: - Propetries
+    var channel: Channel? {
+        didSet {configure()}
     }
+    let firebase = FirebaseService()
+    var messages = [Message]()
+    var myName: String = ""
+    
     private let cellId = "cellMessage"
-    private lazy var messageTableView : UITableView = {
+    private lazy var messageTableView: UITableView = {
         let table = UITableView(frame: view.frame, style: .plain)
         table.register(MessageCell.self, forCellReuseIdentifier: cellId)
         table.dataSource = self
         table.delegate = self
         table.separatorStyle = .none
         table.estimatedRowHeight = 100
-       // table.transform = CGAffineTransform(scaleX: 1, y: -1) // Переворот таблицы
         table.remembersLastFocusedIndexPath = true
+        table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
+
         table.backgroundColor = Theme.current.backgroundColor
         return table
     }()
-   
     
-    //MARK: - Lifecycle
+    private lazy var  customInputView: CustomInputAccesoryView = {
+        let iv = CustomInputAccesoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50 ))
+        return iv
+    }()
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.addSubview(messageTableView)
-        navigationItem.largeTitleDisplayMode = .never
-        messageTableView.scrollToLastRow(animated: false)
-
+        getMyName()
+        createdDesign()
+        listenMessages()
+        registerForKeyboardNotification()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    override var canBecomeFirstResponder: Bool {
+           return true
+       }
+    override var canResignFirstResponder: Bool {
+            return true
+    }
+    
+    override var inputAccessoryView: UIView? {
+        return customInputView
+    }
+    
     deinit {
         print("deinit MessageView")
     }
-
     
-    //MARK: - Helpers
-    func configure(){
-        guard let user = user else {return}
-        configureNavigationBar(withTitle: user.name ?? "Неизвестный", image: UIImage(named: user.image ?? "Anonymous") ?? UIImage())
+    // MARK: - Helpers
+    func configure() {
+        guard let channel = channel else {return}
+        title = channel.name
+        
+    }
+    
+    private func getMyName() {
+        let fileOpener = FileManagerGCD()
+        fileOpener.getUser {[weak self] (user) in
+            guard let self = self else {return}
+            guard let name = user?.name else {return}
+            self.myName = name
+        }
+    }
+    
+    fileprivate func createdDesign() {
+        view.backgroundColor = Theme.current.backgroundColor
+        view.addSubview(messageTableView)
+        navigationItem.largeTitleDisplayMode = .never
+        customInputView.messageInputTextView.delegate = self
+        messageTableView.frame = CGRect(x: 0, y: 0,
+                                        width: self.view.frame.width,
+                                        height: self.view.frame.height - customInputView.frame.height)
+        customInputView.sendButton.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
+        messageTableView.keyboardDismissMode = .interactive
+    }
+    
+    fileprivate func listenMessages() {
+        guard let channelId = channel?.identifier else {return}
+        firebase.addSortedMessageListener(from: channelId) {[weak self] (message) in
+            guard let self = self else {return}
+            self.messages = message
+            self.messageTableView.reloadData()
+            self.messageTableView.scrollToLastRow(animated: false
+             )
+
+        }
+    }
+    // MARK: - Selectors
+    
+    @objc private func sendMessage() {
+        guard let content = self.customInputView.messageInputTextView.text,
+              content.filter({ $0 != " " && $0 != "\n"}).count > 0 else {
+            print("empty")
+            return
+        }
+        guard let channelId = channel?.identifier else {return}
+        firebase.addNew(message: Message(content: content, name: self.myName), to: channelId)
+        self.customInputView.messageInputTextView.text = ""
+        self.customInputView.heightText.constant = customInputView.textViewContentSize().height
+        self.messageTableView.scrollToLastRow(animated: true)
 
     }
+    
 }
 
-//MARK: - Extensions ConversationViewController TableViewDataSource
-extension ConversationViewController: UITableViewDataSource{
+// MARK: - Extensions ConversationViewController TableViewDataSource
+extension ConversationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return user?.messages?.count ?? 0
+        return self.messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -61,20 +133,65 @@ extension ConversationViewController: UITableViewDataSource{
         cell.widthMessage = self.view.bounds.width * 0.75 - 12
         cell.leftBubble.isActive = false
         cell.rightBubble.isActive = false
-        //cell.transform = CGAffineTransform(scaleX: 1, y: -1) //Переворот ячейки
-        cell.configureCell(message: user?.messages?[indexPath.row])
+        cell.textViewTopFromMe.isActive = false
+        cell.configureCell(message: self.messages[indexPath.row])
         
         return cell
     }
-    
-}
-//MARK: - Extensions ConversationViewController TableViewDelegate
 
-extension ConversationViewController: UITableViewDelegate{
+}
+// MARK: - Extensions ConversationViewController TableViewDelegate
+
+extension ConversationViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        customInputView.messageInputTextView.resignFirstResponder()
+//    }
+}
 
+extension ConversationViewController: UITextViewDelegate {
+        
+    func textViewDidChange(_ textView: UITextView) {
+        UIView.animate(withDuration: 0.1) {
+            self.messageTableView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - self.customInputView.frame.height)
+            self.messageTableView.scrollToLastRow(animated: true)
+            self.customInputView.placeholderLabel.isHidden = !self.customInputView.messageInputTextView.isEmpty()
+        }
+
+        if customInputView.textViewContentSize().height >= 100 {
+            customInputView.messageInputTextView.isScrollEnabled = true
+            customInputView.heightText.isActive = true
+        } else {
+            
+            customInputView.messageInputTextView.isScrollEnabled = false
+            customInputView.heightText.constant = customInputView.textViewContentSize().height
+
+        }
+    }
+        
+    //  Обработка появления клавиатуры
+    private func registerForKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
+        
+        let content = messageTableView.contentSize.height
+        let placeBeforeKeyboard = view.frame.height - keyboardFrame.height - customInputView.frame.height
+        
+        if keyboardFrame.height > 100 && content > placeBeforeKeyboard {
+            self.messageTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height - 50, right: 0)
+            self.messageTableView.scrollToLastRow(animated: true)
+        }
+    }
+
+    @objc private func keyboardWillHide() {
+        self.messageTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 
 }

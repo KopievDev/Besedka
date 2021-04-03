@@ -37,7 +37,6 @@ protocol ThemeProtocol {
 
 }
 
-
 extension ThemeProtocol {
     func apply(for application: UIApplication) {
     
@@ -63,7 +62,6 @@ extension ThemeProtocol {
             $0.selectionColor = selectionColor
         }
         
-
         self.extend()
         
         UIApplication.shared.windows.reload()
@@ -74,5 +72,3 @@ extension ThemeProtocol {
         // Optionally extend theme
     }
 }
-
-

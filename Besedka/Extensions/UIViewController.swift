@@ -32,10 +32,7 @@ extension UIViewController {
         stackView.spacing = 5
         
         navigationItem.titleView = stackView
-
         
     }
-    
    
 }
-

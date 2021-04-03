@@ -7,10 +7,8 @@
 
 import Foundation
 
-struct UserProfileModel: Codable{
+struct UserProfileModel: Codable {
     var name: String?
     var aboutMe: String?
     var city: String?
-
 }
-

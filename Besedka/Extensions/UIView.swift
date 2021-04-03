@@ -9,17 +9,17 @@ import UIKit
 
 extension UIView {
     
-    func addCornerRadius(_ radius: CGFloat = 4){
+    func addCornerRadius(_ radius: CGFloat = 4) {
         layer.cornerRadius = radius
         layer.masksToBounds = true
     }
     
-    func addBorderLine(width: CGFloat = 1, color: UIColor){
+    func addBorderLine(width: CGFloat = 1, color: UIColor) {
         layer.borderWidth = width
         layer.borderColor = color.cgColor
     }
     
-    func makeRounded(){
+    func makeRounded() {
         layer.masksToBounds = false
         layer.cornerRadius = self.frame.height / 2
         clipsToBounds = true
@@ -30,7 +30,7 @@ extension UIView {
         shadowColor: UIColor = UIColor(white: 0, alpha: 0.5),
         shadowOffset: CGSize = CGSize(width: 0, height: 3),
         shadowOpacity: Float = 0.3,
-        shadowRadius: CGFloat = 5){
+        shadowRadius: CGFloat = 5) {
         layer.cornerRadius = cornerRadius
         layer.shadowColor = shadowColor.cgColor
         layer.shadowOffset = shadowOffset
@@ -49,7 +49,6 @@ extension UIView {
         layer.rasterizationScale = scale ? UIScreen.main.scale : 1
     }
     
-    
     func applyBlurEffect() {
         let blurEffect = UIBlurEffect(style: .light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -57,7 +56,6 @@ extension UIView {
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(blurEffectView)
     }
-
     
     // OUTPUT 2
     func dropShadow(color: UIColor, opacity: Float = 0.5, offSet: CGSize, radius: CGFloat = 1, scale: Bool = true) {
@@ -95,25 +93,25 @@ extension UIView {
 }
 
 extension UIColor {
-    convenience init(red: Int, green: Int, blue: Int, a: CGFloat = 1.0) {
+    convenience init(red: Int, green: Int, blue: Int, alpha: CGFloat = 1.0) {
         self.init(
             red: CGFloat(red) / 255.0,
             green: CGFloat(green) / 255.0,
             blue: CGFloat(blue) / 255.0,
-            alpha: a
+            alpha: alpha
         )
     }
     
-    convenience init(rgb: Int, a: CGFloat = 1.0) {
+    convenience init(rgb: Int, alpha: CGFloat = 1.0) {
         self.init(
             red: (rgb >> 16) & 0xFF,
             green: (rgb >> 8) & 0xFF,
             blue: rgb & 0xFF,
-            a: a
+            alpha: alpha
         )
     }
     
-    func HexToColor(hexString: String, alpha:CGFloat? = 1.0) -> UIColor {
+    func HexToColor(hexString: String, alpha: CGFloat? = 1.0) -> UIColor {
         // Convert hex string to an integer
         let hexint = Int(self.intFromHexString(hexStr: hexString))
         let red = CGFloat((hexint & 0xff0000) >> 16) / 255.0
@@ -151,10 +149,10 @@ extension UIImage {
         return image!
     }
 }
-extension UIImageView{
+extension UIImageView {
     func setImage(image: UIImage, canAnimate animate: Bool) {
          self.alpha = 0
-         //self.contentMode = .scaleAspectFit
+         // self.contentMode = .scaleAspectFit
          self.image = image
          UIView.animate(withDuration: 1, animations: {
              self.alpha = 1
@@ -191,7 +189,6 @@ extension UITextView {
         return self.text == ""
     }
 }
-
 
 extension Bundle {
     func decode<T: Decodable>(_ type: T.Type, from filename: String) -> T {
