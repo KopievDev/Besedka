@@ -11,40 +11,47 @@ import CoreData
 class ConversationViewController: UIViewController {
     // MARK: - Propetries
     var channel: Channel? {
-        didSet {configure()}
+        didSet {
+            coreDataStack?.performSave { context in
+                guard let channel = channel else {return}
+                self.channelDB = ChannelDB(channel, context: context)
+            }
+            configure()
+        }
     }
+    
     let firebase = FirebaseService()
+    var coreDataStack: CoreDataStack?
+    var channelDB: ChannelDB?
     var messages: [Message] = [] {
         didSet {
-            CoreDataStack.shared.performSave { context in
+            coreDataStack?.performSave { moc in
                 guard let id = channel?.identifier else {return}
                 // Удаляем канал и каскадно все его сообщения
                 // Для актуальности базы данных, чтобы при удалении сообщения в чате - оно удалялось и в памяти телефона
                 // Вариант не подходит для кэширования, но подходит для актуализации данных
                 let request: NSFetchRequest = ChannelDB.fetchRequest()
                 request.predicate = NSPredicate(format: "identifier = %@", id)
-
+                
                 do {
-                    let currentChannel = try context.fetch(request)
+                    let currentChannel = try moc.fetch(request)
                     if let entityToDelete = currentChannel.first {
-                        context.delete(entityToDelete)
+                        moc.delete(entityToDelete)
                     }
                 } catch {
                     print(error)
                 }
-            }
-            // Решил разбить операции на разные контексты ( но не знаю - хорошо ли это)
-            CoreDataStack.shared.performSave { context in
+                
+                // Решил разбить операции на разные контексты ( но не знаю - хорошо ли это)
                 // Добавляем канал и сообщения
                 messages.forEach { message in
                     guard let channel = self.channel else { return }
-                    let messageDB = MessageDB(message, context: context)
-                    let channelDB = ChannelDB(channel, context: context)
+                    let messageDB = MessageDB(message, context: moc)
+                    let channelDB = ChannelDB(channel, context: moc)
                     channelDB.addToMessages(messageDB)
                 }
                 print()
-                CoreDataStack.shared.сountMessages(from: self.channel)
-                CoreDataStack.shared.printMessagesCount()
+                coreDataStack?.printMessagesCount()
             }
         }
     }
