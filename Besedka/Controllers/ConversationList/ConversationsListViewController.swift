@@ -86,13 +86,6 @@ class ConversationsListViewController: UIViewController {
         addButtonChannels()
         
     }
-    // MARK: - Selectors
-    @objc func showProfile() {
-        let profileViewController = ProfileViewController()
-        profileViewController.radius = (self.view.frame.width - 140) * 0.5
-        profileViewController.modalPresentationStyle = .fullScreen
-        self.navigationController?.present(profileViewController, animated: true)
-    }
   
     // MARK: - Helpers
     
@@ -176,15 +169,23 @@ class ConversationsListViewController: UIViewController {
     }
     
 //     Метод для перехода к собщениям контакта
-    func wantToTalk(in channel: Channel) {
+    func wantToTalk(in channel: ChannelDB) {
         let chatView = ConversationViewController()
         chatView.coreDataStack = self.core
-        chatView.channel = channel
+        chatView.channel = Channel(channel)
         navigationController?.pushViewController(chatView, animated: true)
     }
     
     // MARK: - Selectors
-    
+
+    @objc func showProfile() {
+        let profileViewController = ProfileViewController()
+        profileViewController.radius = (self.view.frame.width - 140) * 0.5
+        profileViewController.modalPresentationStyle = .fullScreen
+        self.navigationController?.present(profileViewController, animated: true)
+
+    }
+
     @objc func addNewChannel(sender: UIButton) {
         animateView(sender)
 
@@ -276,7 +277,9 @@ extension ConversationsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        wantToTalk(in: self.channels[indexPath.row])
+        let channel = self.fetchedResultController.object(at: indexPath)
+
+        wantToTalk(in: channel)
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
