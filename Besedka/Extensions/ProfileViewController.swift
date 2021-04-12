@@ -20,17 +20,17 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        self.avatarImageView.setImage(image: info[.editedImage] as? UIImage ?? UIImage(), canAnimate: true)
+        profile.avatarImageView.setImage(image: info[.editedImage] as? UIImage ?? UIImage(), canAnimate: true)
 
-        self.shortName.isHidden = true
-        showEditButton()
-        disableButton(state: false)
+        profile.shortName.isHidden = true
+        profile.showEditButton()
+        profile.disableButton(state: false)
         dismiss(animated: true)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.avatarImageView.image = nil
-        self.shortName.isHidden = false
+        profile.avatarImageView.image = nil
+        profile.shortName.isHidden = false
         dismiss(animated: true)
         let fileSaver = FileManagerGCD()
         fileSaver.deleteFile(name: "Avatar.png")
@@ -40,18 +40,18 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
 // MARK: - Textfield Delegate
 extension ProfileViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        dataChecking()
+        profile.dataChecking()
     }
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        dataChecking()
+        profile.dataChecking()
     }
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        dataChecking()
+        profile.dataChecking()
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
-        case userNameTextfiel:
-            self.descriptionTextView.becomeFirstResponder()
+        case profile.userNameTextfiel:
+            profile.descriptionTextView.becomeFirstResponder()
         default:
             textField.resignFirstResponder()
         }
@@ -61,9 +61,9 @@ extension ProfileViewController: UITextFieldDelegate {
 // MARK: - TextView Delegate
 extension ProfileViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
-        dataChecking()
+        profile.dataChecking()
     }
     func textViewDidChangeSelection(_ textView: UITextView) {
-        dataChecking()
+        profile.dataChecking()
     }
 }

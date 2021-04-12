@@ -68,7 +68,11 @@ class ConversationsListViewController: UIViewController {
         return button
     }()
     
-    let firebase = FirebaseService()
+    let serviceAssembly = ServiceAssembly()
+    
+    var firebase: FireBaseServiceProtocol {
+        return serviceAssembly.firebase
+    }
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -90,7 +94,7 @@ class ConversationsListViewController: UIViewController {
     // MARK: - Helpers
     
     private func addListener() {
-        firebase.addSortedChannelListener { (channels) in
+        serviceAssembly.firebase.addSortedChannelListener { (channels) in
             self.channels = channels
             self.channelsTableView.reloadData()
         }
@@ -179,7 +183,9 @@ class ConversationsListViewController: UIViewController {
     // MARK: - Selectors
 
     @objc func showProfile() {
+//        let profileViewController = ProfileViewController()
         let profileViewController = ProfileViewController()
+
         profileViewController.radius = (self.view.frame.width - 140) * 0.5
         profileViewController.modalPresentationStyle = .fullScreen
         self.navigationController?.present(profileViewController, animated: true)
@@ -286,7 +292,7 @@ extension ConversationsListViewController: UITableViewDelegate {
         let deleteChannel = UITableViewRowAction(style: .default, title: "delete") { _, _  in
             self.firebase.delete(self.channels[indexPath.row])
             let channel = self.fetchedResultController.object(at: indexPath)
-            self.core?.delete(channel: channel.name)
+            self.core?.delete(channel: channel.identifier)
         }
         
         let renameChannel = UITableViewRowAction(style: .default, title: "rename") {_, _ in

@@ -4,7 +4,6 @@
 //
 //  Created by Ivan Kopiev on 22.03.2021.
 //
-
 import UIKit
 
 class CustomInputAccesoryView: UIView {

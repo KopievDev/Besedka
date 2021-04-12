@@ -186,15 +186,3 @@ class CoreDataStack {
         }
     }
 }
-
-extension NSManagedObjectContext {
-    public func saveThrows() {
-        if self.hasChanges {
-            do {
-                try save()
-            } catch let error {
-                print(error, "--- ERROR Save in context")
-            }
-        }
-    }
- }

@@ -7,11 +7,34 @@
 
 import UIKit
 
-class FileManagerGCD {
+protocol FileManagerProtocol {
+    func filePath(forKey key: String) -> URL?
+    func saveImageToFile(_ image: UIImage?,
+                         byName name: String,
+                         completion: @escaping () -> Void)
+    func getImageFromFile(name: String,
+                          runQueue: DispatchQueue,
+                          completionQueue: DispatchQueue,
+                          completion: @escaping (UIImage?) -> Void)
+    func deleteFile(name: String)
+    func saveUser(_ user: UserProfile?, completion: @escaping ((Error?) -> Void))
+    func getUser(_ completion: @escaping (UserProfile?) -> Void)
+    func saveTheme(name theme: String?)
+    func getTheme(_ completion: @escaping (String?) -> Void)
+}
+
+class FileManagerGCD: FileManagerProtocol {
     
     let queue = DispatchQueue.global(qos: .utility)
     let main = DispatchQueue.main
+    let coreAssembly = CoreAssembly()
+    let parser: ParserProtocol
+    let storage: StorageProtocol
     
+    init() {
+        self.parser = coreAssembly.parser
+        self.storage = coreAssembly.storage
+    }
     public func saveImageToFile(_ image: UIImage?,
                                 byName name: String,
                                 completion: @escaping () -> Void) {
@@ -24,22 +47,9 @@ class FileManagerGCD {
     }
     
     public func deleteFile(name: String) {
-        let fileNameToDelete = name
-        var filePath = ""
         queue.async {
-            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-            let documentDirectory = paths[0]
-            filePath = documentDirectory.appendingFormat("/" + fileNameToDelete)
-            do {
-                let fileManager = FileManager.default
-                if fileManager.fileExists(atPath: filePath) {
-                    try fileManager.removeItem(atPath: filePath)
-                } else {
-                    print("File does not exist")
-                }
-            } catch let error as NSError {
-                print("An error took place: \(error)")
-            }
+            let filePath = self.storage.stringPath() + name
+            self.storage.removeFile(atPath: filePath)
         }
     }
     
@@ -48,31 +58,32 @@ class FileManagerGCD {
                                  completionQueue: DispatchQueue,
                                  completion: @escaping (UIImage?) -> Void) {
         runQueue.async {
-            guard let filePath = self.filePath(forKey: name) else {return}
-            guard let fileData = FileManager.default.contents(atPath: filePath.path) else {return}
-            guard let image = UIImage(data: fileData) else {return}
+            guard let filePath = self.filePath(forKey: name),
+                  let fileData = self.storage.contents(atPath: filePath.path),
+                  let image = UIImage(data: fileData ) else {return}
             completionQueue.async {completion(image)}
         }
     }
     
-    public func saveUser(_ user: UserProfileModel?, completion: @escaping ((Error?) -> Void)) {
+    public func saveUser(_ user: UserProfile?, completion: @escaping ((Error?) -> Void)) {
         queue.async {
             guard let user = user,
                   let filePath = self.filePath(forKey: "UserProfile.json") else { return }
             do {
-                try JSONEncoder().encode(user).write(to: filePath)
-                OperationQueue.main.addOperation {completion(nil)}
+                try self.parser.toData(from: user).write(to: filePath)
+                self.main.async {completion(nil)}
             } catch let error {
-                OperationQueue.main.addOperation {completion(error)}
+                self.main.async {completion(error)}
+                print(error, "ERROR SAVED USER")
             }
         }
     }
     
-    public func getUser(_ completion: @escaping (UserProfileModel?) -> Void) {
+    public func getUser(_ completion: @escaping (UserProfile?) -> Void) {
         queue.async {
             guard let filePath = self.filePath(forKey: "UserProfile.json"),
                   let jsonDataFile = try? Data(contentsOf: filePath),
-                  let user = try? JSONDecoder().decode(UserProfileModel.self, from: jsonDataFile) else {return}
+                  let user = self.parser.parse(json: jsonDataFile) else {return}
             self.main.async {completion(user)}
         }
     }
@@ -99,11 +110,8 @@ class FileManagerGCD {
         }
     }
     
-    private func filePath(forKey key: String) -> URL? {
-        let fileManager = FileManager.default
-        guard let documentURL = fileManager.urls(for: .documentDirectory,
-                                                 in: .userDomainMask).first else {return nil}
-        return documentURL.appendingPathComponent(key)
+    internal func filePath(forKey key: String) -> URL? {
+        return storage.urlPath()?.appendingPathComponent(key)
     }
     
 }
