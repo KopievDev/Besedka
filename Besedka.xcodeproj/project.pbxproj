@@ -247,7 +247,10 @@
 		B5D14CC02624502E005BE9C4 /* Service Layer */ = {
 			isa = PBXGroup;
 			children = (
-				B5DC349A260A5152004A1B86 /* Service */,
+				B5D14CE026245B6C005BE9C4 /* ServiceAssembly.swift */,
+				B5DC348326089DC1004A1B86 /* FirebaseService.swift */,
+				B5F0073426147F0D0090D31F /* CoreDataStack.swift */,
+				B50855C8260235150086ACB4 /* FileManagerGCD.swift */,
 			);
 			path = "Service Layer";
 			sourceTree = "<group>";
@@ -353,17 +356,6 @@
 				B55E052625F4DA7500B59502 /* ThemeButton.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		B5DC349A260A5152004A1B86 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				B5D14CE026245B6C005BE9C4 /* ServiceAssembly.swift */,
-				B5DC348326089DC1004A1B86 /* FirebaseService.swift */,
-				B5F0073426147F0D0090D31F /* CoreDataStack.swift */,
-				B50855C8260235150086ACB4 /* FileManagerGCD.swift */,
-			);
-			path = Service;
 			sourceTree = "<group>";
 		};
 		B5EAC50B25F114D5002E3BDB /* Support files */ = {
