@@ -17,7 +17,8 @@ class ThemesViewController: UIViewController {
     
     weak var delegate: ThemeDelegateProtocol?
     var themeSelected: ((String) -> Void)?
-    
+    lazy var serviceAssembly = ServiceAssembly()
+
     // UI objects
     lazy var dayButton: ThemeButton = {
         let button = ThemeButton()
@@ -66,7 +67,7 @@ class ThemesViewController: UIViewController {
             stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
             stackView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor)
         ])
-        let fileOpener = FileManagerGCD()
+        let fileOpener = serviceAssembly.fileManager
         fileOpener.getTheme { [weak self] (name) in
             guard let theme = name else {return}
             guard let self = self else {return}
@@ -115,7 +116,7 @@ class ThemesViewController: UIViewController {
 
     @objc func changeMode(sender: ThemeButton) {
         // Сохранение название темы
-        let fileSaver = FileManagerGCD()
+        let fileSaver = serviceAssembly.fileManager
         fileSaver.saveTheme(name: sender.textLabel.text)
 
         checkSelectedTheme(theme: sender.textLabel.text ?? "Day")

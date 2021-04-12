@@ -27,14 +27,14 @@ class ProfileViewController: UIViewController {
     // MARK: - Helpers
     func addTarget() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectPhoto(_:)))
-        self.profile.avatarImageView.addGestureRecognizer(tapGesture)
+        profile.avatarImageView.addGestureRecognizer(tapGesture)
         profile.editButton.addTarget(self, action: #selector(editProfile), for: .touchUpInside)
         profile.closeButton.addTarget(self, action: #selector(closeProfile), for: .touchUpInside)
+        profile.saveGCDButton.addTarget(self, action: #selector(saveGCD), for: .touchUpInside)
+        profile.cancelButton.addTarget(self, action: #selector(cancelEditing), for: .touchUpInside)
         profile.userNameTextfiel.delegate = self
         profile.cityTextfield.delegate = self
         profile.descriptionTextView.delegate = self
-        profile.saveGCDButton.addTarget(self, action: #selector(saveGCD), for: .touchUpInside)
-        profile.cancelButton.addTarget(self, action: #selector(cancelEditing), for: .touchUpInside)
     }
     
     private func setupDesign() {
