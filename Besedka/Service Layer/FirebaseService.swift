@@ -7,27 +7,23 @@
 
 import Foundation
 import Firebase
-import CoreData
 
 protocol FireBaseServiceProtocol {
+    typealias DictionaryData = [String: Any]
     func addSortedChannelListener(_ completion: @escaping ([Channel]) -> Void)
     func addSortedMessageListener(from channel: String, completion: @escaping ([Message]) -> Void)
     func addNew(channel name: Channel?)
     func addNew(message content: Message?, to channel: String)
-    func delete(_ channel: Channel)
+    func delete(_ channel: ChannelDB)
     func delete(_ message: Message, in channel: String)
-    func rename(_ channel: Channel, to name: String)
+    func rename(_ channel: ChannelDB, to name: String)
     func change(_ message: Message, text content: String, in channel: String)
-    
-    func addChannelsListener(in context: NSManagedObjectContext)
+    func addListner(_ compeltion: @escaping ([DictionaryData]) -> Void)
+    func addListnerMessegesFrom(channel id: String, _ compeltion: @escaping ([DictionaryData]) -> Void)
+
 }
 
 class FirebaseService: FireBaseServiceProtocol {
-    
-    func addChannelsListener(in context: NSManagedObjectContext) {
-        
-        print("dddd")
-    }
     
     let reference = Firestore.firestore().collection("channels")
     
@@ -48,6 +44,46 @@ class FirebaseService: FireBaseServiceProtocol {
             }
         }
         
+    }
+    
+    func addListner(_ compeltion: @escaping ([DictionaryData]) -> Void) {
+        reference.order(by: "name", descending: true).addSnapshotListener { (snapshot, _) in
+            guard let document = snapshot?.documents else {
+                print("no channels")
+                return
+            }
+            var dataArray = [DictionaryData]()
+            document.forEach {doc in
+                var dictionary = doc.data()
+                dictionary["identifier"] = doc.documentID
+                let lastActivity = dictionary["lastActivity"] as? Timestamp
+                dictionary["lastActivity"] = lastActivity?.dateValue()
+                dataArray.append(dictionary)
+            }
+            DispatchQueue.global().async {
+                compeltion(dataArray)
+            }
+        }
+    }
+    
+    func addListnerMessegesFrom(channel id: String, _ compeltion: @escaping ([DictionaryData]) -> Void) {
+        reference.document(id).collection("messages").order(by: "created").addSnapshotListener { (snapshot, _) in
+            guard let document = snapshot?.documents else {
+                print("no messages")
+                return
+            }
+            var dataArray = [DictionaryData]()
+            document.forEach {doc in
+                var dictionary = doc.data()
+                dictionary["identifier"] = doc.documentID
+                let created = dictionary["created"] as? Timestamp ?? Timestamp(date: Date())
+                dictionary["created"] = created.dateValue()
+                dataArray.append(dictionary)
+            }
+            DispatchQueue.global().async {
+                compeltion(dataArray)
+            }
+        }
     }
     
     public  func addSortedMessageListener(from channel: String, completion: @escaping ([Message]) -> Void) {
@@ -76,17 +112,7 @@ class FirebaseService: FireBaseServiceProtocol {
         self.reference.document(channel).collection("messages").addDocument(data: mes.dictionary)
     }
     
-    func deleteChannel(uid: String) {
-        reference.document(uid).delete { error in
-            if let error = error {
-                print("Error removing document: \(error)")
-            } else {
-                print("Document successfully removed!")
-            }
-        }
-    }
-    
-    public func rename(_ channel: Channel, to name: String) {
+    public func rename(_ channel: ChannelDB, to name: String) {
         
         reference.document(channel.identifier).setData([ "name": name ], merge: true)
         
@@ -100,7 +126,7 @@ class FirebaseService: FireBaseServiceProtocol {
             .setData([ "content": content ], merge: true)
     }
     
-    public func delete(_ channel: Channel) {
+    public func delete(_ channel: ChannelDB) {
         
         self.reference.document(channel.identifier).delete { error in
             if let error = error {

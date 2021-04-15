@@ -37,7 +37,6 @@ class Storage: StorageProtocol {
     func stringPath() -> String {
         guard let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else {return String()}
         return path.appendingFormat("/")
-        
     }
     
     func urlPath() -> URL? {

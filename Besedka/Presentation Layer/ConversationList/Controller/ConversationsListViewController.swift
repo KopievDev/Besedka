@@ -18,48 +18,12 @@ class ConversationsListViewController: UIViewController {
         table.dataSource = self
         return table
     }()
-    // CoreData
-    var core: CoreDataStack?
     
+    // CoreData
+    var coreDataService: CoreDataProtocol?
     var fetchedResultController: NSFetchedResultsController = NSFetchedResultsController<ChannelDB>()
     
-    var arrayChannels = [ChannelDB]()
-    
-    lazy var channels: [Channel] = [] {
-        didSet {
-            core?.performSave { context in
-                
-                // Добавляем/обновляем каналы с сервера
-                self.channels.forEach { channel in
-                    
-                    let channel = ChannelDB(channel, context: context)
-                    self.arrayChannels.append(channel)
-                }
-                
-                let request: NSFetchRequest = ChannelDB.fetchRequest()
-                do {
-                    let currentChannel = try context.fetch(request)
-                    // Перебираем массив каналов из памяти и сравниваем с каналами из сервера (удаляем каналы, которых уже нет на сервере)
-                    currentChannel.forEach {
-                        if !self.arrayChannels.contains($0) {
-                            context.delete($0)
-                        }
-                    }
-                    
-                } catch {
-                    print(error)
-                }
-                do {
-                    try context.obtainPermanentIDs(for: arrayChannels )
-                } catch let error {
-                    print(error, "obtain error")
-                }
-            }
-            // Создаем запрос для получения всех каналов из памяти
-            core?.printChannelsCount()
-        }
-    }
-    
+    // UI
     lazy var addChannelButton: UIButton = {
        let button = UIButton()
         button.backgroundColor = Theme.current.secondaryTint
@@ -69,7 +33,6 @@ class ConversationsListViewController: UIViewController {
     }()
     
     let serviceAssembly = ServiceAssembly()
-    
     var firebase: FireBaseServiceProtocol {
         return serviceAssembly.firebase
     }
@@ -79,7 +42,7 @@ class ConversationsListViewController: UIViewController {
         super.viewDidLoad()
         createUI()
         addListener()
-        
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,10 +57,20 @@ class ConversationsListViewController: UIViewController {
     // MARK: - Helpers
     
     private func addListener() {
-        serviceAssembly.firebase.addSortedChannelListener { (channels) in
-            self.channels = channels
-            self.channelsTableView.reloadData()
+
+        serviceAssembly.firebase.addListner { (channels) in
+            self.coreDataService?.save(objects: .Channel, data: channels)
+//            let chan = channels.compactMap { (data) -> Channel? in
+//                return Channel(dictionary: data)
+//
+//            }
+//            chan.forEach { (channel) in
+//                print(channel.name)
+//            }
         }
+//        serviceAssembly.firebase.addListnerMessegesFrom(channel: "4i8CxFt1AgZQVMz9wUKd") { messages in
+//            self.coreDataService?.save(objects: .Message, data: messages)
+//        }
     }
     
     fileprivate func addButtonChannels() {
@@ -133,7 +106,7 @@ class ConversationsListViewController: UIViewController {
         imageForButton.addGestureRecognizer(reconizer)
         imageForButton.isUserInteractionEnabled = true
         barButtonView.clipsToBounds = true
-        let fileOpener = FileManagerGCD()
+        let fileOpener = serviceAssembly.fileManager
         fileOpener.getUser { (user) in
             // Get short name from name
             let text = user?.name ?? ""
@@ -142,7 +115,6 @@ class ConversationsListViewController: UIViewController {
             } else {
                 shortName.text = text.first?.uppercased()
             }
-            
         }
         fileOpener.getImageFromFile(name: "Avatar.png",
                                     runQueue: .global(qos: .utility), completionQueue: .main) {(image) in
@@ -175,8 +147,9 @@ class ConversationsListViewController: UIViewController {
 //     Метод для перехода к собщениям контакта
     func wantToTalk(in channel: ChannelDB) {
         let chatView = ConversationViewController()
-        chatView.coreDataStack = self.core
-        chatView.channel = Channel(channel)
+        chatView.channelDB = channel
+        print("DEBUG", channel.name)
+        chatView.coreDataService = self.coreDataService
         navigationController?.pushViewController(chatView, animated: true)
     }
     
@@ -210,7 +183,7 @@ class ConversationsListViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    func rename(channel: Channel) {
+    func rename(channel: ChannelDB) {
         let alert = UIAlertController(title: nil, message: "Введите новое название канала:", preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.placeholder = channel.name
@@ -288,13 +261,15 @@ extension ConversationsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteChannel = UITableViewRowAction(style: .default, title: "delete") { _, _  in
-            self.firebase.delete(self.channels[indexPath.row])
             let channel = self.fetchedResultController.object(at: indexPath)
-            self.core?.delete(channel: channel.identifier)
+            self.firebase.delete(channel)
+            self.coreDataService?.delete(object: .Channel, id: channel.identifier)
         }
         
         let renameChannel = UITableViewRowAction(style: .default, title: "rename") {_, _ in
-            self.rename(channel: self.channels[indexPath.row])
+            let channel = self.fetchedResultController.object(at: indexPath)
+
+             self.rename(channel: channel)
         }
         
         deleteChannel.backgroundColor = .systemRed
@@ -362,7 +337,7 @@ extension ConversationsListViewController: NSFetchedResultsControllerDelegate {
     }
     
     func getFetchedResultController() -> NSFetchedResultsController<ChannelDB> {
-        guard let context = core?.mainContext else {return NSFetchedResultsController<ChannelDB>()}
+        guard let context = coreDataService?.coreData?.mainContext else {return NSFetchedResultsController<ChannelDB>()}
         fetchedResultController = NSFetchedResultsController(fetchRequest: taskFetchRequest(),
                                                              managedObjectContext: context,
                                                              sectionNameKeyPath: nil,
@@ -373,7 +348,7 @@ extension ConversationsListViewController: NSFetchedResultsControllerDelegate {
     func taskFetchRequest() -> NSFetchRequest<ChannelDB> {
         let fetchRequest: NSFetchRequest = ChannelDB.fetchRequest()
         fetchRequest.fetchBatchSize = 20
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "lastActivity", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         return fetchRequest
     }
@@ -390,26 +365,28 @@ extension ConversationsListViewController: NSFetchedResultsControllerDelegate {
         switch type {
         case .insert:
             if let indexPath = newIndexPath {
-                channelsTableView.insertRows(at: [indexPath], with: .fade)
+                channelsTableView.insertRows(at: [indexPath], with: .automatic)
             }
-        case .delete:            
+        case .delete:
             if let indexPath = indexPath {
-                channelsTableView.deleteRows(at: [indexPath], with: .fade)
+                channelsTableView.deleteRows(at: [indexPath], with: .automatic)
             }
         case .update:
+
             if let indexPath = indexPath, let cell = channelsTableView.cellForRow(at: indexPath) {
                 configureCell(cell, at: indexPath)
             }
-            
+
         case .move:
             if let indexPath = indexPath {
-                channelsTableView.deleteRows(at: [indexPath], with: .fade)
+
+                channelsTableView.deleteRows(at: [indexPath], with: .automatic)
             }
-            
+
             if let newIndexPath = newIndexPath {
-                channelsTableView.insertRows(at: [newIndexPath], with: .fade)
+                channelsTableView.insertRows(at: [newIndexPath], with: .automatic)
             }
-            
+
         @unknown default:
             fatalError("erororoorororo")
         }

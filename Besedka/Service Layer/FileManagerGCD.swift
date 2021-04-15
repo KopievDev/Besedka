@@ -21,6 +21,9 @@ protocol FileManagerProtocol {
     func getUser(_ completion: @escaping (UserProfile?) -> Void)
     func saveTheme(name theme: String?)
     func getTheme(_ completion: @escaping (String?) -> Void)
+    
+    func getData<T: Decodable>(type: T.Type, from file: String, _ completion: @escaping (T?) -> Void)
+
 }
 
 class FileManagerGCD: FileManagerProtocol {
@@ -31,9 +34,9 @@ class FileManagerGCD: FileManagerProtocol {
     let parser: ParserProtocol
     let storage: StorageProtocol
     
-    init() {
-        self.parser = coreAssembly.parser
-        self.storage = coreAssembly.storage
+    init(parser: ParserProtocol = CoreAssembly().parser, storage: StorageProtocol = CoreAssembly().storage) {
+        self.parser = parser
+        self.storage = storage
     }
     public func saveImageToFile(_ image: UIImage?,
                                 byName name: String,
@@ -83,8 +86,20 @@ class FileManagerGCD: FileManagerProtocol {
         queue.async {
             guard let filePath = self.filePath(forKey: "UserProfile.json"),
                   let jsonDataFile = try? Data(contentsOf: filePath),
-                  let user = self.parser.parse(json: jsonDataFile) else {return}
+                  let user = self.parser.decodeJSON(type: UserProfile.self, from: jsonDataFile) else {
+                print("ERROR with get user from file")
+                return
+            }
             self.main.async {completion(user)}
+        }
+    }
+    
+    public func getData<T: Decodable>(type: T.Type, from file: String, _ completion: @escaping (T?) -> Void) {
+        queue.async {
+            guard let filePath = self.filePath(forKey: file),
+                  let jsonData = try? Data(contentsOf: filePath),
+                  let data = self.parser.decodeJSON(type: T.self, from: jsonData) else {return}
+            self.main.async {completion(data)}
         }
     }
     

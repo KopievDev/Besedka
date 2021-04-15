@@ -75,7 +75,7 @@ class MessageCell: UITableViewCell {
     }
     
     // MARK: - Helpers
-    func configureCell(message: Message?) {
+    func configureCell(message: MessageDB?) {
         // Обнуление ячейки
         self.backgroundColor = .clear
         name.isHidden = true

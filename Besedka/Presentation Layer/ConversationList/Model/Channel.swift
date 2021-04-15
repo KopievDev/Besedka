@@ -36,6 +36,14 @@ extension Channel {
         self.init(identifier: documentId, name: name, lastMessage: lastMessage, lastActivity: lastActivity?.dateValue())
         
     }
+    
+    init?(dictionary: [String: Any]) {
+        let name = dictionary["name"] as? String ?? ""
+        let lastMessage = dictionary["lastMessage"] as? String ?? ""
+        let lastActivity = dictionary["lastActivity"] as? Date ?? nil
+        let id = dictionary["identifier"] as? String ?? ""
+        self.init(identifier: id, name: name, lastMessage: lastMessage, lastActivity: lastActivity)
+    }
     init(_ channelDB: ChannelDB) {
         self.identifier = channelDB.identifier
         self.name = channelDB.name

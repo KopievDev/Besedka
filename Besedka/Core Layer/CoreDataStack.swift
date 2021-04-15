@@ -7,7 +7,15 @@
 
 import CoreData
 
-class CoreDataStack {
+protocol CoreDataStackProtocol {
+    var mainContext: NSManagedObjectContext {get}
+    func performSave(_ block: (NSManagedObjectContext) -> Void)
+    func performSave(in context: NSManagedObjectContext)
+    func saveContext() -> NSManagedObjectContext
+
+}
+
+class CoreDataStack: CoreDataStackProtocol {
     
     private var storeUrl: URL = {
         guard let documentsUrl = FileManager.default.urls(for: .documentDirectory,
@@ -40,7 +48,7 @@ class CoreDataStack {
         
         do {
             try coordinator.addPersistentStore(ofType: NSSQLiteStoreType,
-                                               configurationName: nil,
+                                               configurationName: .none,
                                                at: self.storeUrl,
                                                options: nil)
         } catch {
@@ -66,11 +74,12 @@ class CoreDataStack {
         return context
     }()
     
-    private func saveContext() -> NSManagedObjectContext {
+    internal func saveContext() -> NSManagedObjectContext {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.parent = mainContext
         context.automaticallyMergesChangesFromParent = true
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
         return context
     }
 
@@ -78,16 +87,15 @@ class CoreDataStack {
     
     func performSave(_ block: (NSManagedObjectContext) -> Void) {
         let context = saveContext()
-        context.performAndWait { [weak self] in
-            guard let self = self else {return}
+        context.performAndWait {
             block(context)
             if context.hasChanges {
                 self.performSave(in: context)
             }
         }
     }
-    
-    private func performSave(in context: NSManagedObjectContext) {
+
+    internal func performSave(in context: NSManagedObjectContext) {
         context.performAndWait {
             do {
                 try context.save()

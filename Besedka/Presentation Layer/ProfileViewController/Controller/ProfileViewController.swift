@@ -22,6 +22,7 @@ class ProfileViewController: UIViewController {
         profile = ProfileView(frame: self.view.frame, radius: radius)
         view.addSubview(profile)
         setupDesign()
+        addTarget()
     }
     
     // MARK: - Helpers

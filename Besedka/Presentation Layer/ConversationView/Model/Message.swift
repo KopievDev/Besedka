@@ -34,6 +34,14 @@ extension Message {
         self.init(content: content, created: created.dateValue(), senderId: senderId, senderName: senderName, identifier: id)
     }
     
+    init?(_ dictionary: [String: Any]) {
+        let content = dictionary["content"] as? String ?? ""
+        let senderName = dictionary["senderName"] as? String ?? ""
+        let senderId = dictionary["senderId"] as? String ?? ""
+        let created = dictionary["created"] as? Date ?? Date()
+        let id = dictionary["identifier"] as? String ?? ""
+        self.init(content: content, created: created, senderId: senderId, senderName: senderName, identifier: id)
+    }
     init?(content: String) {
         self.content = content
         self.created = Date()

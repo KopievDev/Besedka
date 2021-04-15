@@ -20,4 +20,14 @@ public class MessageDB: NSManagedObject {
         self.created = message.created
         self.senderId = message.senderId
     }
+    convenience init(_ dictionary: [String: Any], context: NSManagedObjectContext) {
+        self.init(context: context)
+        self.content = dictionary["content"] as? String ?? ""
+        self.senderName = dictionary["senderName"] as? String ?? ""
+        self.senderId = dictionary["senderId"] as? String ?? ""
+        self.created = dictionary["created"] as? Date ?? Date()
+        self.identifier = dictionary["identifier"] as? String ?? ""
+        
+    }
+
 }
