@@ -60,17 +60,7 @@ class ConversationsListViewController: UIViewController {
 
         serviceAssembly.firebase.addListner { (channels) in
             self.coreDataService?.save(objects: .Channel, data: channels)
-//            let chan = channels.compactMap { (data) -> Channel? in
-//                return Channel(dictionary: data)
-//
-//            }
-//            chan.forEach { (channel) in
-//                print(channel.name)
-//            }
         }
-//        serviceAssembly.firebase.addListnerMessegesFrom(channel: "4i8CxFt1AgZQVMz9wUKd") { messages in
-//            self.coreDataService?.save(objects: .Message, data: messages)
-//        }
     }
     
     fileprivate func addButtonChannels() {

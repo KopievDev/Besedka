@@ -24,7 +24,6 @@
 		B5623D8125FA049500BFD3D4 /* SecondaryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */; };
 		B5B767332607A618007CF846 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B767322607A618007CF846 /* Channel.swift */; };
 		B5BC515426287AEB001E49D5 /* ConversationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BC515326287AEB001E49D5 /* ConversationsListView.swift */; };
-		B5BC515B2628D529001E49D5 /* CoreDataTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BC515A2628D529001E49D5 /* CoreDataTableView.swift */; };
 		B5BD371025EBA938007AF803 /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BD370F25EBA938007AF803 /* ConversationsListViewController.swift */; };
 		B5BD371425EBB639007AF803 /* ChannelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BD371325EBB639007AF803 /* ChannelCell.swift */; };
 		B5CA6E9625FA7BCE009939AE /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA6E9525FA7BCE009939AE /* UITableViewCell.swift */; };
@@ -76,7 +75,6 @@
 		B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryLabel.swift; sourceTree = "<group>"; };
 		B5B767322607A618007CF846 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		B5BC515326287AEB001E49D5 /* ConversationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListView.swift; sourceTree = "<group>"; };
-		B5BC515A2628D529001E49D5 /* CoreDataTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTableView.swift; sourceTree = "<group>"; };
 		B5BD370F25EBA938007AF803 /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
 		B5BD371325EBB639007AF803 /* ChannelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelCell.swift; sourceTree = "<group>"; };
 		B5CA6E9525FA7BCE009939AE /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
@@ -313,7 +311,6 @@
 			isa = PBXGroup;
 			children = (
 				B5BD370F25EBA938007AF803 /* ConversationsListViewController.swift */,
-				B5BC515A2628D529001E49D5 /* CoreDataTableView.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -564,7 +561,6 @@
 				B5D14D072624BB96005BE9C4 /* ProfileView.swift in Sources */,
 				B5D14D152624CED6005BE9C4 /* MessageCell.swift in Sources */,
 				B5E92D1D25FF86000094DCCC /* UserProfile.swift in Sources */,
-				B5BC515B2628D529001E49D5 /* CoreDataTableView.swift in Sources */,
 				B5F0070A261479FF0090D31F /* Chat.xcdatamodeld in Sources */,
 				B5D14D1E2624CEE7005BE9C4 /* Message.swift in Sources */,
 				B5DC3496260A4F41004A1B86 /* ProfileVC.swift in Sources */,

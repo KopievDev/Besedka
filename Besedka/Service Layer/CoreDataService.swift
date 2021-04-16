@@ -21,7 +21,7 @@ protocol CoreDataProtocol {
     func save(messages: [DATA], from channel: String)
     func delete(object: ChatObjects, id: String)
     func fetchChannels(_ completion: @escaping ([ChannelDB]) -> Void)
-    func fetchMessages(_ completion: @escaping ([MessageDB]) -> Void)
+    func fetchMessages(from id: String, _ completion: @escaping ([MessageDB]) -> Void)
 
 }
 
@@ -87,7 +87,6 @@ class CoreDataService: CoreDataProtocol {
             
             do {
                  let currentChannels = try context.fetch(requestChannel)
-                print(currentChannels.first?.name)
                 if currentChannels.first != nil {
                     currenChannel = currentChannels.first
                 }
@@ -110,60 +109,8 @@ class CoreDataService: CoreDataProtocol {
                 print(error, "obtain error")
             }
             
-            print("DEBUG LISTNER:", currenChannel?.name)
-//            if let chan = currenChannel {
-//                messageArray.forEach { message in
-//                    chan.addToMessages(message)
-//                }
-//            }
-           
         }
     }
-//
-//    func save(messages: [DATA], from channel: ChannelDB) {
-//
-//        coreData?.performSave { context in
-//
-//            let messageArray = messages.compactMap { dict -> MessageDB? in
-//                return MessageDB(dict, context: context)
-//            }
-//
-//            do {
-//                try context.obtainPermanentIDs(for: messageArray )
-//            } catch let error {
-//                print(error, "obtain error")
-//            }
-//
-//            let requestChannel: NSFetchRequest = ChannelDB.fetchRequest()
-//            requestChannel.predicate = NSPredicate(format: "identifier = %@", channel.identifier)
-//
-//            var currenChannel: ChannelDB?
-//            do {
-//                let currentChannels = try context.fetch(requestChannel)
-//                currenChannel = currentChannels.first
-//            } catch {
-//                print(error)
-//            }
-//            print("DEBUG LISTNER:", currenChannel?.name)
-//            if let chan = currenChannel {
-//                messageArray.forEach { message in
-//                    chan.addToMessages(message)
-//                }
-//            }
-//
-//            let id = channel.identifier
-//            let request: NSFetchRequest = MessageDB.fetchRequest()
-//            request.predicate = NSPredicate(format: "channel = %@", id)
-//
-//            let messageFromDB = try? context.fetch(request)
-//            messageFromDB?.forEach { message in
-//                print(message)
-//                if !messageArray.contains(message) {
-//                    context.delete(message)
-//                }
-//            }
-//        }
-//    }
     
     func fetchChannels(_ completion: @escaping ([ChannelDB]) -> Void) {
         coreData?.performSave { context in
@@ -177,17 +124,31 @@ class CoreDataService: CoreDataProtocol {
         }
     }
     
-    func fetchMessages(_ completion: @escaping ([MessageDB]) -> Void) {
+    func fetchMessages(from id: String, _ completion: @escaping ([MessageDB]) -> Void) {
         coreData?.performSave { context in
+            let request = taskFetchRequest(channel: id)
             do {
-                let channels = try context.fetch(ChannelDB.fetchRequest()) as? [MessageDB] ?? []
-                completion(channels)
+                let channels = try context.fetch(request)  
+                DispatchQueue.main.async {
+                    completion(channels)
+
+                }
                 
             } catch let error {
                 print("ERROR to fetch messages from DB", error.localizedDescription)
             }
         }
 
+    }
+    
+    func taskFetchRequest(channel id: String) -> NSFetchRequest<MessageDB> {
+        let fetchRequest: NSFetchRequest = MessageDB.fetchRequest()
+        fetchRequest.fetchBatchSize = 35
+        let sortDescriptor = NSSortDescriptor(key: "created", ascending: true)
+        fetchRequest.predicate = NSPredicate(format: "channel.identifier = %@", id)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.fetchLimit = 1
+        return fetchRequest
     }
     
     func printCount(object: ChatObjects) {

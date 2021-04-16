@@ -14,12 +14,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var coreDataStack: CoreDataStackProtocol?
     var coreDataService: CoreDataProtocol?
+    lazy var serviceAssembly: ServiceAssembly = ServiceAssembly()
     // Сообщает делегату, что процесс запуска начался
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
-        let fileOpener = FileManagerGCD()
+        let fileOpener = serviceAssembly.fileManager
         coreDataStack = CoreDataStack()
-        coreDataService = CoreDataService(coreData: coreDataStack!) //// не забыть
+  
         fileOpener.getTheme { (theme) in
             guard let name = theme else {return}
             switch name {
@@ -32,6 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             Theme.current.apply(for: application)
         }
+        
+        guard let coreData = coreDataStack else { return true}
+        coreDataService = CoreDataService(coreData: coreData)
         return true
     }
     
@@ -66,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     // Сообщает делегату, когда приложение собирается завершить работу.
     func applicationWillTerminate(_ application: UIApplication) {
-
+        try? coreDataService?.coreData?.mainContext.save()
     }
     
 }

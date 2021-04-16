@@ -26,7 +26,7 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="ChannelDB" positionX="-383.484375" positionY="-15.34375" width="99.25390625" height="118"/>
+        <element name="ChannelDB" positionX="-383.484375" positionY="-15.34375" width="99.25390625" height="28"/>
         <element name="MessageDB" positionX="-103.51171875" positionY="-34.328125" width="128" height="133"/>
     </elements>
 </model>

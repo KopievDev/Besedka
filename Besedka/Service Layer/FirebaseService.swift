@@ -80,7 +80,7 @@ class FirebaseService: FireBaseServiceProtocol {
                 dictionary["created"] = created.dateValue()
                 dataArray.append(dictionary)
             }
-            DispatchQueue.global().async {
+            DispatchQueue.main.async {
                 compeltion(dataArray)
             }
         }
