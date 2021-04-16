@@ -11,5 +11,4 @@ class ServiceAssembly {
     
     lazy var firebase: FireBaseServiceProtocol = FirebaseService()
     lazy var fileManager: FileManagerProtocol = FileManagerGCD()
-    
 }

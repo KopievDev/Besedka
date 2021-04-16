@@ -138,7 +138,6 @@ class ConversationsListViewController: UIViewController {
     func wantToTalk(in channel: ChannelDB) {
         let chatView = ConversationViewController()
         chatView.channelDB = channel
-        print("DEBUG", channel.name)
         chatView.coreDataService = self.coreDataService
         navigationController?.pushViewController(chatView, animated: true)
     }

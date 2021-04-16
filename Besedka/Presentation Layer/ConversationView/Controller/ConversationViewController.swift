@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreData
 
 class ConversationViewController: UIViewController {
     // MARK: - Propetries
@@ -15,7 +14,6 @@ class ConversationViewController: UIViewController {
         return serviceAssembly.firebase
     }
     var coreDataService: CoreDataProtocol?
-    var fetchedResultController: NSFetchedResultsController = NSFetchedResultsController<MessageDB>()
 
     var channelDB: ChannelDB? {
         didSet {
@@ -114,13 +112,10 @@ class ConversationViewController: UIViewController {
     fileprivate func listenMessages() {
         firebase.addListnerMessegesFrom(channel: channelID) { (messages) in
             self.coreDataService?.save(messages: messages, from: self.channelID )
-            let messss = messages.compactMap { (mes) -> Message? in
+            let messageArray = messages.compactMap { (mes) -> Message? in
                 return Message(mes)
             }
-            messss.forEach { (mes) in
-                print(mes.content)
-            }
-            self.messages = messss
+            self.messages = messageArray
             self.messageTableView.reloadData()
             self.messageTableView.scrollToLastRow(animated: true)
         }
@@ -154,7 +149,6 @@ class ConversationViewController: UIViewController {
             print("empty")
             return
         }
-//        guard let channelId = channelDB?.identifier else {return}
         firebase.addNew(message: Message(content: content, name: self.myName), to: channelID)
         self.customInputView.messageInputTextView.text = ""
         self.customInputView.heightText.constant = customInputView.textViewContentSize().height

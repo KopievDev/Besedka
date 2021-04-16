@@ -10,4 +10,5 @@ import Foundation
 class CoreAssembly {
     lazy var parser: ParserProtocol = Parser()
     lazy var storage: StorageProtocol = Storage()
+    lazy var coreData: CoreDataStackProtocol = CoreDataStack()
 }
