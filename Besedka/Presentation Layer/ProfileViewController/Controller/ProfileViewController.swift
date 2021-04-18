@@ -121,9 +121,13 @@ class ProfileViewController: UIViewController {
         let camera = UIAlertAction(title: "Сделать фото", style: .default, handler: { _ in
             self.chooseImagePicker(source: .camera)
         })
+        let online = UIAlertAction(title: "Загрузить фото", style: .default, handler: { _ in
+            print("debyuug")
+        })
         let cancel = UIAlertAction(title: "Отмена", style: .cancel )
         alertSheet.addAction(photo)
         alertSheet.addAction(camera)
+        alertSheet.addAction(online)
         alertSheet.addAction(cancel)
         present(alertSheet, animated: true)
         

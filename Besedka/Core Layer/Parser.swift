@@ -8,29 +8,11 @@
 import Foundation
 
 protocol ParserProtocol {
-    func parse(json data: Data) -> UserProfile?
-    func toData(from user: UserProfile) -> Data
     func decodeJSON<T: Decodable>(type: T.Type, from: Data?) -> T?
     func encodeJSON<T: Encodable>(type: T.Type, data: T ) -> Data?
-
 }
 
 class Parser: ParserProtocol {
-    
-    func toData(from user: UserProfile) -> Data {
-        guard let data = try? JSONEncoder().encode(user) else { return Data() }
-        return data
-    }
-    
-    func parse(json data: Data) -> UserProfile? {
-        var user: UserProfile? 
-        do {
-            user = try JSONDecoder().decode(UserProfile.self, from: data)
-        } catch {
-            print(error.localizedDescription)
-        }
-        return user
-    }
     
     func decodeJSON<T: Decodable>(type: T.Type, from: Data?) -> T? {
         let decoder = JSONDecoder()

@@ -31,10 +31,11 @@ class FileManagerGCD: FileManagerProtocol {
     let queue = DispatchQueue.global(qos: .utility)
     let main = DispatchQueue.main
     let coreAssembly = CoreAssembly()
-    let parser: ParserProtocol
+    let parser: ParserServiceProtocol
+    let coreParser: ParserProtocol = CoreAssembly().parser
     let storage: StorageProtocol
     
-    init(parser: ParserProtocol = CoreAssembly().parser, storage: StorageProtocol = CoreAssembly().storage) {
+    init(parser: ParserServiceProtocol = ServiceAssembly().parser, storage: StorageProtocol = CoreAssembly().storage) {
         self.parser = parser
         self.storage = storage
     }
@@ -86,7 +87,7 @@ class FileManagerGCD: FileManagerProtocol {
         queue.async {
             guard let filePath = self.filePath(forKey: "UserProfile.json"),
                   let jsonDataFile = try? Data(contentsOf: filePath),
-                  let user = self.parser.decodeJSON(type: UserProfile.self, from: jsonDataFile) else {
+                  let user = self.parser.parse(json: jsonDataFile) else {
                 print("ERROR with get user from file")
                 return
             }
@@ -98,7 +99,7 @@ class FileManagerGCD: FileManagerProtocol {
         queue.async {
             guard let filePath = self.filePath(forKey: file),
                   let jsonData = try? Data(contentsOf: filePath),
-                  let data = self.parser.decodeJSON(type: T.self, from: jsonData) else {return}
+                  let data = self.coreParser.decodeJSON(type: T.self, from: jsonData) else {return}
             self.main.async {completion(data)}
         }
     }
