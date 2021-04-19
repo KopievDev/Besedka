@@ -13,7 +13,7 @@ class CustomImageView: UIImageView {
     
     var imageUrlString: String?
     
-    func loadImageWithUrl(urlString: String) {
+    func loadImageWithUrl(urlString: String, _ completion: @escaping () -> Void) {
         
         weak var oldTask = currentTask
         currentTask = nil
@@ -21,10 +21,11 @@ class CustomImageView: UIImageView {
         
         imageUrlString = urlString
         
-        image = nil
+        image = UIImage(named: "placeholder")
         
         if let cachedImage = ImageCache.shared.getImage(forKey: urlString) {
             image = cachedImage
+            completion()
             return
         }
         
@@ -41,6 +42,7 @@ class CustomImageView: UIImageView {
                         ImageCache.shared.save(image: downloadedImage, forKey: urlString)
                         if self.imageUrlString == urlString {
                             self.image = downloadedImage
+                            completion()
                         }
                     }
                 }
@@ -49,5 +51,6 @@ class CustomImageView: UIImageView {
             currentTask = dataTask
             dataTask.resume()
         }
+        
     }
 }

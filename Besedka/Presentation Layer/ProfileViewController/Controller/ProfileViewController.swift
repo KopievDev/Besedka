@@ -123,6 +123,14 @@ class ProfileViewController: UIViewController {
         })
         let online = UIAlertAction(title: "Загрузить фото", style: .default, handler: { _ in
             print("debyuug")
+            let avatarVC = AvatatarCollectionViewController()
+            avatarVC.delegate = self
+            avatarVC.modalPresentationStyle = .fullScreen
+            self.present(avatarVC, animated: true)
+
+//            self.present(avatarVC, animated: true) {
+//                print("present")
+//            }
         })
         let cancel = UIAlertAction(title: "Отмена", style: .cancel )
         alertSheet.addAction(photo)
@@ -137,6 +145,12 @@ class ProfileViewController: UIViewController {
         profile.enableEditMode(state: false)
         let oldSetting = serviceAssembly.fileManager
         oldSetting.saveUser(self.user, completion: {_ in })
+        self.setupDesign()
+        oldSetting.getImageFromFile(name: "Avatar.png", runQueue: .global(), completionQueue: .main) {[weak self] (image) in
+            guard let `self` = self else {return}
+            guard let img = image else {return}
+            self.profile.avatarImageView.setImage(image: img, canAnimate: true)
+        }
     }
     
     @objc private func editProfile() {
@@ -176,4 +190,10 @@ class ProfileViewController: UIViewController {
         }
     }
     
+}
+
+extension ProfileViewController: ChangeImage {
+    func selected(_ image: UIImage) {
+        setAvatar(image)
+    }
 }

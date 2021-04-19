@@ -278,14 +278,12 @@ extension ConversationsListViewController {
     }
     
     @objc func goToSetting() {
-//        let settingView = ThemesViewController()
-        let settingView = AvatatarCollectionViewController()
+        let settingView = ThemesViewController()
 
-//        // Clouser
-//        settingView.themeSelected = {[weak self] theme in
-//            self?.changeTheme(name: theme)
-//        }
-//        
+        // Clouser
+        settingView.themeSelected = {[weak self] theme in
+            self?.changeTheme(name: theme)
+        }
 //        // Delegate
 //        settingView.delegate = self
         

@@ -12,7 +12,10 @@ class AvatarCell: UICollectionViewCell {
     var imageUrl: String? {
             didSet {
                 if let imageUrl = imageUrl {
-                    avatarImageView.loadImageWithUrl(urlString: imageUrl)
+                    self.indicator.startAnimating()
+                    avatarImageView.loadImageWithUrl(urlString: imageUrl) {
+                        self.indicator.stopAnimating()
+                    }
                 }
             }
         }
@@ -21,12 +24,19 @@ class AvatarCell: UICollectionViewCell {
     let avatarImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.clipsToBounds = true
-        iv.image = UIImage(named: "add")
+        iv.image = UIImage(named: "placeholder")
         iv.layer.cornerRadius = 48 / 2
         iv.contentMode = .scaleAspectFill
         iv.backgroundColor = UIColor(red: 1.00, green: 0.42, blue: 0.42, alpha: 1.00)
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
+    }()
+    let indicator: UIActivityIndicatorView = {
+        let ind = UIActivityIndicatorView()
+        ind.color = Theme.current.bubbleFromMe
+        ind.hidesWhenStopped = true
+        ind.translatesAutoresizingMaskIntoConstraints = false
+        return ind
     }()
 
     // MARK: - Lifecycle
@@ -45,6 +55,7 @@ class AvatarCell: UICollectionViewCell {
     
     private func createUI() {
         addSubview(avatarImageView)
+        addSubview(indicator)
         createConstrains()
     }
     private func createConstrains() {
@@ -53,8 +64,12 @@ class AvatarCell: UICollectionViewCell {
             avatarImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             avatarImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             avatarImageView.heightAnchor.constraint(equalTo: self.heightAnchor),
-            avatarImageView.widthAnchor.constraint(equalTo: self.heightAnchor)
+            avatarImageView.widthAnchor.constraint(equalTo: self.heightAnchor),
+            
+            indicator.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            indicator.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
+            indicator.heightAnchor.constraint(equalToConstant: 30),
+            indicator.widthAnchor.constraint(equalTo: indicator.heightAnchor)
         ])
-        
     }
 }

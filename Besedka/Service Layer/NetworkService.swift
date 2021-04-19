@@ -19,6 +19,10 @@ enum UrlColor: String, CaseIterable {
     case green
     case orange
     case gray
+    case purple
+    case ios
+    case developer
+    case black
 }
 
 class NetworkService: NetworkServiceProtocol {
