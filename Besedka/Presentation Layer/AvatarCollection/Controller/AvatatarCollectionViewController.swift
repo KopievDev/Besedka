@@ -29,9 +29,9 @@ class AvatatarCollectionViewController: UIViewController {
     // MARK: - Helpers
     private func setupSettings() {
         view.addSubview(avatarView)
-        self.avatarView.refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.avatarView.avatarCollection.dataSource = self
         self.avatarView.avatarCollection.delegate = self
+        self.avatarView.refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.avatarView.closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
     }
     

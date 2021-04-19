@@ -33,7 +33,7 @@ class AvatarView: UIView {
         let button = UIButton()
         button.setTitle("Close", for: .normal)
         button.setTitleColor(Theme.current.labelColor, for: .normal)
-        button.setTitleColor(Theme.current.secondaryLabelColors, for: .highlighted)
+        button.setTitleColor(Theme.current.secondaryLabelColor, for: .highlighted)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

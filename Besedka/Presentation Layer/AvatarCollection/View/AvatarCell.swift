@@ -49,9 +49,9 @@ class AvatarCell: UICollectionViewCell {
     // MARK: - Helpers
     
     private func configure() {
-        guard let imageUrl = imageUrl else {return}
+        guard let url = imageUrl else {return}
         self.indicator.startAnimating()
-        avatarImageView.loadImageWithUrl(urlString: imageUrl) {[weak self] in
+        avatarImageView.loadImageWithUrl(urlString: url) {[weak self] in
             guard let `self` = self else {return}
             self.indicator.stopAnimating()
         }
