@@ -32,8 +32,8 @@ class AvatarView: UIView {
     lazy var closeButton: UIButton = {
         let button = UIButton()
         button.setTitle("Close", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.setTitleColor(.darkGray, for: .highlighted)
+        button.setTitleColor(Theme.current.labelColor, for: .normal)
+        button.setTitleColor(Theme.current.secondaryLabelColors, for: .highlighted)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

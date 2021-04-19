@@ -11,12 +11,7 @@ class AvatarCell: UICollectionViewCell {
     // MARK: - Properties
     var imageUrl: String? {
             didSet {
-                if let imageUrl = imageUrl {
-                    self.indicator.startAnimating()
-                    avatarImageView.loadImageWithUrl(urlString: imageUrl) {
-                        self.indicator.stopAnimating()
-                    }
-                }
+                configure()
             }
         }
     
@@ -53,6 +48,14 @@ class AvatarCell: UICollectionViewCell {
     
     // MARK: - Helpers
     
+    private func configure() {
+        guard let imageUrl = imageUrl else {return}
+        self.indicator.startAnimating()
+        avatarImageView.loadImageWithUrl(urlString: imageUrl) {[weak self] in
+            guard let `self` = self else {return}
+            self.indicator.stopAnimating()
+        }
+    }
     private func createUI() {
         addSubview(avatarImageView)
         addSubview(indicator)
