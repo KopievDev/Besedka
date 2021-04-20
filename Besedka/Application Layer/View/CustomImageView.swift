@@ -10,7 +10,6 @@ import UIKit
 class CustomImageView: UIImageView {
     
     private var currentTask: URLSessionTask?
-    
     var imageUrlString: String?
     
     func loadImageWithUrl(urlString: String, _ completion: @escaping () -> Void) {
@@ -24,7 +23,7 @@ class CustomImageView: UIImageView {
         image = UIImage(named: "placeholder")
         
         if let cachedImage = ImageCache.shared.getImage(forKey: urlString) {
-            image = cachedImage
+            setImage(image: cachedImage, canAnimate: true)
             completion()
             return
         }
@@ -41,7 +40,7 @@ class CustomImageView: UIImageView {
                     DispatchQueue.main.async {
                         ImageCache.shared.save(image: downloadedImage, forKey: urlString)
                         if self.imageUrlString == urlString {
-                            self.image = downloadedImage
+                            self.setImage(image: downloadedImage, canAnimate: true)
                             completion()
                         }
                     }

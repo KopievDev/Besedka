@@ -9,6 +9,8 @@ import UIKit
 
 protocol NetworkServiceProtocol {
     func getImagesUrls(_ completion: @escaping ([String]) -> Void)
+    func getImagesUrls(with code: String, _ completion: @escaping ([String]) -> Void)
+
 }
 
 enum UrlColor: String, CaseIterable {
@@ -23,19 +25,21 @@ enum UrlColor: String, CaseIterable {
     case ios
     case developer
     case black
+    case tech
+    case city
 }
 
 class NetworkService: NetworkServiceProtocol {
     
     let coreAssembly: CoreAssembly = CoreAssembly()
     
-    func getRandomColor() -> String? {
+    func getRandomCode() -> String? {
         return UrlColor.allCases.randomElement()?.rawValue
     }
     
     func getImagesUrls(_ completion: @escaping ([String]) -> Void) {
-        guard let color = getRandomColor() else {return}
-        let url = "https://pixabay.com/api/?key=21189137-e91aebb15d83ce97f04ecb4d6&q=\(color)&image_type=photo&pretty=true&per_page=100"
+        guard let code = getRandomCode() else {return}
+        let url = "https://pixabay.com/api/?key=21189137-e91aebb15d83ce97f04ecb4d6&q=\(code)&image_type=photo&pretty=true&per_page=200"
         let network = coreAssembly.network
         var urls = [String]()
         network.getCodableData(url, Response.self) { data in
@@ -46,6 +50,20 @@ class NetworkService: NetworkServiceProtocol {
             DispatchQueue.main.async {completion(urls)}
         }
     }
+    
+    func getImagesUrls(with code: String, _ completion: @escaping ([String]) -> Void) {
+        let url = "https://pixabay.com/api/?key=21189137-e91aebb15d83ce97f04ecb4d6&q=\(code)&image_type=photo&pretty=true&per_page=200"
+        let network = coreAssembly.network
+        var urls = [String]()
+        network.getCodableData(url, Response.self) { data in
+            data.hits?.forEach { avatar in
+                guard let url = avatar.imageURL else {return}
+                urls.append(url)
+            }
+            DispatchQueue.main.async {completion(urls)}
+        }
+    }
+
     func getImage(_ urlString: String) -> UIImage {
         let network = coreAssembly.network
         var image = UIImage()

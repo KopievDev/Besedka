@@ -16,14 +16,16 @@ protocol NetworkProtocol {
 
 class Network: NetworkProtocol {
     
+    let coreService: CoreAssembly = CoreAssembly()
+    
     private var currentTask: URLSessionTask?
     var imageUrlString: String?
     
     func getCodableData<T>(_ urlString: String, _ type: T.Type, _ completion: @escaping (T) -> Void) where T: Decodable, T: Encodable {
         
-        createSession(urlString) { data in
+        createSession(urlString) { data, _ in
             
-            let parser = Parser()
+            let parser = self.coreService.parser
             guard let dataDecoded = parser.decodeJSON(type: T.self, from: data) else {return}
             DispatchQueue.main.async {
                 completion(dataDecoded)
@@ -32,7 +34,9 @@ class Network: NetworkProtocol {
     }
     
     func getData(_ urlString: String, _ completion: @escaping (Data) -> Void) {
-        createSession(urlString) { data in
+        createSession(urlString) { data, _ in
+            
+            guard let `data` = data else {return}
             DispatchQueue.global().async {
                 completion(data)
             }
@@ -46,7 +50,6 @@ class Network: NetworkProtocol {
         oldTask?.cancel()
         
         self.imageUrlString = urlString
-                
         if let cachedImage = ImageCache.shared.getImage(forKey: urlString) {
             DispatchQueue.main.async {
                 completion(cachedImage)
@@ -80,17 +83,18 @@ class Network: NetworkProtocol {
         }
     }
     
-    func createSession(_ urlString: String, _ completion: @escaping (Data) -> Void ) {
+    func createSession(_ urlString: String, _ completion: @escaping (Data?, Error?) -> Void ) {
         
         guard let url = URL(string: urlString) else {return}
         let session = URLSession.shared
         let dataTask = session.dataTask(with: url) { (data, _, error) in
             guard let data = data, error == nil else {
                 print("Error task")
+                completion(nil, error)
                 return
             }
             DispatchQueue.global().async {
-                completion(data)
+                completion(data, nil)
             }
         }
         dataTask.resume()

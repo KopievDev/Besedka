@@ -51,10 +51,18 @@ class AvatarCell: UICollectionViewCell {
     private func configure() {
         guard let url = imageUrl else {return}
         self.indicator.startAnimating()
-        avatarImageView.loadImageWithUrl(urlString: url) {[weak self] in
-            guard let `self` = self else {return}
+        self.avatarImageView.loadImageWithUrl(urlString: url) {
             self.indicator.stopAnimating()
         }
+        
+//        self.avatarImageView.image = UIImage(named: "placeholder")
+//        let network = Network()
+//        network.getImageCache(url) {[weak self] image in
+//            guard let `self` = self else {return}
+//            self.avatarImageView.transition(to: image)
+//            self.indicator.stopAnimating()
+//        }
+
     }
     private func createUI() {
         addSubview(avatarImageView)

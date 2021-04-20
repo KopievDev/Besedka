@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
         coreDataService = CoreDataService(coreData: coreAssembly.coreData)
-
         let fileOpener = serviceAssembly.fileManager
         fileOpener.getTheme { (theme) in
             guard let name = theme else {return}
