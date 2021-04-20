@@ -39,7 +39,7 @@ class AvatatarCollectionViewController: UIViewController {
     private func getUrls() {
         let network = serviceAssembly.network
             avatarView.indicator.startAnimating()
-        network.getImagesUrls { (urls) in
+        network.getRandomImage { (urls) in
             self.imageUrls = urls
             self.avatarView.indicator.stopAnimating()
             self.avatarView.avatarCollection.reloadData()
