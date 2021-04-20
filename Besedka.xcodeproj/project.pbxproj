@@ -32,7 +32,6 @@
 		B5623D7E25F9255900BFD3D4 /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5623D7D25F9255900BFD3D4 /* DarkTheme.swift */; };
 		B5623D8125FA049500BFD3D4 /* SecondaryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */; };
 		B5B767332607A618007CF846 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B767322607A618007CF846 /* Channel.swift */; };
-		B5BC515426287AEB001E49D5 /* ConversationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BC515326287AEB001E49D5 /* ConversationsListView.swift */; };
 		B5BD371025EBA938007AF803 /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BD370F25EBA938007AF803 /* ConversationsListViewController.swift */; };
 		B5BD371425EBB639007AF803 /* ChannelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BD371325EBB639007AF803 /* ChannelCell.swift */; };
 		B5CA6E9625FA7BCE009939AE /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CA6E9525FA7BCE009939AE /* UITableViewCell.swift */; };
@@ -92,7 +91,6 @@
 		B5623D7D25F9255900BFD3D4 /* DarkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkTheme.swift; sourceTree = "<group>"; };
 		B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryLabel.swift; sourceTree = "<group>"; };
 		B5B767322607A618007CF846 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
-		B5BC515326287AEB001E49D5 /* ConversationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListView.swift; sourceTree = "<group>"; };
 		B5BD370F25EBA938007AF803 /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
 		B5BD371325EBB639007AF803 /* ChannelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelCell.swift; sourceTree = "<group>"; };
 		B5CA6E9525FA7BCE009939AE /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
@@ -378,7 +376,6 @@
 			isa = PBXGroup;
 			children = (
 				B5BD371325EBB639007AF803 /* ChannelCell.swift */,
-				B5BC515326287AEB001E49D5 /* ConversationsListView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -638,7 +635,6 @@
 				B5392F82262C522B00BAEE20 /* Avatar.swift in Sources */,
 				B5BD371425EBB639007AF803 /* ChannelCell.swift in Sources */,
 				B5392F6D262C1E5700BAEE20 /* AvatatarCollectionViewController.swift in Sources */,
-				B5BC515426287AEB001E49D5 /* ConversationsListView.swift in Sources */,
 				B5392F77262C395800BAEE20 /* CustomImageView.swift in Sources */,
 				B54266AD25FA36BF009BBF2F /* ThemesViewController.swift in Sources */,
 				B5D14D102624CEC9005BE9C4 /* ConversationViewController.swift in Sources */,

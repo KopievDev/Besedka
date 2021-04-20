@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var coreDataService: CoreDataProtocol?
-    lazy var serviceAssembly: ServiceAssembly = ServiceAssembly()
+    lazy var serviceAssembly: ServiceProtocol = ServiceAssembly()
     lazy var coreAssembly: CoreAssembly = CoreAssembly()
     // Сообщает делегату, что процесс запуска начался
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Create navigation controller
         window = UIWindow(frame: UIScreen.main.bounds)
-        let startController = ConversationsListViewController()
+        let startController = ConversationsListViewController(serviceAssembly: self.serviceAssembly)
         let navigationController = UINavigationController(rootViewController: startController)
         startController.coreDataService = coreDataService
         window?.rootViewController = navigationController

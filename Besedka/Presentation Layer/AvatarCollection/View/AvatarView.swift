@@ -55,13 +55,16 @@ class AvatarView: UIView {
     lazy var searchImage: UITextField = {
         let textfield = UITextField()
         textfield.font = .systemFont(ofSize: 16)
-        textfield.attributedPlaceholder = NSAttributedString(string: "Поиск изображений",
+        textfield.attributedPlaceholder = NSAttributedString(string: "Тема для поиска",
                                                              attributes: [NSAttributedString.Key.foregroundColor: Theme.current.secondaryLabelColor])
-        textfield.addBorderLine(color: Theme.current.secondaryLabelColor)
-        textfield.addCornerRadius(8)
+        
+        let image = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        image.image = UIImage(named: "eclipce")
+        image.tintColor = Theme.current.labelColor
+        textfield.leftView = image
+        textfield.textAlignment = .center
         textfield.clearButtonMode = .whileEditing
         textfield.translatesAutoresizingMaskIntoConstraints = false
-        textfield.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 20))
         textfield.leftViewMode = .always
         textfield.keyboardType = .alphabet
         return textfield

@@ -19,7 +19,6 @@ class AvatarCell: UICollectionViewCell {
     let avatarImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.clipsToBounds = true
-        iv.image = UIImage(named: "placeholder")
         iv.layer.cornerRadius = 48 / 2
         iv.contentMode = .scaleAspectFill
         iv.backgroundColor = UIColor(red: 1.00, green: 0.42, blue: 0.42, alpha: 1.00)
@@ -33,6 +32,7 @@ class AvatarCell: UICollectionViewCell {
         ind.translatesAutoresizingMaskIntoConstraints = false
         return ind
     }()
+    var network: NetworkServiceProtocol?
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -54,15 +54,11 @@ class AvatarCell: UICollectionViewCell {
         self.avatarImageView.loadImageWithUrl(urlString: url) {
             self.indicator.stopAnimating()
         }
-        
-//        self.avatarImageView.image = UIImage(named: "placeholder")
-//        let network = Network()
-//        network.getImageCache(url) {[weak self] image in
+//        network?.getImage(from: url) {[weak self] image in
 //            guard let `self` = self else {return}
-//            self.avatarImageView.transition(to: image)
+//            self.avatarImageView.setImage(image: image, canAnimate: true)
 //            self.indicator.stopAnimating()
 //        }
-
     }
     private func createUI() {
         addSubview(avatarImageView)
@@ -79,7 +75,7 @@ class AvatarCell: UICollectionViewCell {
             
             indicator.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
             indicator.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
-            indicator.heightAnchor.constraint(equalToConstant: 30),
+            indicator.heightAnchor.constraint(equalToConstant: 50),
             indicator.widthAnchor.constraint(equalTo: indicator.heightAnchor)
         ])
     }

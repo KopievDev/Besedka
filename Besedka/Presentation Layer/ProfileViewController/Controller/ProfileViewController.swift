@@ -10,13 +10,22 @@ import UIKit
 class ProfileViewController: UIViewController {
     // MARK: - Properies
     lazy var radius = CGFloat()
-    lazy var serviceAssembly = ServiceAssembly()
+    let serviceAssembly: ServiceProtocol
     var user = UserProfile()
     var profile = ProfileView()
     
     var keyboardDismissTapGesture: UIGestureRecognizer?
     
     // MARK: - Lifecycle
+    init(serviceAssembly: ServiceProtocol) {
+        self.serviceAssembly = serviceAssembly
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         profile = ProfileView(frame: self.view.frame, radius: radius)
@@ -125,7 +134,7 @@ class ProfileViewController: UIViewController {
         }
         let online = UIAlertAction(title: "Загрузить фото", style: .default) {[weak self] _ in
             guard let `self` = self else {return}
-            let avatarVC = AvatatarCollectionViewController()
+            let avatarVC = AvatatarCollectionViewController(serviceAssembly: self.serviceAssembly)
             avatarVC.delegate = self
             avatarVC.modalPresentationStyle = .fullScreen
             self.present(avatarVC, animated: true)

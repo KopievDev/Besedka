@@ -9,12 +9,12 @@ import UIKit
 
 protocol NetworkServiceProtocol {
     func getImagesUrls(with code: String, _ completion: @escaping ([String]) -> Void)
+    func getImage(from urlString: String, _ completion: @escaping (UIImage) -> Void)
 }
 
 class NetworkService: NetworkServiceProtocol {
-    
     let coreAssembly: CoreAssembly = CoreAssembly()
-        
+    var imgUrl: String?
     func getImagesUrls(with code: String, _ completion: @escaping ([String]) -> Void) {
         let url = "https://pixabay.com/api/?key=21189137-e91aebb15d83ce97f04ecb4d6&q=\(code)&image_type=photo&pretty=true&per_page=200"
         let network = coreAssembly.network
@@ -27,13 +27,22 @@ class NetworkService: NetworkServiceProtocol {
             DispatchQueue.main.async {completion(urls)}
         }
     }
-
-    func getImage(_ urlString: String) -> UIImage {
-        let network = coreAssembly.network
-        var image = UIImage()
-        network.getImageCache(urlString) { downloadImage in
-            image = downloadImage
+    
+    func getImage(from urlString: String, _ completion: @escaping (UIImage) -> Void) {
+        imgUrl = urlString
+        DispatchQueue.global(qos: .utility).async {
+            if let cachedImage = ImageCache.shared.getImage(forKey: urlString) {
+                DispatchQueue.main.async {completion(cachedImage)}
+                return
+            }
+            let network = self.coreAssembly.network
+            network.getData(urlString) { data in
+                guard let image = UIImage(data: data) else {return}
+                ImageCache.shared.save(image: image, forKey: urlString)
+                if self.imgUrl == urlString {
+                    DispatchQueue.main.async {completion(image)}
+                }
+            }
         }
-        return image
-    }
+    }    
 }

@@ -11,7 +11,6 @@ protocol NetworkProtocol {
     func getCodableData<T: Codable>(_ urlString: String, _ type: T.Type, _ completion: @escaping (T) -> Void)
     func getData(_ urlString: String, _ completion: @escaping (Data) -> Void)
     func getImageCache(_ urlString: String, _ completion: @escaping (UIImage) -> Void)
-
 }
 
 class Network: NetworkProtocol {
@@ -22,9 +21,7 @@ class Network: NetworkProtocol {
     var imageUrlString: String?
     
     func getCodableData<T>(_ urlString: String, _ type: T.Type, _ completion: @escaping (T) -> Void) where T: Decodable, T: Encodable {
-        
         createSession(urlString) { data, _ in
-            
             let parser = self.coreService.parser
             guard let dataDecoded = parser.decodeJSON(type: T.self, from: data) else {return}
             DispatchQueue.main.async {
@@ -35,7 +32,6 @@ class Network: NetworkProtocol {
     
     func getData(_ urlString: String, _ completion: @escaping (Data) -> Void) {
         createSession(urlString) { data, _ in
-            
             guard let `data` = data else {return}
             DispatchQueue.global().async {
                 completion(data)

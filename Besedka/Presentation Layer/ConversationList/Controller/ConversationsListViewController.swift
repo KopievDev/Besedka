@@ -32,12 +32,22 @@ class ConversationsListViewController: UIViewController {
         return button
     }()
     
-    let serviceAssembly = ServiceAssembly()
+    let serviceAssembly: ServiceProtocol
     var firebase: FireBaseServiceProtocol {
         return serviceAssembly.firebase
     }
     
     // MARK: - LifeCycle
+    
+    init(serviceAssembly: ServiceProtocol) {
+        self.serviceAssembly = serviceAssembly
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         createUI()
@@ -152,7 +162,7 @@ class ConversationsListViewController: UIViewController {
     // MARK: - Selectors
 
     @objc func showProfile() {
-        let profileViewController = ProfileViewController()
+        let profileViewController = ProfileViewController(serviceAssembly: self.serviceAssembly)
         profileViewController.radius = (self.view.frame.width - 140) * 0.5
         profileViewController.modalPresentationStyle = .fullScreen
         self.navigationController?.present(profileViewController, animated: true)

@@ -15,11 +15,22 @@ class AvatatarCollectionViewController: UIViewController {
     
     // MARK: - Properties
     lazy var avatarView = AvatarView(frame: self.view.frame)
-    let serviceAssembly: ServiceAssembly = ServiceAssembly()
+    let serviceAssembly: ServiceProtocol
+    let network: NetworkServiceProtocol
     var imageUrls = [String]()
     weak var delegate: ChangeImage?
     
     // MARK: - Lifecycle
+    init(serviceAssembly: ServiceProtocol) {
+        self.serviceAssembly = serviceAssembly
+        self.network = serviceAssembly.network
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -34,10 +45,11 @@ class AvatatarCollectionViewController: UIViewController {
         self.avatarView.searchImage.delegate = self
         self.avatarView.refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.avatarView.closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+        self.avatarView.avatarCollection.keyboardDismissMode  = .interactive
     }
     
     private func getUrls(with code: String) {
-        let network = serviceAssembly.network
+//        let network = serviceAssembly.network
             avatarView.indicator.startAnimating()
         network.getImagesUrls(with: code) {[weak self] urls in
             guard let `self` = self else {return}
@@ -86,6 +98,14 @@ class AvatatarCollectionViewController: UIViewController {
 extension AvatatarCollectionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.avatarView.cellId, for: indexPath) as? AvatarCell else { return UICollectionViewCell()}
+//        cell.avatarImageView.image = UIImage(named: "placeholder")
+//        let url = self.imageUrls[indexPath.row] 
+//        cell.indicator.startAnimating()
+//        network.getImage(from: url) { image in
+//            cell.avatarImageView.transition(to: image)
+//            cell.indicator.stopAnimating()
+//        }
+//        cell.network = self.serviceAssembly.network
         cell.imageUrl = imageUrls[indexPath.row]
         return cell
     }
@@ -99,9 +119,8 @@ extension AvatatarCollectionViewController: UICollectionViewDataSource {
 // MARK: - Extension CollectionView Delegate
 extension AvatatarCollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.row)
-        guard let cell = avatarView.avatarCollection.cellForItem(at: indexPath) as? AvatarCell else {return}
-        guard let image = cell.avatarImageView.image, image != UIImage(named: "placeholder") else {return}
+        guard let cell = avatarView.avatarCollection.cellForItem(at: indexPath) as? AvatarCell,
+              let image = cell.avatarImageView.image, image != UIImage(named: "placeholder") else {return}
         self.delegate?.selected(image)
     }
 }
