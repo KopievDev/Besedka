@@ -115,23 +115,22 @@ class ProfileViewController: UIViewController {
         let alertSheet = UIAlertController(title: nil,
                                            message: nil,
                                            preferredStyle: .actionSheet)
-        let photo = UIAlertAction(title: "Выбрать фото", style: .default, handler: { _ in
+        let photo = UIAlertAction(title: "Выбрать фото", style: .default) {[weak self] _ in
+            guard let `self` = self else {return}
             self.chooseImagePicker(source: .photoLibrary)
-        })
-        let camera = UIAlertAction(title: "Сделать фото", style: .default, handler: { _ in
+        }
+        let camera = UIAlertAction(title: "Сделать фото", style: .default) { [weak self] _ in
+            guard let `self` = self else {return}
             self.chooseImagePicker(source: .camera)
-        })
-        let online = UIAlertAction(title: "Загрузить фото", style: .default, handler: { _ in
-            print("debyuug")
+        }
+        let online = UIAlertAction(title: "Загрузить фото", style: .default) {[weak self] _ in
+            guard let `self` = self else {return}
             let avatarVC = AvatatarCollectionViewController()
             avatarVC.delegate = self
             avatarVC.modalPresentationStyle = .fullScreen
             self.present(avatarVC, animated: true)
-
-//            self.present(avatarVC, animated: true) {
-//                print("present")
-//            }
-        })
+        }
+        
         let cancel = UIAlertAction(title: "Отмена", style: .cancel )
         alertSheet.addAction(photo)
         alertSheet.addAction(camera)
@@ -185,8 +184,7 @@ class ProfileViewController: UIViewController {
                 if error != nil {self.showAlert(state: false); return}
                 self.showAlert(state: true)
             }
-            saver.saveImageToFile(profile.avatarImageView.image, byName: "Avatar.png", completion: {
-            })
+            saver.saveImageToFile(profile.avatarImageView.image, byName: "Avatar.png", completion: {})
         }
     }
     

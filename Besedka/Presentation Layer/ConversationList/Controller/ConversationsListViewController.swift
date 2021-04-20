@@ -42,6 +42,7 @@ class ConversationsListViewController: UIViewController {
         super.viewDidLoad()
         createUI()
         addListener()
+        addButtonChannels()
 
     }
     
@@ -50,7 +51,6 @@ class ConversationsListViewController: UIViewController {
         initFectedResultController()
         channelsTableView.reloadData()
         updateImageProfile()
-        addButtonChannels()
         
     }
   
@@ -72,6 +72,13 @@ class ConversationsListViewController: UIViewController {
         button.tintColor = UIColor(red: 1.00, green: 0.42, blue: 0.42, alpha: 1.00)
         button.addCornerRadius(button.frame.width / 2)
         button.backgroundColor = .white
+        // Тень
+        button.layer.shadowRadius = 5
+        button.layer.shadowOffset = CGSize(width: 2, height: 4)
+        button.layer.shadowOpacity = 0.5
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowPath = UIBezierPath(roundedRect: button.bounds, cornerRadius: button.frame.width / 2).cgPath
+        button.layer.masksToBounds = false
 
         button.setImage(UIImage(named: "add"), for: .normal)
         button.addTarget(self, action: #selector(addNewChannel), for: .touchUpInside)

@@ -17,10 +17,6 @@ class AvatarView: UIView {
         layout.itemSize = CGSize(width: width, height: width)
         let collection = UICollectionView(frame: self.frame, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
-//        let collection = UICollectionView(frame: CGRect(x: 0, y: searchImage.frame.maxY + 10,
-//                                                        width: self.frame.width,
-//                                                        height: self.frame.height * 6 / 7),
-//                                          collectionViewLayout: layout)
         collection.register(AvatarCell.self, forCellWithReuseIdentifier: cellId)
         collection.backgroundColor = .clear
         return collection
@@ -33,9 +29,8 @@ class AvatarView: UIView {
     
     lazy var closeButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Close", for: .normal)
-        button.setTitleColor(Theme.current.labelColor, for: .normal)
-        button.setTitleColor(Theme.current.secondaryLabelColor, for: .highlighted)
+        button.setImage(UIImage(named: "close"), for: .normal)
+        button.setImage(UIImage(named: "closeTap"), for: .highlighted)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -98,10 +93,10 @@ class AvatarView: UIView {
             indicator.heightAnchor.constraint(equalToConstant: 30),
             indicator.widthAnchor.constraint(equalToConstant: 30),
             
-            closeButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20),
-            closeButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            closeButton.heightAnchor.constraint(equalToConstant: 30),
-            closeButton.widthAnchor.constraint(equalToConstant: 50),
+            closeButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            closeButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            closeButton.heightAnchor.constraint(equalToConstant: 35),
+            closeButton.widthAnchor.constraint(equalToConstant: 35),
             
             titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
             titleLabel.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
