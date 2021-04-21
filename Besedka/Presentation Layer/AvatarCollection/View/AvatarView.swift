@@ -55,7 +55,7 @@ class AvatarView: UIView {
     lazy var searchImage: UITextField = {
         let textfield = UITextField()
         textfield.font = .systemFont(ofSize: 16)
-        textfield.attributedPlaceholder = NSAttributedString(string: "Тема для поиска",
+        textfield.attributedPlaceholder = NSAttributedString(string: "Введите тему для поиска",
                                                              attributes: [NSAttributedString.Key.foregroundColor: Theme.current.secondaryLabelColor])
         
         let image = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
