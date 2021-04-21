@@ -14,7 +14,8 @@ protocol NetworkServiceProtocol {
 
 class NetworkService: NetworkServiceProtocol {
     let coreAssembly: CoreAssembly = CoreAssembly()
-    var imgUrl: String?
+    lazy var network: NetworkProtocol = self.coreAssembly.network
+
     func getImagesUrls(with code: String, _ completion: @escaping ([String]) -> Void) {
         let url = "https://pixabay.com/api/?key=21189137-e91aebb15d83ce97f04ecb4d6&q=\(code)&image_type=photo&pretty=true&per_page=200"
         let network = coreAssembly.network
@@ -29,20 +30,29 @@ class NetworkService: NetworkServiceProtocol {
     }
     
     func getImage(from urlString: String, _ completion: @escaping (UIImage) -> Void) {
-        imgUrl = urlString
         DispatchQueue.global(qos: .utility).async {
-            if let cachedImage = ImageCache.shared.getImage(forKey: urlString) {
-                DispatchQueue.main.async {completion(cachedImage)}
-                return
-            }
-            let network = self.coreAssembly.network
-            network.getData(urlString) { data in
-                guard let image = UIImage(data: data) else {return}
-                ImageCache.shared.save(image: image, forKey: urlString)
-                if self.imgUrl == urlString {
-                    DispatchQueue.main.async {completion(image)}
+            if let cachedImage = self.imageFromCache(urlString) {
+                DispatchQueue.main.async {
+                    completion(cachedImage)
+                    print("getting image from cache")
+                    return
+                }
+            } else {
+                print("getting image from internet")
+                self.network.getDataFrom(urlString) { data in
+                    guard let image = UIImage(data: data) else {return}
+                    ImageCache.shared.save(image: image, forKey: urlString)
+                    DispatchQueue.main.async {
+                        completion(image)
+                        return
+                    }
                 }
             }
         }
-    }    
+    }
+    
+    func imageFromCache(_ url: String) -> UIImage? {
+        return ImageCache.shared.getImage(forKey: url)
+    }
+    
 }

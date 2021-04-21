@@ -9,13 +9,7 @@ import UIKit
 
 class AvatarCell: UICollectionViewCell {
     // MARK: - Properties
-    var imageUrl: String? {
-            didSet {
-                configure()
-            }
-        }
-    
-    // avatar
+ 
     let avatarImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.clipsToBounds = true
@@ -32,7 +26,6 @@ class AvatarCell: UICollectionViewCell {
         ind.translatesAutoresizingMaskIntoConstraints = false
         return ind
     }()
-    var network: NetworkServiceProtocol?
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -48,18 +41,6 @@ class AvatarCell: UICollectionViewCell {
     
     // MARK: - Helpers
     
-    private func configure() {
-        guard let url = imageUrl else {return}
-        self.indicator.startAnimating()
-        self.avatarImageView.loadImageWithUrl(urlString: url) {
-            self.indicator.stopAnimating()
-        }
-//        network?.getImage(from: url) {[weak self] image in
-//            guard let `self` = self else {return}
-//            self.avatarImageView.setImage(image: image, canAnimate: true)
-//            self.indicator.stopAnimating()
-//        }
-    }
     private func createUI() {
         addSubview(avatarImageView)
         addSubview(indicator)

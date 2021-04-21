@@ -28,28 +28,22 @@ class CustomImageView: UIImageView {
             return
         }
         
-        if let url = URL(string: urlString) {
-            let session = URLSession.shared
-            let dataTask = session.dataTask(with: url) { (data, _, error) in
-                if let unwrappedError = error {
-                    print(unwrappedError)
-                    return
+        guard let url = URL(string: urlString) else {return}
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: url) { (data, _, error) in
+           guard let `data` = data,
+                 let image = UIImage(data: data),
+                 error == nil else {return}
+            DispatchQueue.main.async {
+                ImageCache.shared.save(image: image, forKey: urlString)
+                if self.imageUrlString == urlString {
+                    self.setImage(image: image, canAnimate: true)
+                    completion()
                 }
-                
-                if let unwrappedData = data, let downloadedImage = UIImage(data: unwrappedData) {
-                    DispatchQueue.main.async {
-                        ImageCache.shared.save(image: downloadedImage, forKey: urlString)
-                        if self.imageUrlString == urlString {
-                            self.setImage(image: downloadedImage, canAnimate: true)
-                            completion()
-                        }
-                    }
-                }
-                
             }
-            currentTask = dataTask
-            dataTask.resume()
         }
+        currentTask = dataTask
+        dataTask.resume()
         
     }
 }

@@ -97,21 +97,24 @@ class AvatatarCollectionViewController: UIViewController {
 // MARK: - Extension CollectionView DataSource
 extension AvatatarCollectionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.avatarView.cellId, for: indexPath) as? AvatarCell else { return UICollectionViewCell()}
-//        cell.avatarImageView.image = UIImage(named: "placeholder")
-//        let url = self.imageUrls[indexPath.row] 
-//        cell.indicator.startAnimating()
-//        network.getImage(from: url) { image in
-//            cell.avatarImageView.transition(to: image)
-//            cell.indicator.stopAnimating()
-//        }
-//        cell.network = self.serviceAssembly.network
-        cell.imageUrl = imageUrls[indexPath.row]
-        return cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.avatarView.cellId, for: indexPath)
+        return configure(cell, at: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageUrls.count
+    }
+    
+    func configure(_ cell: UICollectionViewCell, at indexPath: IndexPath) -> AvatarCell {
+        guard let `cell` = cell as? AvatarCell else {return AvatarCell()}
+        cell.avatarImageView.image = UIImage(named: "placeholder")
+        let url = self.imageUrls[indexPath.row]
+        cell.indicator.startAnimating()
+        network.getImage(from: url) { image in
+            cell.avatarImageView.setImage(image: image, canAnimate: true)
+            cell.indicator.stopAnimating()
+        }
+        return cell
     }
 
 }
