@@ -49,8 +49,7 @@ class AvatatarCollectionViewController: UIViewController {
     }
     
     private func getUrls(with code: String) {
-//        let network = serviceAssembly.network
-            avatarView.indicator.startAnimating()
+        avatarView.indicator.startAnimating()
         network.getImagesUrls(with: code) {[weak self] urls in
             guard let `self` = self else {return}
             self.imageUrls = urls

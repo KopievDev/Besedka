@@ -8,10 +8,8 @@
 import Foundation
 
 struct Avatar: Codable {
-    var tags: String?
     var imageURL: String?
     private enum CodingKeys: String, CodingKey {
-        case tags
         case imageURL = "webformatURL"
     }
 }
