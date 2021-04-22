@@ -38,7 +38,7 @@ class AvatarView: UIView {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 26)
-        label.text = "Найди свой аватар"
+        label.text = "Поиск аватара"
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

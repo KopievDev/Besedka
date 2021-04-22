@@ -108,10 +108,13 @@ extension AvatatarCollectionViewController: UICollectionViewDataSource {
         guard let `cell` = cell as? AvatarCell else {return AvatarCell()}
         cell.avatarImageView.image = UIImage(named: "placeholder")
         let url = self.imageUrls[indexPath.row]
+        cell.imageURL = url
         cell.indicator.startAnimating()
         network.getImage(from: url) { image in
-            cell.avatarImageView.setImage(image: image, canAnimate: true)
-            cell.indicator.stopAnimating()
+            if cell.imageURL == url {
+                cell.avatarImageView.setImage(image: image, canAnimate: true)
+                cell.indicator.stopAnimating()
+            }
         }
         return cell
     }

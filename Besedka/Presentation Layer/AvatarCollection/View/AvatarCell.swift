@@ -26,6 +26,7 @@ class AvatarCell: UICollectionViewCell {
         ind.translatesAutoresizingMaskIntoConstraints = false
         return ind
     }()
+    var imageURL: String?
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
