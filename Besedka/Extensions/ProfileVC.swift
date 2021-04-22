@@ -37,8 +37,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         profile.avatarImageView.image = nil
         profile.shortName.isHidden = false
         dismiss(animated: true)
-        let fileSaver = serviceAssembly.fileManager
-        fileSaver.deleteFile(name: "Avatar.png")
+        store.deleteFile(name: "Avatar.png")
     }
 }
 

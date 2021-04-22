@@ -10,15 +10,15 @@ import UIKit
 class ProfileViewController: UIViewController {
     // MARK: - Properies
     lazy var radius = CGFloat()
-    let serviceAssembly: ServiceProtocol
     var user = UserProfile()
     var profile = ProfileView()
+    let store: FileManagerProtocol
     
     var keyboardDismissTapGesture: UIGestureRecognizer?
     
     // MARK: - Lifecycle
-    init(serviceAssembly: ServiceProtocol) {
-        self.serviceAssembly = serviceAssembly
+    init(fileManager: FileManagerProtocol) {
+        self.store = fileManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -49,31 +49,28 @@ class ProfileViewController: UIViewController {
     
     private func setupDesign() {
         addTarget()
-        let fileOpener = serviceAssembly.fileManager
-        fileOpener.getImageFromFile(name: "Avatar.png",
+        store.getImageFromFile(name: "Avatar.png",
                                     runQueue: .global(qos: .utility),
                                     completionQueue: .main) { [weak self] (image) in
-            guard let self = self else {return}
             guard let  image = image else {return}
-            self.profile.avatarImageView.image = image
-            self.profile.shortName.isHidden = true
+            self?.profile.avatarImageView.image = image
+            self?.profile.shortName.isHidden = true
             
         }
-        fileOpener.getUser {[weak self] (user) in
+        store.getUser {[weak self] (user) in
             guard let newUser = user else {return}
-            guard let self = self else {return}
-            self.user = newUser // резерв для отмены
+            self?.user = newUser // резерв для отмены
             // Get user data
             let descText = newUser.aboutMe ?? ""
             let geoText = newUser.city ?? ""
-            self.profile.descriptionLabel.text = "\(descText)\n\(geoText)"
-            self.profile.nameLabel.text = newUser.name ?? ""
+            self?.profile.descriptionLabel.text = "\(descText)\n\(geoText)"
+            self?.profile.nameLabel.text = newUser.name ?? ""
             // Get short name from name
             let text = newUser.name ?? ""
             if text.split(separator: " ").count >= 2 {
-                self.profile.shortName.text = "\(text.split(separator: " ")[0].first ?? "n")\(text.split(separator: " ")[1].first ?? "n")".uppercased()
+                self?.profile.shortName.text = "\(text.split(separator: " ")[0].first ?? "n")\(text.split(separator: " ")[1].first ?? "n")".uppercased()
             } else {
-                self.profile.shortName.text = text.first?.uppercased()
+                self?.profile.shortName.text = text.first?.uppercased()
             }
         }
     }
@@ -95,18 +92,15 @@ class ProfileViewController: UIViewController {
     private func showAlert(state: Bool = true) {
         let alertView = UIAlertController(title: nil, message: "Данные сохранены", preferredStyle: .alert)
         let doneAction = UIAlertAction(title: "Ok", style: .default, handler: {[weak self]  _ in
-            guard let self = self else {return}
-            self.profile.enableEditMode(state: false)
+            self?.profile.enableEditMode(state: false)
         })
         alertView.addAction(doneAction)
         let errorAlert = UIAlertController(title: "Ошибка", message: "Не удалось сохранить данные", preferredStyle: .alert)
         let repetAction = UIAlertAction(title: "Повторить", style: .destructive) {[weak self] _ in
-            guard let self = self else {return}
-            self.saveGCD()
+            self?.saveGCD()
         }
         let doneActionError = UIAlertAction(title: "Ok", style: .default, handler: {[weak self]  _ in
-            guard let self = self else {return}
-            self.profile.enableEditMode(state: false)
+            self?.profile.enableEditMode(state: false)
         })
         errorAlert.addAction(doneActionError)
         errorAlert.addAction(repetAction)
@@ -125,19 +119,16 @@ class ProfileViewController: UIViewController {
                                            message: nil,
                                            preferredStyle: .actionSheet)
         let photo = UIAlertAction(title: "Выбрать фото", style: .default) {[weak self] _ in
-            guard let `self` = self else {return}
-            self.chooseImagePicker(source: .photoLibrary)
+            self?.chooseImagePicker(source: .photoLibrary)
         }
         let camera = UIAlertAction(title: "Сделать фото", style: .default) { [weak self] _ in
-            guard let `self` = self else {return}
-            self.chooseImagePicker(source: .camera)
+            self?.chooseImagePicker(source: .camera)
         }
         let online = UIAlertAction(title: "Загрузить фото", style: .default) {[weak self] _ in
-            guard let `self` = self else {return}
-            let avatarVC = AvatatarCollectionViewController(serviceAssembly: self.serviceAssembly)
+            let avatarVC = AvatatarCollectionViewController(network: ServiceAssembly().network)
             avatarVC.delegate = self
             avatarVC.modalPresentationStyle = .fullScreen
-            self.present(avatarVC, animated: true)
+            self?.present(avatarVC, animated: true)
         }
         
         let cancel = UIAlertAction(title: "Отмена", style: .cancel )
@@ -151,13 +142,11 @@ class ProfileViewController: UIViewController {
     
     @objc private func cancelEditing() {
         profile.enableEditMode(state: false)
-        let oldSetting = serviceAssembly.fileManager
-        oldSetting.saveUser(self.user, completion: {_ in })
+        store.saveUser(self.user, completion: {_ in })
         self.setupDesign()
-        oldSetting.getImageFromFile(name: "Avatar.png", runQueue: .global(), completionQueue: .main) {[weak self] (image) in
-            guard let `self` = self else {return}
-            guard let img = image else {return}
-            self.profile.avatarImageView.setImage(image: img, canAnimate: true)
+        store.getImageFromFile(name: "Avatar.png", runQueue: .global(), completionQueue: .main) {[weak self] (image) in
+            guard let image = image else {return}
+            self?.profile.avatarImageView.setImage(image: image, canAnimate: true)
         }
     }
     
@@ -171,7 +160,6 @@ class ProfileViewController: UIViewController {
     
     @objc private func saveGCD() {
         
-        let saver = serviceAssembly.fileManager
         let user = returnModifiedData()
         
         profile.activityIndicator.startAnimating()
@@ -179,21 +167,19 @@ class ProfileViewController: UIViewController {
         profile.disableButton()
         // Если изменено только фото
         if profile.userNameTextfiel.isHidden {
-            saver.saveImageToFile(profile.avatarImageView.image, byName: "Avatar.png") {[weak self] in
-                guard let self = self else { return }
-                self.profile.activityIndicator.stopAnimating()
-                self.showAlert()
+            store.saveImageToFile(profile.avatarImageView.image, byName: "Avatar.png") {[weak self] in
+                self?.profile.activityIndicator.stopAnimating()
+                self?.showAlert()
             }
         } else {
             // Если изменены фото и данные
-            saver.saveUser(user) {[weak self] error in
-                guard let self = self else {return}
-                self.setupDesign()
-                self.profile.activityIndicator.stopAnimating()
-                if error != nil {self.showAlert(state: false); return}
-                self.showAlert(state: true)
+            store.saveUser(user) {[weak self] error in
+                self?.setupDesign()
+                self?.profile.activityIndicator.stopAnimating()
+                if error != nil {self?.showAlert(state: false); return}
+                self?.showAlert(state: true)
             }
-            saver.saveImageToFile(profile.avatarImageView.image, byName: "Avatar.png", completion: {})
+            store.saveImageToFile(profile.avatarImageView.image, byName: "Avatar.png", completion: {})
         }
     }
     

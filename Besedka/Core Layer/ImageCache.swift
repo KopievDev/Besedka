@@ -22,11 +22,10 @@ class ImageCache {
         return cache
     }()
     struct Config {
-           let countLimit: Int
-           let memoryLimit: Int
-
-           static let defaultConfig = Config(countLimit: 400, memoryLimit: 1024 * 1024 * 200) // 200 MB
-       }
+        let countLimit: Int
+        let memoryLimit: Int
+        static let defaultConfig = Config(countLimit: 400, memoryLimit: 1024 * 1024 * 200) // 200 MB
+    }
     
     init(config: Config = Config.defaultConfig) {
         self.config = config
@@ -34,8 +33,8 @@ class ImageCache {
                                                           object: nil,
                                                           queue: nil,
                                                           using: { [weak self] _ in
-            self?.cache.removeAllObjects()
-        })
+                                                            self?.cache.removeAllObjects()
+                                                          })
     }
     
     deinit {

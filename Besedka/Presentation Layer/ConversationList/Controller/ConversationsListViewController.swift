@@ -32,15 +32,14 @@ class ConversationsListViewController: UIViewController {
         return button
     }()
     
-    let serviceAssembly: ServiceProtocol
-    var firebase: FireBaseServiceProtocol {
-        return serviceAssembly.firebase
-    }
+    let store: FileManagerProtocol
+    let firebase: FireBaseServiceProtocol
     
     // MARK: - LifeCycle
     
     init(serviceAssembly: ServiceProtocol) {
-        self.serviceAssembly = serviceAssembly
+        self.firebase = serviceAssembly.firebase
+        self.store = serviceAssembly.fileManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -68,7 +67,7 @@ class ConversationsListViewController: UIViewController {
     
     private func addListener() {
 
-        serviceAssembly.firebase.addListner { (channels) in
+        self.firebase.addListner { (channels) in
             self.coreDataService?.save(objects: .Channel, data: channels)
         }
     }
@@ -113,8 +112,7 @@ class ConversationsListViewController: UIViewController {
         imageForButton.addGestureRecognizer(reconizer)
         imageForButton.isUserInteractionEnabled = true
         barButtonView.clipsToBounds = true
-        let fileOpener = serviceAssembly.fileManager
-        fileOpener.getUser { (user) in
+        self.store.getUser { (user) in
             // Get short name from name
             let text = user?.name ?? ""
             if text.split(separator: " ").count >= 2 {
@@ -123,7 +121,7 @@ class ConversationsListViewController: UIViewController {
                 shortName.text = text.first?.uppercased()
             }
         }
-        fileOpener.getImageFromFile(name: "Avatar.png",
+        self.store.getImageFromFile(name: "Avatar.png",
                                     runQueue: .global(qos: .utility), completionQueue: .main) {(image) in
             imageForButton.image = image
             shortName.isHidden = true
@@ -162,7 +160,7 @@ class ConversationsListViewController: UIViewController {
     // MARK: - Selectors
 
     @objc func showProfile() {
-        let profileViewController = ProfileViewController(serviceAssembly: self.serviceAssembly)
+        let profileViewController = ProfileViewController(fileManager: ServiceAssembly().fileManager)
         profileViewController.radius = (self.view.frame.width - 140) * 0.5
         profileViewController.modalPresentationStyle = .fullScreen
         self.navigationController?.present(profileViewController, animated: true)

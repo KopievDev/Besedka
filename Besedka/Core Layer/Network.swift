@@ -8,16 +8,16 @@
 import UIKit
 
 protocol NetworkProtocol {
-    func getCodableData<T: Codable>(_ urlString: String, _ type: T.Type, _ completion: @escaping (T) -> Void)
-    func getDataFrom(_ urlString: String, _ completion: @escaping (Data) -> Void)
+    func getCodableData<T: Codable>(fromUrlString url: String, _ type: T.Type, _ completion: @escaping (T) -> Void)
+    func getDataFrom(fromUrlString url: String, _ completion: @escaping (Data) -> Void)
 }
 
 class Network: NetworkProtocol {
     
     let coreService: CoreAssembly = CoreAssembly()
     // Получение кодируемых данных
-    func getCodableData<T>(_ urlString: String, _ type: T.Type, _ completion: @escaping (T) -> Void) where T: Decodable, T: Encodable {
-        createSession(urlString) { data, _ in
+    func getCodableData<T>(fromUrlString url: String, _ type: T.Type, _ completion: @escaping (T) -> Void) where T: Decodable, T: Encodable {
+        createSession(by: url) { data, _ in
             let parser = self.coreService.parser
             guard let dataDecoded = parser.decodeJSON(type: T.self, from: data) else {return}
             DispatchQueue.main.async {
@@ -26,8 +26,8 @@ class Network: NetworkProtocol {
         }
     }
     // Получение данных по URL
-    func getDataFrom(_ urlString: String, _ completion: @escaping (Data) -> Void) {
-        createSession(urlString) { data, _ in
+    func getDataFrom(fromUrlString url: String, _ completion: @escaping (Data) -> Void) {
+        createSession(by: url) { data, _ in
             guard let `data` = data else {return}
             DispatchQueue.global().async {
                 completion(data)
@@ -35,7 +35,7 @@ class Network: NetworkProtocol {
         }
     }
     // Создание сетевой сессии
-    func createSession(_ urlString: String, _ completion: @escaping (Data?, Error?) -> Void ) {
+    func createSession(by urlString: String, _ completion: @escaping (Data?, Error?) -> Void ) {
         
         guard let url = URL(string: urlString) else {return}
         let session = URLSession.shared

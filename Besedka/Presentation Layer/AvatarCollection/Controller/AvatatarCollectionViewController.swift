@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ChangeImage: class {
+protocol ChangeImage: AnyObject {
     func selected(_ image: UIImage)
 }
 
@@ -15,15 +15,13 @@ class AvatatarCollectionViewController: UIViewController {
     
     // MARK: - Properties
     lazy var avatarView = AvatarView(frame: self.view.frame)
-    let serviceAssembly: ServiceProtocol
     let network: NetworkServiceProtocol
     var imageUrls = [String]()
     weak var delegate: ChangeImage?
     
     // MARK: - Lifecycle
-    init(serviceAssembly: ServiceProtocol) {
-        self.serviceAssembly = serviceAssembly
-        self.network = serviceAssembly.network
+    init(network: NetworkServiceProtocol) {
+        self.network = network
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -50,7 +48,7 @@ class AvatatarCollectionViewController: UIViewController {
     
     private func getUrls(with code: String) {
         avatarView.indicator.startAnimating()
-        network.getImagesUrls(with: code) {[weak self] urls in
+        network.getImagesUrls(withCode: code) {[weak self] urls in
             guard let `self` = self else {return}
             self.imageUrls = urls
             self.avatarView.indicator.stopAnimating()
@@ -110,7 +108,7 @@ extension AvatatarCollectionViewController: UICollectionViewDataSource {
         let url = self.imageUrls[indexPath.row]
         cell.imageURL = url
         cell.indicator.startAnimating()
-        network.getImage(from: url) { image in
+        network.getImage(fromUrlString: url) { image in
             if cell.imageURL == url {
                 cell.avatarImageView.setImage(image: image, canAnimate: true)
                 cell.indicator.stopAnimating()
