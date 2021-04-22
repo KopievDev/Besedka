@@ -12,4 +12,5 @@ class CoreAssembly {
     lazy var storage: StorageProtocol = Storage()
     lazy var coreData: CoreDataStackProtocol = CoreDataStack()
     lazy var network: NetworkProtocol = Network()
+    lazy var cacheImage: ImageCacheProtocol = ImageCache()
 }

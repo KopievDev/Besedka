@@ -15,6 +15,7 @@ protocol NetworkServiceProtocol {
 class NetworkService: NetworkServiceProtocol {
     let coreAssembly: CoreAssembly = CoreAssembly()
     lazy var network: NetworkProtocol = self.coreAssembly.network
+    lazy var cache = coreAssembly.cacheImage
 
     func getImagesUrls(with code: String, _ completion: @escaping ([String]) -> Void) {
         let url = "https://pixabay.com/api/?key=21189137-e91aebb15d83ce97f04ecb4d6&q=\(code)&image_type=photo&pretty=true&per_page=200"
@@ -31,7 +32,7 @@ class NetworkService: NetworkServiceProtocol {
     
     func getImage(from urlString: String, _ completion: @escaping (UIImage) -> Void) {
         DispatchQueue.global(qos: .utility).async {
-            if let cachedImage = self.imageFromCache(urlString) {
+            if let cachedImage = self.cache.getImage(forKey: urlString) {
                 DispatchQueue.main.async {
                     completion(cachedImage)
                     print("getting image from cache")
@@ -41,7 +42,7 @@ class NetworkService: NetworkServiceProtocol {
                 print("getting image from internet")
                 self.network.getDataFrom(urlString) { data in
                     guard let image = UIImage(data: data) else {return}
-                    ImageCache.shared.save(image: image, forKey: urlString)
+                    self.cache.save(image: image, forKey: urlString)
                     DispatchQueue.main.async {
                         completion(image)
                         return
@@ -49,10 +50,6 @@ class NetworkService: NetworkServiceProtocol {
                 }
             }
         }
-    }
-    
-    func imageFromCache(_ url: String) -> UIImage? {
-        return ImageCache.shared.getImage(forKey: url)
     }
     
 }

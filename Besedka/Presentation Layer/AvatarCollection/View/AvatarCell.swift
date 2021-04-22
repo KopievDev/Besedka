@@ -10,8 +10,8 @@ import UIKit
 class AvatarCell: UICollectionViewCell {
     // MARK: - Properties
  
-    let avatarImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let avatarImageView: UIImageView = {
+        let iv = UIImageView()
         iv.clipsToBounds = true
         iv.layer.cornerRadius = 48 / 2
         iv.contentMode = .scaleAspectFill

@@ -14,7 +14,6 @@
 		B534FAD525EEA6C900C70403 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B534FAD425EEA6C800C70403 /* UIViewController.swift */; };
 		B5392F6D262C1E5700BAEE20 /* AvatatarCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5392F6C262C1E5700BAEE20 /* AvatatarCollectionViewController.swift */; };
 		B5392F74262C257F00BAEE20 /* AvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5392F73262C257F00BAEE20 /* AvatarCell.swift */; };
-		B5392F77262C395800BAEE20 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5392F76262C395800BAEE20 /* CustomImageView.swift */; };
 		B5392F7A262C39B900BAEE20 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5392F79262C39B900BAEE20 /* ImageCache.swift */; };
 		B5392F7D262C452C00BAEE20 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5392F7C262C452C00BAEE20 /* Network.swift */; };
 		B5392F82262C522B00BAEE20 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5392F81262C522B00BAEE20 /* Avatar.swift */; };
@@ -71,7 +70,6 @@
 		B534FAD425EEA6C800C70403 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		B5392F6C262C1E5700BAEE20 /* AvatatarCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatatarCollectionViewController.swift; sourceTree = "<group>"; };
 		B5392F73262C257F00BAEE20 /* AvatarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCell.swift; sourceTree = "<group>"; };
-		B5392F76262C395800BAEE20 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		B5392F79262C39B900BAEE20 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		B5392F7C262C452C00BAEE20 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		B5392F81262C522B00BAEE20 /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
@@ -257,7 +255,6 @@
 				B557FE5325D84D1800BF0F06 /* Assets.xcassets */,
 				B557FE5525D84D1800BF0F06 /* LaunchScreen.storyboard */,
 				B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */,
-				B5392F76262C395800BAEE20 /* CustomImageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -635,7 +632,6 @@
 				B5392F82262C522B00BAEE20 /* Avatar.swift in Sources */,
 				B5BD371425EBB639007AF803 /* ChannelCell.swift in Sources */,
 				B5392F6D262C1E5700BAEE20 /* AvatatarCollectionViewController.swift in Sources */,
-				B5392F77262C395800BAEE20 /* CustomImageView.swift in Sources */,
 				B54266AD25FA36BF009BBF2F /* ThemesViewController.swift in Sources */,
 				B5D14D102624CEC9005BE9C4 /* ConversationViewController.swift in Sources */,
 				B557FE4B25D84D1600BF0F06 /* AppDelegate.swift in Sources */,
