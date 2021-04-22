@@ -17,7 +17,7 @@ class Network: NetworkProtocol {
     let coreService: CoreAssembly = CoreAssembly()
     // Получение кодируемых данных
     func getCodableData<T>(fromUrlString url: String, _ type: T.Type, _ completion: @escaping (T) -> Void) where T: Decodable, T: Encodable {
-        createSession(by: url) { data, _ in
+        createSession(byUrlString: url) { data, _ in
             let parser = self.coreService.parser
             guard let dataDecoded = parser.decodeJSON(type: T.self, from: data) else {return}
             DispatchQueue.main.async {
@@ -27,7 +27,7 @@ class Network: NetworkProtocol {
     }
     // Получение данных по URL
     func getDataFrom(fromUrlString url: String, _ completion: @escaping (Data) -> Void) {
-        createSession(by: url) { data, _ in
+        createSession(byUrlString: url) { data, _ in
             guard let `data` = data else {return}
             DispatchQueue.global().async {
                 completion(data)
@@ -35,9 +35,9 @@ class Network: NetworkProtocol {
         }
     }
     // Создание сетевой сессии
-    func createSession(by urlString: String, _ completion: @escaping (Data?, Error?) -> Void ) {
+    func createSession(byUrlString url: String, _ completion: @escaping (Data?, Error?) -> Void ) {
         
-        guard let url = URL(string: urlString) else {return}
+        guard let url = URL(string: url) else {return}
         let session = URLSession.shared
         let dataTask = session.dataTask(with: url) { (data, _, error) in
             guard let data = data, error == nil else {

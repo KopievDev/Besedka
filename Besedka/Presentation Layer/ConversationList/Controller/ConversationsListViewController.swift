@@ -37,9 +37,9 @@ class ConversationsListViewController: UIViewController {
     
     // MARK: - LifeCycle
     
-    init(serviceAssembly: ServiceProtocol) {
-        self.firebase = serviceAssembly.firebase
-        self.store = serviceAssembly.fileManager
+    init(firebase: FireBaseServiceProtocol, store: FileManagerProtocol) {
+        self.firebase = firebase
+        self.store = store
         super.init(nibName: nil, bundle: nil)
     }
     
