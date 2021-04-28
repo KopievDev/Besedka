@@ -10,6 +10,7 @@ import UIKit
 class ProfileView: UIView {
     // MARK: - Properties
     lazy var radius = CGFloat()
+    var animator: AnimationProtocol?
     var keyboardDismissTapGesture: UIGestureRecognizer?
     
     // MARK: - UI
@@ -163,9 +164,10 @@ class ProfileView: UIView {
     }()
     
     // MARK: - Lifecycle
-    init(frame: CGRect, radius: CGFloat) {
+    init(frame: CGRect, radius: CGFloat, animator: AnimationProtocol) {
         super.init(frame: frame)
         self.radius = radius
+        self.animator = animator
         createDesing()
     }
     override init(frame: CGRect) {
@@ -292,9 +294,7 @@ class ProfileView: UIView {
         if state {
             self.registerForKeyboardNotification()
             self.userNameTextfiel.becomeFirstResponder()
-            self.userNameTextfiel.text = ""
-            self.cityTextfield.text = ""
-            self.descriptionTextView.text = ""
+            self.clearData()
         }
         showEditButton(state: state)
         self.cityTextfield.isHidden = !state
@@ -309,12 +309,19 @@ class ProfileView: UIView {
         self.saveGCDButton.isEnabled = !state
         self.saveGCDButton.backgroundColor = Theme.current.buttonDisable
         self.saveGCDButton.setTitleColor(Theme.current.subtleLabelColor, for: .normal)
+        self.animator?.removeShake(from: saveGCDButton)
         if !state {
+            self.animator?.addShake(to: saveGCDButton)
             self.saveGCDButton.backgroundColor = Theme.current.buttonBackground
             self.saveGCDButton.setTitleColor(Theme.current.secondaryLabelColor, for: .normal)
         }
     }
     
+    public func clearData() {
+        self.userNameTextfiel.text = ""
+        self.cityTextfield.text = ""
+        self.descriptionTextView.text = ""
+    }
     public func dataChecking() {
         var formIsValid: Bool {
             return userNameTextfiel.isEmpty()

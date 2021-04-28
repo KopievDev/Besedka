@@ -28,7 +28,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        profile = ProfileView(frame: self.view.frame, radius: radius)
+        profile = ProfileView(frame: self.view.frame, radius: radius, animator: ServiceAssembly().animator)
         view.addSubview(profile)
         setupDesign()
         addTarget()
@@ -161,10 +161,10 @@ class ProfileViewController: UIViewController {
     @objc private func saveGCD() {
         
         let user = returnModifiedData()
-        
+        profile.animator?.removeShake(from: profile.saveGCDButton)
+        profile.clearData()
         profile.activityIndicator.startAnimating()
         profile.activityIndicator.isHidden = false
-        profile.disableButton()
         // Если изменено только фото
         if profile.userNameTextfiel.isHidden {
             store.saveImageToFile(profile.avatarImageView.image, byName: "Avatar.png") {[weak self] in

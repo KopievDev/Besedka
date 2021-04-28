@@ -12,6 +12,7 @@ protocol ServiceProtocol {
     var fileManager: FileManagerProtocol {get}
     var parser: ParserServiceProtocol {get}
     var network: NetworkServiceProtocol {get}
+    var animator: AnimationProtocol {get}
 }
 
 class ServiceAssembly: ServiceProtocol {
@@ -20,5 +21,5 @@ class ServiceAssembly: ServiceProtocol {
     lazy var fileManager: FileManagerProtocol = FileManagerGCD()
     lazy var parser: ParserServiceProtocol = ParserService()
     lazy var network: NetworkServiceProtocol = NetworkService()
-    
+    lazy var animator: AnimationProtocol = AnimationService()
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ThemeDelegateProtocol: class {
+protocol ThemeDelegateProtocol: AnyObject {
     func changeTheme(name: String)
 }
 
