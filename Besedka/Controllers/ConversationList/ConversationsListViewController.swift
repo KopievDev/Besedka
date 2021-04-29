@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import CoreData
 class ConversationsListViewController: UIViewController {
 
     // MARK: - Properties
@@ -19,7 +19,34 @@ class ConversationsListViewController: UIViewController {
         return table
     }()
     
-    lazy var channels = [Channel]()
+    lazy var channels: [Channel] = [] {
+        didSet {
+            CoreDataStack.shared.performSave { context in
+                // Создаем запрос для получения всех каналов из памяти
+                let request: NSFetchRequest = ChannelDB.fetchRequest()
+                do {
+                    let currentChannel = try context.fetch(request)
+                    // Перебираем массив каналов из памяти и сравниваем с каналами из сервера (удаляем каналы, которых уже нет на сервере)
+                    currentChannel.forEach {
+                        if !self.channels.contains(Channel($0)) {
+                            context.delete($0)
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+            
+            CoreDataStack.shared.performSave { context in
+                // Добавляем/обновляем каналы с сервера
+                self.channels.forEach { channel in
+                    _ = ChannelDB(channel, context: context)
+                }
+                CoreDataStack.shared.printChannelsCount()
+            }
+        }
+    }
+    
     lazy var addChannelButton: UIButton = {
        let button = UIButton()
         button.backgroundColor = Theme.current.secondaryTint
@@ -35,6 +62,8 @@ class ConversationsListViewController: UIViewController {
         super.viewDidLoad()
         createUI()
         addListener()
+//        CoreDataStack.shared.enableObservers()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +96,7 @@ class ConversationsListViewController: UIViewController {
         button.frame = CGRect(x: self.view.frame.width - self.view.frame.width / 5 - 20,
                               y: self.view.frame.height - self.view.frame.width / 5 - 50,
                               width: self.view.frame.width / 6, height: self.view.frame.width / 6)
-        button.tintColor = .systemPurple
+        button.tintColor = UIColor(red: 1.00, green: 0.42, blue: 0.42, alpha: 1.00)
         button.addCornerRadius(button.frame.width / 2)
         button.backgroundColor = .white
 
@@ -126,7 +155,6 @@ class ConversationsListViewController: UIViewController {
     private func animateView(_ viewToAnimate: UIView) {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.5, options: .curveEaseIn) {
             viewToAnimate.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            viewToAnimate.transform = CGAffineTransform(rotationAngle: CGFloat(CGFloat.pi * -3 / 4))
         }
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 1, options: .curveEaseIn) {
             viewToAnimate.transform = .identity

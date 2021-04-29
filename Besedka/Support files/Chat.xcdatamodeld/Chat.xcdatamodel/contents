@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H524" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ChannelDB" representedClassName="ChannelDB" syncable="YES">
+        <attribute name="identifier" attributeType="String"/>
+        <attribute name="lastActivity" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="lastMessage" optional="YES" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MessageDB" inverseName="channel" inverseEntity="MessageDB"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="identifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MessageDB" representedClassName="MessageDB" syncable="YES">
+        <attribute name="content" attributeType="String"/>
+        <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="identifier" attributeType="String"/>
+        <attribute name="senderId" attributeType="String"/>
+        <attribute name="senderName" attributeType="String"/>
+        <relationship name="channel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChannelDB" inverseName="messages" inverseEntity="ChannelDB"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="identifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <elements>
+        <element name="ChannelDB" positionX="-383.484375" positionY="-15.34375" width="99.25390625" height="118"/>
+        <element name="MessageDB" positionX="-103.51171875" positionY="-34.328125" width="128" height="133"/>
+    </elements>
+</model>

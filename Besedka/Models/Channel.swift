@@ -7,8 +7,9 @@
 
 import Foundation
 import Firebase
+import CoreData
 
-struct Channel {
+struct Channel: Hashable {
     let identifier: String
     let name: String
     var lastMessage: String?
@@ -34,6 +35,12 @@ extension Channel {
         let lastActivity = dictionary["lastActivity"] as? Timestamp 
         self.init(identifier: documentId, name: name, lastMessage: lastMessage, lastActivity: lastActivity?.dateValue())
         
+    }
+    init(_ channelDB: ChannelDB) {
+        self.identifier = channelDB.identifier
+        self.name = channelDB.name
+        self.lastMessage = channelDB.lastMessage
+        self.lastActivity = channelDB.lastActivity
     }
     
     init(name: String) {

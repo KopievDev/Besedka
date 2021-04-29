@@ -38,6 +38,12 @@
 		B5DC34882608ECFD004A1B86 /* CustomInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC34872608ECFD004A1B86 /* CustomInputView.swift */; };
 		B5DC3496260A4F41004A1B86 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC3495260A4F41004A1B86 /* ProfileVC.swift */; };
 		B5E92D1D25FF86000094DCCC /* UserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E92D1C25FF86000094DCCC /* UserProfileModel.swift */; };
+		B5F0070A261479FF0090D31F /* Chat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B5F00708261479FF0090D31F /* Chat.xcdatamodeld */; };
+		B5F0073526147F0D0090D31F /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F0073426147F0D0090D31F /* CoreDataStack.swift */; };
+		B5F0073C2614A2230090D31F /* MessageDB+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F007382614A2230090D31F /* MessageDB+CoreDataClass.swift */; };
+		B5F0073D2614A2230090D31F /* MessageDB+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F007392614A2230090D31F /* MessageDB+CoreDataProperties.swift */; };
+		B5F0073E2614A2230090D31F /* ChannelDB+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F0073A2614A2230090D31F /* ChannelDB+CoreDataClass.swift */; };
+		B5F0073F2614A2230090D31F /* ChannelDB+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F0073B2614A2230090D31F /* ChannelDB+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +82,12 @@
 		B5DC34872608ECFD004A1B86 /* CustomInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputView.swift; sourceTree = "<group>"; };
 		B5DC3495260A4F41004A1B86 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		B5E92D1C25FF86000094DCCC /* UserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileModel.swift; sourceTree = "<group>"; };
+		B5F00709261479FF0090D31F /* Chat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Chat.xcdatamodel; sourceTree = "<group>"; };
+		B5F0073426147F0D0090D31F /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		B5F007382614A2230090D31F /* MessageDB+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageDB+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B5F007392614A2230090D31F /* MessageDB+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageDB+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B5F0073A2614A2230090D31F /* ChannelDB+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChannelDB+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B5F0073B2614A2230090D31F /* ChannelDB+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChannelDB+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +138,7 @@
 		B534FACD25EE3A6900C70403 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B5F007412614A22D0090D31F /* Core Data */,
 				B5B767322607A618007CF846 /* Channel.swift */,
 				B5B767352607A627007CF846 /* Message.swift */,
 				B5E92D1C25FF86000094DCCC /* UserProfileModel.swift */,
@@ -216,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				B5DC348326089DC1004A1B86 /* FirebaseService.swift */,
+				B5F0073426147F0D0090D31F /* CoreDataStack.swift */,
 				B50855C8260235150086ACB4 /* FileManagerGCD.swift */,
 			);
 			path = Service;
@@ -235,12 +249,24 @@
 		B5EAC50B25F114D5002E3BDB /* Support files */ = {
 			isa = PBXGroup;
 			children = (
+				B5F00708261479FF0090D31F /* Chat.xcdatamodeld */,
 				B557FE5325D84D1800BF0F06 /* Assets.xcassets */,
 				B557FE5525D84D1800BF0F06 /* LaunchScreen.storyboard */,
 				B5DC345B26089452004A1B86 /* GoogleService-Info.plist */,
 				B557FE4A25D84D1600BF0F06 /* AppDelegate.swift */,
 			);
 			path = "Support files";
+			sourceTree = "<group>";
+		};
+		B5F007412614A22D0090D31F /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				B5F007382614A2230090D31F /* MessageDB+CoreDataClass.swift */,
+				B5F007392614A2230090D31F /* MessageDB+CoreDataProperties.swift */,
+				B5F0073A2614A2230090D31F /* ChannelDB+CoreDataClass.swift */,
+				B5F0073B2614A2230090D31F /* ChannelDB+CoreDataProperties.swift */,
+			);
+			path = "Core Data";
 			sourceTree = "<group>";
 		};
 		DE5FF6129337D993485E5D7C /* Frameworks */ = {
@@ -399,16 +425,21 @@
 				B5B767332607A618007CF846 /* Channel.swift in Sources */,
 				B51995B725F3A16C00576121 /* Date.swift in Sources */,
 				B534FAC925EE374900C70403 /* ConversationViewController.swift in Sources */,
+				B5F0073526147F0D0090D31F /* CoreDataStack.swift in Sources */,
 				B5DC34882608ECFD004A1B86 /* CustomInputView.swift in Sources */,
 				B534FAD025EE3A8D00C70403 /* MessageCell.swift in Sources */,
 				B54266B425FA3765009BBF2F /* DayTheme.swift in Sources */,
 				B5CA6E9C25FA7DF9009939AE /* With.swift in Sources */,
+				B5F0073C2614A2230090D31F /* MessageDB+CoreDataClass.swift in Sources */,
 				B5CA6E9625FA7BCE009939AE /* UITableViewCell.swift in Sources */,
 				B54266B125FA375B009BBF2F /* LightTheme.swift in Sources */,
 				B5E92D1D25FF86000094DCCC /* UserProfileModel.swift in Sources */,
+				B5F0070A261479FF0090D31F /* Chat.xcdatamodeld in Sources */,
 				B5DC3496260A4F41004A1B86 /* ProfileVC.swift in Sources */,
 				B5623DA525FA1FA500BFD3D4 /* ProfileViewController.swift in Sources */,
 				B51995BA25F3A1C500576121 /* UITableView.swift in Sources */,
+				B5F0073F2614A2230090D31F /* ChannelDB+CoreDataProperties.swift in Sources */,
+				B5F0073D2614A2230090D31F /* MessageDB+CoreDataProperties.swift in Sources */,
 				B5BD371025EBA938007AF803 /* ConversationsListViewController.swift in Sources */,
 				B55E052725F4DA7500B59502 /* ThemeButton.swift in Sources */,
 				B5DC348426089DC1004A1B86 /* FirebaseService.swift in Sources */,
@@ -416,6 +447,7 @@
 				B54266AD25FA36BF009BBF2F /* ThemesViewController.swift in Sources */,
 				B557FE4B25D84D1600BF0F06 /* AppDelegate.swift in Sources */,
 				B5B767362607A627007CF846 /* Message.swift in Sources */,
+				B5F0073E2614A2230090D31F /* ChannelDB+CoreDataClass.swift in Sources */,
 				B5623D7B25F9237E00BFD3D4 /* Theme.swift in Sources */,
 				B50855C9260235150086ACB4 /* FileManagerGCD.swift in Sources */,
 				B5623D8125FA049500BFD3D4 /* SecondaryLabel.swift in Sources */,
@@ -617,6 +649,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B5F00708261479FF0090D31F /* Chat.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B5F00709261479FF0090D31F /* Chat.xcdatamodel */,
+			);
+			currentVersion = B5F00709261479FF0090D31F /* Chat.xcdatamodel */;
+			path = Chat.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B557FE3F25D84D1600BF0F06 /* Project object */;
 }

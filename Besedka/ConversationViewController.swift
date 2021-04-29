@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ConversationViewController: UIViewController {
     // MARK: - Propetries
@@ -13,7 +14,40 @@ class ConversationViewController: UIViewController {
         didSet {configure()}
     }
     let firebase = FirebaseService()
-    var messages = [Message]()
+    var messages: [Message] = [] {
+        didSet {
+            CoreDataStack.shared.performSave { context in
+                guard let id = channel?.identifier else {return}
+                // Удаляем канал и каскадно все его сообщения
+                // Для актуальности базы данных, чтобы при удалении сообщения в чате - оно удалялось и в памяти телефона
+                // Вариант не подходит для кэширования, но подходит для актуализации данных
+                let request: NSFetchRequest = ChannelDB.fetchRequest()
+                request.predicate = NSPredicate(format: "identifier = %@", id)
+
+                do {
+                    let currentChannel = try context.fetch(request)
+                    if let entityToDelete = currentChannel.first {
+                        context.delete(entityToDelete)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+            // Решил разбить операции на разные контексты ( но не знаю - хорошо ли это)
+            CoreDataStack.shared.performSave { context in
+                // Добавляем канал и сообщения
+                messages.forEach { message in
+                    guard let channel = self.channel else { return }
+                    let messageDB = MessageDB(message, context: context)
+                    let channelDB = ChannelDB(channel, context: context)
+                    channelDB.addToMessages(messageDB)
+                }
+                print()
+                CoreDataStack.shared.сountMessages(from: self.channel)
+                CoreDataStack.shared.printMessagesCount()
+            }
+        }
+    }
     var myName: String = ""
     
     private let cellId = "cellMessage"
@@ -103,6 +137,27 @@ class ConversationViewController: UIViewController {
 
         }
     }
+    
+    private func edit(message: Message) {
+
+        let alert = UIAlertController(title: nil, message: "\(message.senderName)\n \(message.created.toString())", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.text = message.content
+        }
+        let applyButton = UIAlertAction(title: "Изменить", style: .default) {[weak self] (_) in
+            guard let content = alert.textFields?.first?.text else {return}
+            guard let self = self else { return }
+            guard let channelId = self.channel?.identifier else {return}
+            if content != "" {
+                self.firebase.change(message, text: content, in: channelId)
+            }
+        }
+        let cancel = UIAlertAction(title: "Отменить", style: .cancel)
+        alert.addAction(applyButton)
+        alert.addAction(cancel)
+        present(alert, animated: true)
+    }
+    
     // MARK: - Selectors
     
     @objc private func sendMessage() {
@@ -138,6 +193,10 @@ extension ConversationViewController: UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
 
 }
 // MARK: - Extensions ConversationViewController TableViewDelegate
@@ -148,11 +207,33 @@ extension ConversationViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteChannel = UITableViewRowAction(style: .default, title: "delete") { _, _  in
+            guard let channelId = self.channel?.identifier else {return}
+            if self.messages[indexPath.row].senderId == myId {
+                self.firebase.delete(self.messages[indexPath.row], in: channelId)
+            }
+        }
+        
+        let renameChannel = UITableViewRowAction(style: .default, title: "edit") { _, _ in
+            
+            if self.messages[indexPath.row].senderId == myId {
+                self.edit(message: self.messages[indexPath.row])
+            }
+        }
+
+        deleteChannel.backgroundColor = .systemRed
+        renameChannel.backgroundColor = .systemPurple
+        
+        return [deleteChannel, renameChannel]
+    }
+    
 //    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
 //        customInputView.messageInputTextView.resignFirstResponder()
 //    }
 }
 
+// MARK: - Extension TextView
 extension ConversationViewController: UITextViewDelegate {
         
     func textViewDidChange(_ textView: UITextView) {

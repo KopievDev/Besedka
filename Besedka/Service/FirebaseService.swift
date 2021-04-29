@@ -66,7 +66,7 @@ class FirebaseService {
             }
             let message = document.compactMap({ (snap) -> Message? in
                 let data = snap.data()
-                return Message(dictionary: data)
+                return Message(dictionary: data, document: snap.documentID)
             })
             
             let sortedMessages = message.sorted { $0.created < $1.created }
@@ -84,7 +84,7 @@ class FirebaseService {
             }
             let message = document.compactMap({ (snap) -> Message? in
                 let data = snap.data()
-                return Message(dictionary: data)
+                return Message(dictionary: data, document: snap.documentID)
             })
             DispatchQueue.main.async {
                 completion(message)
@@ -100,7 +100,7 @@ class FirebaseService {
             }
             let message = document.compactMap({ (snap) -> Message? in
                 let data = snap.data()
-                return Message(dictionary: data)
+                return Message(dictionary: data, document: snap.documentID)
             })
             
             let sortedMessages = message.sorted { $0.created < $1.created }
@@ -136,15 +136,28 @@ class FirebaseService {
         
     }
     // Todo
-//    public func change(_ message: Message?, text content: String) {
-//        
-//        reference.document(channel.identifier).setData([ "name": name ], merge: true)
-//        
-//    }
+    public func change(_ message: Message, text content: String, in channel: String) {
+        
+        self.reference.document(channel)
+            .collection("messages")
+            .document(message.identifier)
+            .setData([ "content": content ], merge: true)
+    }
     
     public func delete(_ channel: Channel) {
         
-        reference.document(channel.identifier).delete { error in
+        self.reference.document(channel.identifier).delete { error in
+            if let error = error {
+                print("Error removing document: \(error)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
+    }
+    
+    public func delete(_ message: Message, in channel: String) {
+        
+        self.reference.document(channel).collection("messages").document(message.identifier).delete { error in
             if let error = error {
                 print("Error removing document: \(error)")
             } else {

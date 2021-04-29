@@ -46,13 +46,14 @@ class UserCell: UITableViewCell {
         iv.clipsToBounds = true
         iv.layer.cornerRadius = 48 / 2
         iv.contentMode = .scaleAspectFill
-        iv.backgroundColor = UIColor(red: 0.40, green: 0.80, blue: 0.67, alpha: 1.00)
+        iv.backgroundColor = UIColor(red: 1.00, green: 0.42, blue: 0.42, alpha: 1.00)
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
 
     let shortName: UILabel = {
         let label = SecondaryLabel()
+        label.textColor = .white
         label.text = "N"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 40)
