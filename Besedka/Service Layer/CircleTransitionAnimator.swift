@@ -33,29 +33,53 @@ class CircleTransitionAnimator: NSObject {
         containerView.addSubview(circleView)
         containerView.addSubview(presentedView)
         
-//        containerView.subviews.forEach { view in
-//            view.center = startButtonCenter
-//            view.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
-//        }
-        
         circleView.center = startFrameCenter
         circleView.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
         presentedView.center = startFrameCenter
         presentedView.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
-        
-        UIView.animate(withDuration: 0.5) {
+
+        UIView.animate(withDuration: self.duration) {
             presentedView.transform = CGAffineTransform(scaleX: 1, y: 1)
             presentedView.frame = finalFrame
             circleView.transform = CGAffineTransform(scaleX: 1, y: 1)
             circleView.center = presentedView.center
         } completion: { finished in
+            circleView.removeFromSuperview()
             transitionContext.completeTransition(finished)
         }
 
     }
     
     func dismiss(using transitionContext: UIViewControllerContextTransitioning) {
+        let containerView = transitionContext.containerView
+        guard let dismissedView = transitionContext.view(forKey: .from),
+              let presentedView = transitionContext.view(forKey: .to) else {
+            transitionContext.completeTransition(false)
+            return
+        }
         
+        presentedView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        presentedView.frame = CGRect(x: 0, y: 0, width: presentedView.frame.width, height: presentedView.frame.height)
+       
+        let circleView = createCircle(for: dismissedView)
+        let startFrame = startView.convert(startView.bounds, to: containerView)
+        let startFrameCenter = CGPoint(x: startFrame.midX, y: startFrame.midY)
+        circleView.center = dismissedView.center
+        
+        containerView.addSubview(presentedView)
+        containerView.addSubview(circleView)
+        containerView.addSubview(dismissedView)
+
+        UIView.animate(withDuration: self.duration) {
+            dismissedView.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
+            circleView.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
+            dismissedView.center = startFrameCenter
+            circleView.center = startFrameCenter
+        } completion: { finished in
+            circleView.removeFromSuperview()
+            transitionContext.completeTransition(finished)
+            
+        }
     }
     
     func createCircle(for view: UIView) -> UIView {
@@ -63,7 +87,7 @@ class CircleTransitionAnimator: NSObject {
         let circleView = UIView(frame: CGRect(x: 0, y: 0, width: diametr, height: diametr))
         circleView.layer.cornerRadius = diametr / 2
         circleView.layer.masksToBounds = true
-        circleView.backgroundColor = view.backgroundColor
+        circleView.backgroundColor = Theme.current.backgroundColor
         return circleView
     }
 
