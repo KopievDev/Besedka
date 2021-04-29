@@ -162,9 +162,9 @@ class ConversationsListViewController: UIViewController {
     @objc func showProfile() {
         let profileViewController = ProfileViewController(fileManager: ServiceAssembly().fileManager)
         profileViewController.radius = (self.view.frame.width - 140) * 0.5
-        profileViewController.modalPresentationStyle = .fullScreen
-        self.navigationController?.present(profileViewController, animated: true)
-
+        profileViewController.transitioningDelegate = self
+        profileViewController.modalPresentationStyle = .custom
+        self.present(profileViewController, animated: true)
     }
 
     @objc func addNewChannel(sender: UIButton) {
