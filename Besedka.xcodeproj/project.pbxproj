@@ -33,6 +33,7 @@
 		B5B267562639675200DA09DE /* AnimationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B267552639675200DA09DE /* AnimationService.swift */; };
 		B5B26760263A846000DA09DE /* ConversationsListViewTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B2675F263A846000DA09DE /* ConversationsListViewTransitionDelegate.swift */; };
 		B5B26763263A90D800DA09DE /* CircleTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B26762263A90D800DA09DE /* CircleTransitionAnimator.swift */; };
+		B5B26766263AC70000DA09DE /* EmblemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B26765263AC6FD00DA09DE /* EmblemView.swift */; };
 		B5B767332607A618007CF846 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B767322607A618007CF846 /* Channel.swift */; };
 		B5BD371025EBA938007AF803 /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BD370F25EBA938007AF803 /* ConversationsListViewController.swift */; };
 		B5BD371425EBB639007AF803 /* ChannelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BD371325EBB639007AF803 /* ChannelCell.swift */; };
@@ -94,6 +95,7 @@
 		B5B267552639675200DA09DE /* AnimationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationService.swift; sourceTree = "<group>"; };
 		B5B2675F263A846000DA09DE /* ConversationsListViewTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewTransitionDelegate.swift; sourceTree = "<group>"; };
 		B5B26762263A90D800DA09DE /* CircleTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleTransitionAnimator.swift; sourceTree = "<group>"; };
+		B5B26765263AC6FD00DA09DE /* EmblemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmblemView.swift; sourceTree = "<group>"; };
 		B5B767322607A618007CF846 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		B5BD370F25EBA938007AF803 /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
 		B5BD371325EBB639007AF803 /* ChannelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelCell.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				B557FE5325D84D1800BF0F06 /* Assets.xcassets */,
 				B557FE5525D84D1800BF0F06 /* LaunchScreen.storyboard */,
 				B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */,
+				B5B26765263AC6FD00DA09DE /* EmblemView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -637,6 +640,7 @@
 				B5F0073F2614A2230090D31F /* ChannelDB+CoreDataProperties.swift in Sources */,
 				B5D14D1D2624CEE7005BE9C4 /* MessageDB+CoreDataProperties.swift in Sources */,
 				B5BD371025EBA938007AF803 /* ConversationsListViewController.swift in Sources */,
+				B5B26766263AC70000DA09DE /* EmblemView.swift in Sources */,
 				B55E052725F4DA7500B59502 /* ThemeButton.swift in Sources */,
 				B5392F8B262D76E700BAEE20 /* AvatarView.swift in Sources */,
 				B5DC348426089DC1004A1B86 /* FirebaseService.swift in Sources */,

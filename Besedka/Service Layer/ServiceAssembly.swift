@@ -5,7 +5,7 @@
 //  Created by Ivan Kopiev on 12.04.2021.
 //
 
-import Foundation
+import UIKit
 
 protocol ServiceProtocol {
     var firebase: FireBaseServiceProtocol {get}
@@ -13,6 +13,7 @@ protocol ServiceProtocol {
     var parser: ParserServiceProtocol {get}
     var network: NetworkServiceProtocol {get}
     var animator: AnimationProtocol {get}
+    func transitionAnimator(fromView: UIView, isPresenting: Bool) -> UIViewControllerAnimatedTransitioning
 }
 
 class ServiceAssembly: ServiceProtocol {
@@ -22,4 +23,7 @@ class ServiceAssembly: ServiceProtocol {
     lazy var parser: ParserServiceProtocol = ParserService()
     lazy var network: NetworkServiceProtocol = NetworkService()
     lazy var animator: AnimationProtocol = AnimationService()
+    func transitionAnimator(fromView: UIView, isPresenting: Bool) -> UIViewControllerAnimatedTransitioning {
+        return CircleTransitionAnimator(fromView: fromView, isPresenting: isPresenting)
+    }
 }
