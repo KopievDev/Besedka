@@ -58,9 +58,6 @@ class CircleTransitionAnimator: NSObject {
             return
         }
         
-        presentedView.transform = CGAffineTransform(scaleX: 1, y: 1)
-        presentedView.frame = CGRect(x: 0, y: 0, width: presentedView.frame.width, height: presentedView.frame.height)
-       
         let circleView = createCircle(for: dismissedView)
         let startFrame = startView.convert(startView.bounds, to: containerView)
         let startFrameCenter = CGPoint(x: startFrame.midX, y: startFrame.midY)
