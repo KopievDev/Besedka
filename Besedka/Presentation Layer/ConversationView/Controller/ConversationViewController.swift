@@ -58,7 +58,7 @@ class ConversationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         messageTableView.reloadData()
-        self.messageTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+        self.messageTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 75, right: 0)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -253,7 +253,7 @@ extension ConversationViewController: UITextViewDelegate {
     }
 
     @objc private func keyboardWillHide() {
-        self.messageTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.messageTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 75, right: 0)
     }
 
 }

@@ -154,10 +154,16 @@ extension UIImageView {
          self.alpha = 0
          // self.contentMode = .scaleAspectFit
          self.image = image
-         UIView.animate(withDuration: 1, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
              self.alpha = 1
          })
      }
+    
+    func transition(to image: UIImage?) {
+        UIView.transition(with: self, duration: 0.4, options: [.transitionCrossDissolve]) {
+            self.image = image
+        }
+    }
 
 }
 

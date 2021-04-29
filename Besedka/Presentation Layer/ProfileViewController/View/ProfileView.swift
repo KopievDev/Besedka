@@ -17,7 +17,7 @@ class ProfileView: UIView {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = radius
         imageView.backgroundColor = UIColor(red: 0.894, green: 0.908, blue: 0.17, alpha: 1)
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.isUserInteractionEnabled = true
@@ -77,9 +77,8 @@ class ProfileView: UIView {
     
     lazy var closeButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Close", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.setTitleColor(.darkGray, for: .highlighted)
+        button.setImage(UIImage(named: "close"), for: .normal)
+        button.setImage(UIImage(named: "closeTap"), for: .highlighted)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -235,10 +234,10 @@ class ProfileView: UIView {
             self.editButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
             self.editButton.widthAnchor.constraint(equalTo: cancelButton.widthAnchor),
             
-            self.closeButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20),
-            self.closeButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            self.closeButton.heightAnchor.constraint(equalToConstant: 30),
-            self.closeButton.widthAnchor.constraint(equalToConstant: 50),
+            self.closeButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            self.closeButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            self.closeButton.heightAnchor.constraint(equalToConstant: 35),
+            self.closeButton.widthAnchor.constraint(equalToConstant: 35),
             
             self.titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
             self.titleLabel.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),

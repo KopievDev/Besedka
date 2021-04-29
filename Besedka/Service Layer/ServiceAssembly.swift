@@ -7,8 +7,18 @@
 
 import Foundation
 
-class ServiceAssembly {
+protocol ServiceProtocol {
+    var firebase: FireBaseServiceProtocol {get}
+    var fileManager: FileManagerProtocol {get}
+    var parser: ParserServiceProtocol {get}
+    var network: NetworkServiceProtocol {get}
+}
+
+class ServiceAssembly: ServiceProtocol {
     
     lazy var firebase: FireBaseServiceProtocol = FirebaseService()
     lazy var fileManager: FileManagerProtocol = FileManagerGCD()
+    lazy var parser: ParserServiceProtocol = ParserService()
+    lazy var network: NetworkServiceProtocol = NetworkService()
+    
 }

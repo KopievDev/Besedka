@@ -32,16 +32,26 @@ class ConversationsListViewController: UIViewController {
         return button
     }()
     
-    let serviceAssembly = ServiceAssembly()
-    var firebase: FireBaseServiceProtocol {
-        return serviceAssembly.firebase
-    }
+    let store: FileManagerProtocol
+    let firebase: FireBaseServiceProtocol
     
     // MARK: - LifeCycle
+    
+    init(firebase: FireBaseServiceProtocol, store: FileManagerProtocol) {
+        self.firebase = firebase
+        self.store = store
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         createUI()
         addListener()
+        addButtonChannels()
 
     }
     
@@ -50,7 +60,6 @@ class ConversationsListViewController: UIViewController {
         initFectedResultController()
         channelsTableView.reloadData()
         updateImageProfile()
-        addButtonChannels()
         
     }
   
@@ -58,7 +67,7 @@ class ConversationsListViewController: UIViewController {
     
     private func addListener() {
 
-        serviceAssembly.firebase.addListner { (channels) in
+        self.firebase.addListner { (channels) in
             self.coreDataService?.save(objects: .Channel, data: channels)
         }
     }
@@ -72,6 +81,13 @@ class ConversationsListViewController: UIViewController {
         button.tintColor = UIColor(red: 1.00, green: 0.42, blue: 0.42, alpha: 1.00)
         button.addCornerRadius(button.frame.width / 2)
         button.backgroundColor = .white
+        // Тень
+        button.layer.shadowRadius = 5
+        button.layer.shadowOffset = CGSize(width: 2, height: 4)
+        button.layer.shadowOpacity = 0.5
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowPath = UIBezierPath(roundedRect: button.bounds, cornerRadius: button.frame.width / 2).cgPath
+        button.layer.masksToBounds = false
 
         button.setImage(UIImage(named: "add"), for: .normal)
         button.addTarget(self, action: #selector(addNewChannel), for: .touchUpInside)
@@ -96,8 +112,7 @@ class ConversationsListViewController: UIViewController {
         imageForButton.addGestureRecognizer(reconizer)
         imageForButton.isUserInteractionEnabled = true
         barButtonView.clipsToBounds = true
-        let fileOpener = serviceAssembly.fileManager
-        fileOpener.getUser { (user) in
+        self.store.getUser { (user) in
             // Get short name from name
             let text = user?.name ?? ""
             if text.split(separator: " ").count >= 2 {
@@ -106,7 +121,7 @@ class ConversationsListViewController: UIViewController {
                 shortName.text = text.first?.uppercased()
             }
         }
-        fileOpener.getImageFromFile(name: "Avatar.png",
+        self.store.getImageFromFile(name: "Avatar.png",
                                     runQueue: .global(qos: .utility), completionQueue: .main) {(image) in
             imageForButton.image = image
             shortName.isHidden = true
@@ -145,7 +160,7 @@ class ConversationsListViewController: UIViewController {
     // MARK: - Selectors
 
     @objc func showProfile() {
-        let profileViewController = ProfileViewController()
+        let profileViewController = ProfileViewController(fileManager: ServiceAssembly().fileManager)
         profileViewController.radius = (self.view.frame.width - 140) * 0.5
         profileViewController.modalPresentationStyle = .fullScreen
         self.navigationController?.present(profileViewController, animated: true)
@@ -279,14 +294,13 @@ extension ConversationsListViewController {
     
     @objc func goToSetting() {
         let settingView = ThemesViewController()
-        
+
         // Clouser
         settingView.themeSelected = {[weak self] theme in
             self?.changeTheme(name: theme)
         }
-        
-        // Delegate
-        settingView.delegate = self
+//        // Delegate
+//        settingView.delegate = self
         
         navigationController?.pushViewController(settingView, animated: true)
 

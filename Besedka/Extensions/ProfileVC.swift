@@ -9,6 +9,15 @@ import UIKit
 
 // MARK: - Extension UIImagePicker - work with image
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func setAvatar(_ image: UIImage) {
+        profile.avatarImageView.setImage(image: image, canAnimate: true)
+        profile.shortName.isHidden = true
+        profile.showEditButton()
+        profile.disableButton(state: false)
+        dismiss(animated: true)
+    }
+    
     func chooseImagePicker(source: UIImagePickerController.SourceType) {
         if UIImagePickerController.isSourceTypeAvailable(source) {
             let imagePicker = UIImagePickerController()
@@ -20,20 +29,15 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        profile.avatarImageView.setImage(image: info[.editedImage] as? UIImage ?? UIImage(), canAnimate: true)
-
-        profile.shortName.isHidden = true
-        profile.showEditButton()
-        profile.disableButton(state: false)
-        dismiss(animated: true)
+        guard let image = info[.editedImage] as? UIImage else {return}
+        setAvatar(image)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         profile.avatarImageView.image = nil
         profile.shortName.isHidden = false
         dismiss(animated: true)
-        let fileSaver = FileManagerGCD()
-        fileSaver.deleteFile(name: "Avatar.png")
+        store.deleteFile(name: "Avatar.png")
     }
 }
 
