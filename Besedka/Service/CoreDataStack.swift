@@ -9,8 +9,6 @@ import CoreData
 
 class CoreDataStack {
     
-    static let shared = CoreDataStack()
-    private init() { }
     private var storeUrl: URL = {
         guard let documentsUrl = FileManager.default.urls(for: .documentDirectory,
                                                           in: .userDomainMask).last else {
@@ -60,7 +58,7 @@ class CoreDataStack {
         return context
     }()
 
-    private(set) lazy var mainContext: NSManagedObjectContext = {
+     lazy var mainContext: NSManagedObjectContext = {
         let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = writterContext
         context.automaticallyMergesChangesFromParent = true
@@ -100,37 +98,26 @@ class CoreDataStack {
         if let parent = context.parent { performSave(in: parent) }
     }
     
-    // MARK: - CoreData Observers
-    
-    func enableObservers() {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self,
-                                       selector: #selector(managedObjectContextObjectsDidChange(notification:)),
-                                       name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
-                                       object: mainContext)
-    }
-    
-    @objc
-    private func managedObjectContextObjectsDidChange(notification: NSNotification) {
-        guard let userInfo = notification.userInfo else { return }
-                
-        if let inserts = userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject>,
-           inserts.count > 0 {
-            print("Добавлено объектов: ", inserts.count)
-        }
-        
-        if let updates = userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>,
-           updates.count > 0 {
-            print("Обновлено объектов: ", updates.count)
-        }
-        
-        if let deletes = userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>,
-           deletes.count > 0 {
-            print("Удалено объектов: ", deletes.count)
-        }
-    }
-    
     // MARK: - Core Data Logs
+    
+    func delete(channel id: String) {
+        let context = saveContext()
+        context.perform {
+            let request: NSFetchRequest = ChannelDB.fetchRequest()
+            request.predicate = NSPredicate(format: "identifier = %@", id)
+            
+            do {
+                let currentChannel = try context.fetch(request)
+                if let entityToDelete = currentChannel.first {
+                    context.delete(entityToDelete)
+                    print(entityToDelete.name, " : Удалено")
+                }
+            } catch {
+                print(error)
+            }
+        }
+        
+    }
     
     func printAllMessages() {
         mainContext.perform {[weak self] in
@@ -199,3 +186,15 @@ class CoreDataStack {
         }
     }
 }
+
+extension NSManagedObjectContext {
+    public func saveThrows() {
+        if self.hasChanges {
+            do {
+                try save()
+            } catch let error {
+                print(error, "--- ERROR Save in context")
+            }
+        }
+    }
+ }

@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 class ConversationsListViewController: UIViewController {
-
+    
     // MARK: - Properties
     private let cellId = "cell"
     private lazy var channelsTableView: UITableView = {
@@ -18,32 +18,45 @@ class ConversationsListViewController: UIViewController {
         table.dataSource = self
         return table
     }()
+    // CoreData
+    var core: CoreDataStack?
+    
+    var fetchedResultController: NSFetchedResultsController = NSFetchedResultsController<ChannelDB>()
+    
+    var arrayChannels = [ChannelDB]()
     
     lazy var channels: [Channel] = [] {
         didSet {
-            CoreDataStack.shared.performSave { context in
-                // Создаем запрос для получения всех каналов из памяти
+            core?.performSave { context in
+                
+                // Добавляем/обновляем каналы с сервера
+                self.channels.forEach { channel in
+                    
+                    let channel = ChannelDB(channel, context: context)
+                    self.arrayChannels.append(channel)
+                }
+                
                 let request: NSFetchRequest = ChannelDB.fetchRequest()
                 do {
                     let currentChannel = try context.fetch(request)
                     // Перебираем массив каналов из памяти и сравниваем с каналами из сервера (удаляем каналы, которых уже нет на сервере)
                     currentChannel.forEach {
-                        if !self.channels.contains(Channel($0)) {
+                        if !self.arrayChannels.contains($0) {
                             context.delete($0)
                         }
                     }
+                    
                 } catch {
                     print(error)
                 }
-            }
-            
-            CoreDataStack.shared.performSave { context in
-                // Добавляем/обновляем каналы с сервера
-                self.channels.forEach { channel in
-                    _ = ChannelDB(channel, context: context)
+                do {
+                    try context.obtainPermanentIDs(for: arrayChannels )
+                } catch let error {
+                    print(error, "obtain error")
                 }
-                CoreDataStack.shared.printChannelsCount()
             }
+            // Создаем запрос для получения всех каналов из памяти
+            core?.printChannelsCount()
         }
     }
     
@@ -62,12 +75,12 @@ class ConversationsListViewController: UIViewController {
         super.viewDidLoad()
         createUI()
         addListener()
-//        CoreDataStack.shared.enableObservers()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        initFectedResultController()
         channelsTableView.reloadData()
         updateImageProfile()
         addButtonChannels()
@@ -165,6 +178,7 @@ class ConversationsListViewController: UIViewController {
 //     Метод для перехода к собщениям контакта
     func wantToTalk(in channel: Channel) {
         let chatView = ConversationViewController()
+        chatView.coreDataStack = self.core
         chatView.channel = channel
         navigationController?.pushViewController(chatView, animated: true)
     }
@@ -215,25 +229,38 @@ class ConversationsListViewController: UIViewController {
     
 extension ConversationsListViewController: UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Channels"
+    func numberOfSections(in tableView: UITableView) -> Int {
+        guard let numberOfSections = fetchedResultController.sections?.count else {return 0}
+        return numberOfSections
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return channels.count
+        let numberOfRowsInSection = fetchedResultController.sections?[section].numberOfObjects
+        return numberOfRowsInSection!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? UserCell else {return UITableViewCell()}
+        let channel = fetchedResultController.object(at: indexPath as IndexPath)
         cell.backgroundColor = .clear
-        cell.configureCell(self.channels[indexPath.row])
+        cell.configureCell(channel)
         return cell
+    }
+    func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
+        guard let cellUpdate = cell as? UserCell else {return}
+        // get managed object
+        let channel = self.fetchedResultController.object(at: indexPath)
+        // Configure Cell
+        cellUpdate.configureCell(channel)
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Channels"
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
 }
 
 // MARK: - Extension TableView Delegate
@@ -255,6 +282,8 @@ extension ConversationsListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteChannel = UITableViewRowAction(style: .default, title: "delete") { _, _  in
             self.firebase.delete(self.channels[indexPath.row])
+            let channel = self.fetchedResultController.object(at: indexPath)
+            self.core?.delete(channel: channel.name)
         }
         
         let renameChannel = UITableViewRowAction(style: .default, title: "rename") {_, _ in
@@ -310,4 +339,78 @@ extension ConversationsListViewController: ThemeDelegateProtocol {
         }
         Theme.current.apply(for: UIApplication.shared)
     }
+}
+
+// MARK: - FetchedResultController
+
+extension ConversationsListViewController: NSFetchedResultsControllerDelegate {
+    
+    func initFectedResultController() {
+        fetchedResultController = getFetchedResultController()
+        fetchedResultController.delegate = self
+        do {
+            try fetchedResultController.performFetch()
+        } catch _ {
+        }
+    }
+    
+    func getFetchedResultController() -> NSFetchedResultsController<ChannelDB> {
+        guard let context = core?.mainContext else {return NSFetchedResultsController<ChannelDB>()}
+        fetchedResultController = NSFetchedResultsController(fetchRequest: taskFetchRequest(),
+                                                             managedObjectContext: context,
+                                                             sectionNameKeyPath: nil,
+                                                             cacheName: nil)
+        return fetchedResultController
+    }
+    
+    func taskFetchRequest() -> NSFetchRequest<ChannelDB> {
+        let fetchRequest: NSFetchRequest = ChannelDB.fetchRequest()
+        fetchRequest.fetchBatchSize = 20
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        return fetchRequest
+    }
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        channelsTableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            if let indexPath = newIndexPath {
+                channelsTableView.insertRows(at: [indexPath], with: .fade)
+            }
+        case .delete:            
+            if let indexPath = indexPath {
+                channelsTableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        case .update:
+            if let indexPath = indexPath, let cell = channelsTableView.cellForRow(at: indexPath) {
+                configureCell(cell, at: indexPath)
+            }
+            
+        case .move:
+            if let indexPath = indexPath {
+                channelsTableView.deleteRows(at: [indexPath], with: .fade)
+            }
+            
+            if let newIndexPath = newIndexPath {
+                channelsTableView.insertRows(at: [newIndexPath], with: .fade)
+            }
+            
+        @unknown default:
+            fatalError("erororoorororo")
+        }
+        
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        channelsTableView.endUpdates()
+    }
+    
 }

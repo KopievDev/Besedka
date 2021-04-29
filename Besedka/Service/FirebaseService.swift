@@ -36,7 +36,7 @@ class FirebaseService {
     }
     
     public  func addSortedChannelListener(_ completion: @escaping ([Channel]) -> Void) {
-        reference.order(by: "lastActivity", descending: true).addSnapshotListener { (snapshot, _) in
+        reference.order(by: "name", descending: true).addSnapshotListener { (snapshot, _) in
             guard let document = snapshot?.documents else {
                 print("no channels")
                 return

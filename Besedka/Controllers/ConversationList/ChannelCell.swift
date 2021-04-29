@@ -84,8 +84,9 @@ class UserCell: UITableViewCell {
       
     }
     
-    func configureCell(_ channel: Channel?) {
+    func configureCell(_ channel: ChannelDB?) {
         self.backgroundColor = .clear
+        self.shortName.textColor = .white
         self.messageLabel.font = UIFont.systemFont(ofSize: 14)
         self.shortName.text = channel?.name.first?.uppercased()
         guard let channel = channel else {return}

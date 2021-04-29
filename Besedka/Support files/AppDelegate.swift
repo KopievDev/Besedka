@@ -12,12 +12,11 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var coreDataStack = CoreDataStack()
     // Сообщает делегату, что процесс запуска начался
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
         let fileOpener = FileManagerGCD()
-        
         fileOpener.getTheme { (theme) in
             guard let name = theme else {return}
             switch name {
@@ -40,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         let startController = ConversationsListViewController()
         let navigationController = UINavigationController(rootViewController: startController)
-
+        startController.core = coreDataStack
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         return true
