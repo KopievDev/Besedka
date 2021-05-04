@@ -34,10 +34,12 @@ class ConversationsListViewController: UIViewController {
     
     let store: FileManagerProtocol
     let firebase: FireBaseServiceProtocol
+    let animator: AnimationProtocol
     // MARK: - LifeCycle
-    init(store: FileManagerProtocol, firebase: FireBaseServiceProtocol) {
+    init(store: FileManagerProtocol, firebase: FireBaseServiceProtocol, animator: AnimationProtocol) {
         self.firebase = firebase
         self.store = store
+        self.animator = animator
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -158,7 +160,7 @@ class ConversationsListViewController: UIViewController {
     // MARK: - Selectors
 
     @objc func showProfile() {
-        let profileViewController = ProfileViewController(fileManager: store, animator: ServiceAssembly.shared.animator)
+        let profileViewController = ProfileViewController(fileManager: store, animator: animator)
         profileViewController.radius = (self.view.frame.width - 140) * 0.5
         profileViewController.transitioningDelegate = self
         profileViewController.modalPresentationStyle = .fullScreen

@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Create navigation controller
         window = UIWindow(frame: UIScreen.main.bounds)
         let service = ServiceAssembly.shared
-        let startController = ConversationsListViewController(store: service.fileManager, firebase: service.firebase)
+        let startController = ConversationsListViewController(store: service.fileManager, firebase: service.firebase, animator: service.animator)
         let navigationController = UINavigationController(rootViewController: startController)
         startController.coreDataService = coreDataService
         window?.rootViewController = navigationController
