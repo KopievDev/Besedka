@@ -18,6 +18,9 @@ protocol ServiceProtocol {
 
 class ServiceAssembly: ServiceProtocol {
     
+    static let shared: ServiceProtocol = ServiceAssembly()
+    private init() {}
+    
     lazy var firebase: FireBaseServiceProtocol = FirebaseService()
     lazy var fileManager: FileManagerProtocol = FileManagerGCD()
     lazy var parser: ParserServiceProtocol = ParserService()

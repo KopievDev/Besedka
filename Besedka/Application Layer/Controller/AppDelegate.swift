@@ -13,13 +13,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var coreDataService: CoreDataProtocol?
-    lazy var serviceAssembly: ServiceProtocol = ServiceAssembly()
     lazy var coreAssembly: CoreAssembly = CoreAssembly()
     // Сообщает делегату, что процесс запуска начался
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
         coreDataService = CoreDataService(coreData: coreAssembly.coreData)
-        let fileOpener = serviceAssembly.fileManager
+        let fileOpener = ServiceAssembly.shared.fileManager
         fileOpener.getTheme { (theme) in
             guard let name = theme else {return}
             switch name {
@@ -41,7 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Create navigation controller
         window = UIWindow(frame: UIScreen.main.bounds)
-        let startController = ConversationsListViewController(firebase: serviceAssembly.firebase, store: serviceAssembly.fileManager)
+        let service = ServiceAssembly.shared
+        let startController = ConversationsListViewController(store: service.fileManager, firebase: service.firebase)
         let navigationController = UINavigationController(rootViewController: startController)
         startController.coreDataService = coreDataService
         window?.rootViewController = navigationController

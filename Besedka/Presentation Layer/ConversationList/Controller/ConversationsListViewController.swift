@@ -34,10 +34,8 @@ class ConversationsListViewController: UIViewController {
     
     let store: FileManagerProtocol
     let firebase: FireBaseServiceProtocol
-    
     // MARK: - LifeCycle
-    
-    init(firebase: FireBaseServiceProtocol, store: FileManagerProtocol) {
+    init(store: FileManagerProtocol, firebase: FireBaseServiceProtocol) {
         self.firebase = firebase
         self.store = store
         super.init(nibName: nil, bundle: nil)
@@ -151,7 +149,7 @@ class ConversationsListViewController: UIViewController {
     
 //     Метод для перехода к собщениям контакта
     func wantToTalk(in channel: ChannelDB) {
-        let chatView = ConversationViewController()
+        let chatView = ConversationViewController(firebase: firebase, fileManager: store)
         chatView.channelDB = channel
         chatView.coreDataService = self.coreDataService
         navigationController?.pushViewController(chatView, animated: true)
@@ -160,7 +158,7 @@ class ConversationsListViewController: UIViewController {
     // MARK: - Selectors
 
     @objc func showProfile() {
-        let profileViewController = ProfileViewController(fileManager: ServiceAssembly().fileManager)
+        let profileViewController = ProfileViewController(fileManager: store, animator: ServiceAssembly.shared.animator)
         profileViewController.radius = (self.view.frame.width - 140) * 0.5
         profileViewController.transitioningDelegate = self
         profileViewController.modalPresentationStyle = .fullScreen
@@ -294,7 +292,7 @@ extension ConversationsListViewController {
     }
     
     @objc func goToSetting() {
-        let settingView = ThemesViewController()
+        let settingView = ThemesViewController(filemanager: store)
 
         // Clouser
         settingView.themeSelected = {[weak self] theme in

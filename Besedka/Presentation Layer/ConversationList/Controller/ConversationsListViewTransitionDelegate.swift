@@ -10,10 +10,10 @@ import UIKit
 extension ConversationsListViewController: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return ServiceAssembly().transitionAnimator(fromView: self.view, isPresenting: true)
+        return ServiceAssembly.shared.transitionAnimator(fromView: self.view, isPresenting: true)
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return ServiceAssembly().transitionAnimator(fromView: self.view, isPresenting: false)
+        return ServiceAssembly.shared.transitionAnimator(fromView: self.view, isPresenting: false)
     }
 }

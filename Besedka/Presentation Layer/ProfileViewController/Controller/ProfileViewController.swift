@@ -13,12 +13,14 @@ class ProfileViewController: UIViewController {
     var user = UserProfile()
     var profile = ProfileView()
     let store: FileManagerProtocol
+    let animator: AnimationProtocol
     
     var keyboardDismissTapGesture: UIGestureRecognizer?
     
     // MARK: - Lifecycle
-    init(fileManager: FileManagerProtocol) {
+    init(fileManager: FileManagerProtocol, animator: AnimationProtocol) {
         self.store = fileManager
+        self.animator = animator
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -28,7 +30,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        profile = ProfileView(frame: self.view.frame, radius: radius, animator: ServiceAssembly().animator)
+        profile = ProfileView(frame: self.view.frame, radius: radius, animator: animator)
         view.addSubview(profile)
         setupDesign()
         addTarget()
@@ -124,8 +126,9 @@ class ProfileViewController: UIViewController {
         let camera = UIAlertAction(title: "Сделать фото", style: .default) { [weak self] _ in
             self?.chooseImagePicker(source: .camera)
         }
+        let network = ServiceAssembly.shared.network
         let online = UIAlertAction(title: "Загрузить фото", style: .default) {[weak self] _ in
-            let avatarVC = AvatatarCollectionViewController(network: ServiceAssembly().network)
+            let avatarVC = AvatatarCollectionViewController(network: network )
             avatarVC.delegate = self
             avatarVC.modalPresentationStyle = .fullScreen
             self?.present(avatarVC, animated: true)
