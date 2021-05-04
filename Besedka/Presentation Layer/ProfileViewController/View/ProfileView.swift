@@ -9,8 +9,8 @@ import UIKit
 
 class ProfileView: UIView {
     // MARK: - Properties
-    lazy var radius = CGFloat()
-    var animator: AnimationProtocol?
+    let radius: CGFloat
+    let animator: AnimationProtocol
     var keyboardDismissTapGesture: UIGestureRecognizer?
     
     // MARK: - UI
@@ -165,13 +165,10 @@ class ProfileView: UIView {
     
     // MARK: - Lifecycle
     init(frame: CGRect, radius: CGFloat, animator: AnimationProtocol) {
-        super.init(frame: frame)
         self.radius = radius
         self.animator = animator
-        createDesing()
-    }
-    override init(frame: CGRect) {
         super.init(frame: frame)
+        createDesing()
     }
     
     required init?(coder: NSCoder) {
@@ -309,9 +306,9 @@ class ProfileView: UIView {
         saveGCDButton.isEnabled = !state
         saveGCDButton.backgroundColor = Theme.current.buttonDisable
         saveGCDButton.setTitleColor(Theme.current.subtleLabelColor, for: .normal)
-        animator?.removeShake(from: saveGCDButton)
+        animator.removeShake(from: saveGCDButton)
         if !state {
-            animator?.addShake(to: saveGCDButton)
+            animator.addShake(to: saveGCDButton)
             saveGCDButton.backgroundColor = Theme.current.buttonBackground
             saveGCDButton.setTitleColor(Theme.current.secondaryLabelColor, for: .normal)
         }
