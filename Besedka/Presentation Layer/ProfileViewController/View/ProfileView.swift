@@ -96,6 +96,8 @@ class ProfileView: UIView {
         textfield.translatesAutoresizingMaskIntoConstraints = false
         textfield.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 20))
         textfield.leftViewMode = .always
+        textfield.accessibilityIdentifier = "NameTextfield"
+        textfield.returnKeyType = .next
         return textfield
     }()
     lazy var cityTextfield: UITextField = {
@@ -110,6 +112,8 @@ class ProfileView: UIView {
         textfield.translatesAutoresizingMaskIntoConstraints = false
         textfield.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 20))
         textfield.leftViewMode = .always
+        textfield.accessibilityIdentifier = "CityTextfield"
+        textfield.returnKeyType = .done
         return textfield
     }()
     
@@ -121,6 +125,7 @@ class ProfileView: UIView {
         textView.font = .systemFont(ofSize: 16)
         textView.addBorderLine(color: Theme.current.secondaryLabelColor)
         textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.accessibilityIdentifier = "DescriptionTextView"
         return textView
     }()
     lazy var saveGCDButton: UIButton = {
