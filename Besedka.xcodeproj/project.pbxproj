@@ -23,6 +23,7 @@
 		B54266AD25FA36BF009BBF2F /* ThemesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54266AC25FA36BF009BBF2F /* ThemesViewController.swift */; };
 		B54266B125FA375B009BBF2F /* LightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54266B025FA375B009BBF2F /* LightTheme.swift */; };
 		B54266B425FA3765009BBF2F /* DayTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54266B325FA3765009BBF2F /* DayTheme.swift */; };
+		B545E22B2642C034005693D5 /* BesedkaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B545E22A2642C034005693D5 /* BesedkaUITests.swift */; };
 		B557FE4B25D84D1600BF0F06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B557FE4A25D84D1600BF0F06 /* AppDelegate.swift */; };
 		B557FE5425D84D1800BF0F06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B557FE5325D84D1800BF0F06 /* Assets.xcassets */; };
 		B557FE5725D84D1800BF0F06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B557FE5525D84D1800BF0F06 /* LaunchScreen.storyboard */; };
@@ -64,6 +65,16 @@
 		B5F0073F2614A2230090D31F /* ChannelDB+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F0073B2614A2230090D31F /* ChannelDB+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B545E22D2642C035005693D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B557FE3F25D84D1600BF0F06 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B557FE4625D84D1600BF0F06;
+			remoteInfo = Besedka;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		160978B7534E240220D09EC8 /* Pods-Besedka.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Besedka.release.xcconfig"; path = "Target Support Files/Pods-Besedka/Pods-Besedka.release.xcconfig"; sourceTree = "<group>"; };
 		5C43CAAD5D0C8E5105B2F26C /* Pods-Besedka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Besedka.debug.xcconfig"; path = "Target Support Files/Pods-Besedka/Pods-Besedka.debug.xcconfig"; sourceTree = "<group>"; };
@@ -83,6 +94,9 @@
 		B54266AC25FA36BF009BBF2F /* ThemesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesViewController.swift; sourceTree = "<group>"; };
 		B54266B025FA375B009BBF2F /* LightTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTheme.swift; sourceTree = "<group>"; };
 		B54266B325FA3765009BBF2F /* DayTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayTheme.swift; sourceTree = "<group>"; };
+		B545E2282642C034005693D5 /* BesedkaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BesedkaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B545E22A2642C034005693D5 /* BesedkaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BesedkaUITests.swift; sourceTree = "<group>"; };
+		B545E22C2642C035005693D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B557FE4725D84D1600BF0F06 /* Besedka.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Besedka.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B557FE4A25D84D1600BF0F06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B557FE5325D84D1800BF0F06 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -127,6 +141,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B545E2252642C034005693D5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B557FE4425D84D1600BF0F06 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -226,10 +247,20 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		B545E2292642C034005693D5 /* BesedkaUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B545E22A2642C034005693D5 /* BesedkaUITests.swift */,
+				B545E22C2642C035005693D5 /* Info.plist */,
+			);
+			path = BesedkaUITests;
+			sourceTree = "<group>";
+		};
 		B557FE3E25D84D1600BF0F06 = {
 			isa = PBXGroup;
 			children = (
 				B557FE4925D84D1600BF0F06 /* Besedka */,
+				B545E2292642C034005693D5 /* BesedkaUITests */,
 				B557FE4825D84D1600BF0F06 /* Products */,
 				FC28D7A054040A15108C9C15 /* Pods */,
 				DE5FF6129337D993485E5D7C /* Frameworks */,
@@ -240,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				B557FE4725D84D1600BF0F06 /* Besedka.app */,
+				B545E2282642C034005693D5 /* BesedkaUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -478,6 +510,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B545E2272642C034005693D5 /* BesedkaUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B545E2312642C035005693D5 /* Build configuration list for PBXNativeTarget "BesedkaUITests" */;
+			buildPhases = (
+				B545E2242642C034005693D5 /* Sources */,
+				B545E2252642C034005693D5 /* Frameworks */,
+				B545E2262642C034005693D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B545E22E2642C035005693D5 /* PBXTargetDependency */,
+			);
+			name = BesedkaUITests;
+			productName = BesedkaUITests;
+			productReference = B545E2282642C034005693D5 /* BesedkaUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		B557FE4625D84D1600BF0F06 /* Besedka */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B557FE5B25D84D1800BF0F06 /* Build configuration list for PBXNativeTarget "Besedka" */;
@@ -507,6 +557,10 @@
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					B545E2272642C034005693D5 = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = B557FE4625D84D1600BF0F06;
+					};
 					B557FE4625D84D1600BF0F06 = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -526,11 +580,19 @@
 			projectRoot = "";
 			targets = (
 				B557FE4625D84D1600BF0F06 /* Besedka */,
+				B545E2272642C034005693D5 /* BesedkaUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B545E2262642C034005693D5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B557FE4525D84D1600BF0F06 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -604,6 +666,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B545E2242642C034005693D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B545E22B2642C034005693D5 /* BesedkaUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B557FE4325D84D1600BF0F06 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -664,6 +734,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		B545E22E2642C035005693D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B557FE4625D84D1600BF0F06 /* Besedka */;
+			targetProxy = B545E22D2642C035005693D5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		B557FE5525D84D1800BF0F06 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -676,6 +754,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		B545E22F2642C035005693D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4DQD7HY3MS;
+				INFOPLIST_FILE = BesedkaUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ru.mustdev.BesedkaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Besedka;
+			};
+			name = Debug;
+		};
+		B545E2302642C035005693D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4DQD7HY3MS;
+				INFOPLIST_FILE = BesedkaUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ru.mustdev.BesedkaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Besedka;
+			};
+			name = Release;
+		};
 		B557FE5925D84D1800BF0F06 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -837,6 +953,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B545E2312642C035005693D5 /* Build configuration list for PBXNativeTarget "BesedkaUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B545E22F2642C035005693D5 /* Debug */,
+				B545E2302642C035005693D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B557FE4225D84D1600BF0F06 /* Build configuration list for PBXProject "Besedka" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

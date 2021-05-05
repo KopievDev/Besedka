@@ -90,7 +90,7 @@ class ProfileViewController: UIViewController {
     }
     
     private func showAlert(state: Bool = true) {
-        let alertView = UIAlertController(title: nil, message: "Данные сохранены", preferredStyle: .alert)
+        let alertView = UIAlertController(title: "!!!", message: "Данные сохранены", preferredStyle: .alert)
         let doneAction = UIAlertAction(title: "Ok", style: .default, handler: {[weak self]  _ in
             self?.profile.enableEditMode(state: false)
         })
