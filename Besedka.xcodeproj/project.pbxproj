@@ -24,7 +24,6 @@
 		B54266B125FA375B009BBF2F /* LightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54266B025FA375B009BBF2F /* LightTheme.swift */; };
 		B54266B425FA3765009BBF2F /* DayTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54266B325FA3765009BBF2F /* DayTheme.swift */; };
 		B545E25F2642EF8D005693D5 /* BesedkaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B545E25E2642EF8D005693D5 /* BesedkaUITests.swift */; };
-		B545E2632642EF9F005693D5 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B545E2622642EF9F005693D5 /* Info.plist */; };
 		B557FE4B25D84D1600BF0F06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B557FE4A25D84D1600BF0F06 /* AppDelegate.swift */; };
 		B557FE5425D84D1800BF0F06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B557FE5325D84D1800BF0F06 /* Assets.xcassets */; };
 		B557FE5725D84D1800BF0F06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B557FE5525D84D1800BF0F06 /* LaunchScreen.storyboard */; };
@@ -591,7 +590,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B545E2632642EF9F005693D5 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

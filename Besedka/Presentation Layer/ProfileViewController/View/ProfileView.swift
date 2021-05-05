@@ -323,6 +323,7 @@ class ProfileView: UIView {
         userNameTextfiel.text = ""
         cityTextfield.text = ""
         descriptionTextView.text = ""
+        placeholderLabel.isHidden = false
     }
     public func dataChecking() {
         var formIsValid: Bool {

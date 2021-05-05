@@ -9,34 +9,34 @@ import XCTest
 
 class BesedkaUITests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testProfileVCHasTwoTextfileds() throws {
 
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
+         let app = XCUIApplication()
+         app.launch()
+         app.navigationBars["Tinckoff Chat"].otherElements.children(matching: .image).element.tap()
 
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
+         let editButton = app.buttons["Edit"]
+         editButton.tap()
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+         let nameTextfield = app.textFields["NameTextfield"]
+         XCTAssertTrue(nameTextfield.exists)
 
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
+         nameTextfield.tap()
+         nameTextfield.typeText("Ivan Kopiev")
+         app.buttons["Next:"].tap()
 
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+         let descriptionTextView = app.textViews["DescriptionTextView"]
+         descriptionTextView.typeText("iOS Developer :D")
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
-    }
+         let cityTextField = app.textFields["CityTextfield"]
+         XCTAssertTrue(cityTextField.exists)
+         cityTextField.tap()
+         cityTextField.typeText("Moscow, Russia")
+
+         app.buttons["Done"].tap()
+         app.buttons["Save"].tap()
+         app.alerts["!!!"].otherElements.buttons["Ok"].tap()
+
+     }
+
 }
