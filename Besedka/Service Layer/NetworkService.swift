@@ -10,6 +10,7 @@ import UIKit
 protocol NetworkServiceProtocol {
     func getImagesUrls(withCode code: String, _ completion: @escaping ([String]) -> Void)
     func getImage(fromUrlString url: String, _ completion: @escaping (UIImage) -> Void)
+    func createUrlWithCode(_ code: String) -> String
 }
 
 class NetworkService: NetworkServiceProtocol {
@@ -54,19 +55,19 @@ class NetworkService: NetworkServiceProtocol {
     }
     
     func createUrlWithCode(_ code: String) -> String {
-          var component = URLComponents()
-          component.scheme = "https"
-          component.host = "pixabay.com"
-          component.path = "/api/"
-          let queryKey = URLQueryItem(name: "key", value: "21189137-e91aebb15d83ce97f04ecb4d6")
-          let queryCodeforSearch = URLQueryItem(name: "q", value: code)
-          let queryTypeImage = URLQueryItem(name: "image_type", value: "photo")
-          let queryParameters = URLQueryItem(name: "pretty", value: "true")
-          let queryCount = URLQueryItem(name: "per_page", value: "200")
-          component.queryItems = [queryKey, queryCodeforSearch, queryTypeImage, queryParameters, queryCount]
-          guard let urlString = component.url?.absoluteString else {return "nil"}
-          print(urlString)
-          return urlString
-      }
+        var component = URLComponents()
+        component.scheme = "https"
+        component.host = "pixabay.com"
+        component.path = "/api/"
+        let queryKey = URLQueryItem(name: "key", value: "21189137-e91aebb15d83ce97f04ecb4d6")
+        let queryCodeforSearch = URLQueryItem(name: "q", value: code)
+        let queryTypeImage = URLQueryItem(name: "image_type", value: "photo")
+        let queryParameters = URLQueryItem(name: "pretty", value: "true")
+        let queryCount = URLQueryItem(name: "per_page", value: "200")
+        component.queryItems = [queryKey, queryCodeforSearch, queryTypeImage, queryParameters, queryCount]
+        guard let urlString = component.url?.absoluteString else {return "nil"}
+        print(urlString)
+        return urlString
+    }
     
 }

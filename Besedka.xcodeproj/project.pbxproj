@@ -24,7 +24,6 @@
 		B54266B125FA375B009BBF2F /* LightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54266B025FA375B009BBF2F /* LightTheme.swift */; };
 		B54266B425FA3765009BBF2F /* DayTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54266B325FA3765009BBF2F /* DayTheme.swift */; };
 		B545E25F2642EF8D005693D5 /* BesedkaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B545E25E2642EF8D005693D5 /* BesedkaUITests.swift */; };
-		B545E29E2643FB96005693D5 /* BesedkaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B545E29D2643FB96005693D5 /* BesedkaTests.swift */; };
 		B557FE4B25D84D1600BF0F06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B557FE4A25D84D1600BF0F06 /* AppDelegate.swift */; };
 		B557FE5425D84D1800BF0F06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B557FE5325D84D1800BF0F06 /* Assets.xcassets */; };
 		B557FE5725D84D1800BF0F06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B557FE5525D84D1800BF0F06 /* LaunchScreen.storyboard */; };
@@ -32,6 +31,7 @@
 		B5623D7B25F9237E00BFD3D4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5623D7A25F9237E00BFD3D4 /* Theme.swift */; };
 		B5623D7E25F9255900BFD3D4 /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5623D7D25F9255900BFD3D4 /* DarkTheme.swift */; };
 		B5623D8125FA049500BFD3D4 /* SecondaryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */; };
+		B5A2E3502644534B005436D6 /* NetworkServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A2E34F2644534B005436D6 /* NetworkServiceTest.swift */; };
 		B5B267562639675200DA09DE /* AnimationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B267552639675200DA09DE /* AnimationService.swift */; };
 		B5B26760263A846000DA09DE /* ConversationsListViewTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B2675F263A846000DA09DE /* ConversationsListViewTransitionDelegate.swift */; };
 		B5B26763263A90D800DA09DE /* CircleTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B26762263A90D800DA09DE /* CircleTransitionAnimator.swift */; };
@@ -106,7 +106,6 @@
 		B545E25E2642EF8D005693D5 /* BesedkaUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BesedkaUITests.swift; sourceTree = "<group>"; };
 		B545E2622642EF9F005693D5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B545E29B2643FB96005693D5 /* BesedkaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BesedkaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B545E29D2643FB96005693D5 /* BesedkaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BesedkaTests.swift; sourceTree = "<group>"; };
 		B545E29F2643FB96005693D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B557FE4725D84D1600BF0F06 /* Besedka.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Besedka.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B557FE4A25D84D1600BF0F06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +116,7 @@
 		B5623D7A25F9237E00BFD3D4 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		B5623D7D25F9255900BFD3D4 /* DarkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkTheme.swift; sourceTree = "<group>"; };
 		B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryLabel.swift; sourceTree = "<group>"; };
+		B5A2E34F2644534B005436D6 /* NetworkServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTest.swift; sourceTree = "<group>"; };
 		B5B267552639675200DA09DE /* AnimationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationService.swift; sourceTree = "<group>"; };
 		B5B2675F263A846000DA09DE /* ConversationsListViewTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewTransitionDelegate.swift; sourceTree = "<group>"; };
 		B5B26762263A90D800DA09DE /* CircleTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleTransitionAnimator.swift; sourceTree = "<group>"; };
@@ -277,7 +277,7 @@
 		B545E29C2643FB96005693D5 /* BesedkaTests */ = {
 			isa = PBXGroup;
 			children = (
-				B545E29D2643FB96005693D5 /* BesedkaTests.swift */,
+				B5A2E34F2644534B005436D6 /* NetworkServiceTest.swift */,
 				B545E29F2643FB96005693D5 /* Info.plist */,
 			);
 			path = BesedkaTests;
@@ -737,7 +737,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B545E29E2643FB96005693D5 /* BesedkaTests.swift in Sources */,
+				B5A2E3502644534B005436D6 /* NetworkServiceTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
