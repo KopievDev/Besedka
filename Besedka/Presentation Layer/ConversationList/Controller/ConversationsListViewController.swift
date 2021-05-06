@@ -97,34 +97,19 @@ class ConversationsListViewController: UIViewController {
         let barButtonView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40 ))
         barButtonView.backgroundColor = .black
         barButtonView.layer.cornerRadius = 20
-        let imageForButton = UIImageView()
+        let imageForButton = UIImageView(image: UIImage(named: "emblem"))
         imageForButton.backgroundColor = UIColor(red: 0.894, green: 0.908, blue: 0.17, alpha: 1)
         imageForButton.tintColor = Theme.current.tint
         barButtonView.addSubview(imageForButton)
         imageForButton.frame = barButtonView.frame
         imageForButton.contentMode = .scaleAspectFill
-        let shortName = UILabel()
-        shortName.frame = imageForButton.frame
-        shortName.font = .boldSystemFont(ofSize: 20)
-        shortName.textAlignment = .center
-        imageForButton.addSubview(shortName)
         let reconizer = UITapGestureRecognizer(target: self, action: #selector(showProfile))
         imageForButton.addGestureRecognizer(reconizer)
         imageForButton.isUserInteractionEnabled = true
         barButtonView.clipsToBounds = true
-        self.store.getUser { (user) in
-            // Get short name from name
-            let text = user?.name ?? ""
-            if text.split(separator: " ").count >= 2 {
-                shortName.text = "\(text.split(separator: " ")[0].first ?? "n")\(text.split(separator: " ")[1].first ?? "n")".uppercased()
-            } else {
-                shortName.text = text.first?.uppercased()
-            }
-        }
         self.store.getImageFromFile(name: "Avatar.png",
                                     runQueue: .global(qos: .utility), completionQueue: .main) {(image) in
             imageForButton.image = image
-            shortName.isHidden = true
         }
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: barButtonView)
     }
