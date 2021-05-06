@@ -14,12 +14,15 @@ protocol NetworkProtocol {
 
 class Network: NetworkProtocol {
     
-    let coreService: CoreAssembly = CoreAssembly()
+    let parser: ParserProtocol
+    
+    init(parser: ParserProtocol = CoreAssembly.shared.parser) {
+        self.parser = parser
+    }
     // Получение кодируемых данных
     func getCodableData<T>(fromUrlString url: String, _ type: T.Type, _ completion: @escaping (T) -> Void) where T: Decodable, T: Encodable {
         createSession(byUrlString: url) { data, _ in
-            let parser = self.coreService.parser
-            guard let dataDecoded = parser.decodeJSON(type: T.self, from: data) else {return}
+            guard let dataDecoded = self.parser.decodeJSON(type: T.self, from: data) else {return}
             DispatchQueue.main.async {
                 completion(dataDecoded)
             }

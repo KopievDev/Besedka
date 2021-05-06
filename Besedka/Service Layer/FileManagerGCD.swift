@@ -30,15 +30,18 @@ class FileManagerGCD: FileManagerProtocol {
     
     let queue = DispatchQueue.global(qos: .utility)
     let main = DispatchQueue.main
-    let coreAssembly = CoreAssembly()
     let parser: ParserServiceProtocol
-    let coreParser: ParserProtocol = CoreAssembly().parser
+    let coreParser: ParserProtocol
     let storage: StorageProtocol
     
-    init(parser: ParserServiceProtocol = ServiceAssembly.shared.parser, storage: StorageProtocol = CoreAssembly().storage) {
+    init(parser: ParserServiceProtocol = ServiceAssembly.shared.parser,
+         coreParser: ParserProtocol = CoreAssembly.shared.parser,
+         storage: StorageProtocol = CoreAssembly.shared.storage) {
         self.parser = parser
         self.storage = storage
+        self.coreParser = coreParser
     }
+    
     public func saveImageToFile(_ image: UIImage?,
                                 byName name: String,
                                 completion: @escaping () -> Void) {
