@@ -80,9 +80,5 @@ extension NetworkServiceTest {
             isCalled = true
             countCalled += 1
         }
-        override func getCodableData<T>(fromUrlString url: String, _ type: T.Type, _ completion: @escaping (T) -> Void) where T: Decodable, T: Encodable {
-            isCalled = true
-            countCalled += 1
-        }
     }
 }
