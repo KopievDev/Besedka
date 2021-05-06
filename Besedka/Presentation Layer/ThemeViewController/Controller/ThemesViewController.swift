@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ThemeDelegateProtocol: class {
+protocol ThemeDelegateProtocol: AnyObject {
     func changeTheme(name: String)
 }
 
@@ -17,7 +17,7 @@ class ThemesViewController: UIViewController {
     
     weak var delegate: ThemeDelegateProtocol?
     var themeSelected: ((String) -> Void)?
-    lazy var serviceAssembly = ServiceAssembly()
+    let filemanager: FileManagerProtocol
 
     // UI objects
     lazy var dayButton: ThemeButton = {
@@ -46,6 +46,15 @@ class ThemesViewController: UIViewController {
         createDesign()
     }
     
+    init(filemanager: FileManagerProtocol) {
+        self.filemanager = filemanager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     deinit {
         print("deinit theme view ")
     }
@@ -67,8 +76,7 @@ class ThemesViewController: UIViewController {
             stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
             stackView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor)
         ])
-        let fileOpener = serviceAssembly.fileManager
-        fileOpener.getTheme { [weak self] (name) in
+        filemanager.getTheme { [weak self] (name) in
             guard let theme = name else {return}
             guard let self = self else {return}
             switch theme {
@@ -116,8 +124,7 @@ class ThemesViewController: UIViewController {
 
     @objc func changeMode(sender: ThemeButton) {
         // Сохранение название темы
-        let fileSaver = serviceAssembly.fileManager
-        fileSaver.saveTheme(name: sender.textLabel.text)
+        filemanager.saveTheme(name: sender.textLabel.text)
 
         checkSelectedTheme(theme: sender.textLabel.text ?? "Day")
         // MARK: - HOMEWORK #4.3

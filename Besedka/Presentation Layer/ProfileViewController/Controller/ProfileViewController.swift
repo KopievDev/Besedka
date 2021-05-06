@@ -11,14 +11,16 @@ class ProfileViewController: UIViewController {
     // MARK: - Properies
     lazy var radius = CGFloat()
     var user = UserProfile()
-    var profile = ProfileView()
+    lazy var profile = ProfileView(frame: self.view.frame, radius: radius, animator: animator)
     let store: FileManagerProtocol
+    let animator: AnimationProtocol
     
     var keyboardDismissTapGesture: UIGestureRecognizer?
     
     // MARK: - Lifecycle
-    init(fileManager: FileManagerProtocol) {
+    init(fileManager: FileManagerProtocol, animator: AnimationProtocol) {
         self.store = fileManager
+        self.animator = animator
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -28,7 +30,6 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        profile = ProfileView(frame: self.view.frame, radius: radius)
         view.addSubview(profile)
         setupDesign()
         addTarget()
@@ -124,8 +125,9 @@ class ProfileViewController: UIViewController {
         let camera = UIAlertAction(title: "Сделать фото", style: .default) { [weak self] _ in
             self?.chooseImagePicker(source: .camera)
         }
+        let network = ServiceAssembly.shared.network
         let online = UIAlertAction(title: "Загрузить фото", style: .default) {[weak self] _ in
-            let avatarVC = AvatatarCollectionViewController(network: ServiceAssembly().network)
+            let avatarVC = AvatatarCollectionViewController(network: network )
             avatarVC.delegate = self
             avatarVC.modalPresentationStyle = .fullScreen
             self?.present(avatarVC, animated: true)
@@ -161,10 +163,10 @@ class ProfileViewController: UIViewController {
     @objc private func saveGCD() {
         
         let user = returnModifiedData()
-        
+        profile.animator.removeShake(from: profile.saveGCDButton)
+        profile.clearData()
         profile.activityIndicator.startAnimating()
         profile.activityIndicator.isHidden = false
-        profile.disableButton()
         // Если изменено только фото
         if profile.userNameTextfiel.isHidden {
             store.saveImageToFile(profile.avatarImageView.image, byName: "Avatar.png") {[weak self] in

@@ -9,11 +9,9 @@ import UIKit
 
 class ConversationViewController: UIViewController {
     // MARK: - Propetries
-    let serviceAssembly = ServiceAssembly()
-    var firebase: FireBaseServiceProtocol {
-        return serviceAssembly.firebase
-    }
+    let firebase: FireBaseServiceProtocol
     var coreDataService: CoreDataProtocol?
+    let fileManager: FileManagerProtocol
 
     var channelDB: ChannelDB? {
         didSet {
@@ -77,6 +75,16 @@ class ConversationViewController: UIViewController {
         return customInputView
     }
     
+    init(firebase: FireBaseServiceProtocol, fileManager: FileManagerProtocol) {
+        self.firebase = firebase
+        self.fileManager = fileManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     deinit {
         print("deinit MessageView")
     }
@@ -89,8 +97,7 @@ class ConversationViewController: UIViewController {
     }
     
     private func getMyName() {
-        let fileOpener = serviceAssembly.fileManager
-        fileOpener.getUser {[weak self] (user) in
+        fileManager.getUser {[weak self] (user) in
             guard let self = self else {return}
             guard let name = user?.name else {return}
             self.myName = name

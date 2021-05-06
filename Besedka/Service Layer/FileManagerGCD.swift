@@ -35,7 +35,7 @@ class FileManagerGCD: FileManagerProtocol {
     let coreParser: ParserProtocol = CoreAssembly().parser
     let storage: StorageProtocol
     
-    init(parser: ParserServiceProtocol = ServiceAssembly().parser, storage: StorageProtocol = CoreAssembly().storage) {
+    init(parser: ParserServiceProtocol = ServiceAssembly.shared.parser, storage: StorageProtocol = CoreAssembly().storage) {
         self.parser = parser
         self.storage = storage
     }
