@@ -13,11 +13,30 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-default_platform(:ios)
-
 platform :ios do
-  desc "Description of what the lane does"
-  lane :custom_lane do
-    # add actions here: https://docs.fastlane.tools/actions
+
+ desc "Build project to folder"
+  lane :build_for_testing do
+	send
+	scan(
+	   derived_data_path: "my_folder",
+	   build_for_testing: true,
+	   clean: true
+	)
   end
+
+  desc "Testing folder from folder"
+  lane :test_run do
+	scan(
+  	   derived_data_path: "my_folder",
+           test_without_building: true
+	)
+  end
+
+  desc "Build and test"
+  lane :build_and_test do
+	build_for_testing
+	test_run
+  end
+
 end
