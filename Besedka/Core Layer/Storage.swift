@@ -12,6 +12,8 @@ protocol StorageProtocol {
     func stringPath() -> String
     func removeFile(atPath path: String)
     func contents(atPath path: String) -> Data?
+    func getPrivateData(byKey key: String) -> String 
+
 }
 
 class Storage: StorageProtocol {
@@ -44,5 +46,12 @@ class Storage: StorageProtocol {
         guard let documentURL = fileManager.urls(for: .documentDirectory,
                                                  in: .userDomainMask).first else {return nil}
         return documentURL
+    }
+    
+    func getPrivateData(byKey key: String) -> String {
+        guard let path = Bundle.main.path(forResource: "Info", ofType: "plist") else {return "bundle error"}
+        let dictionary = NSDictionary(contentsOfFile: path)
+        guard let output = dictionary?[key] as? String else {return "key error"}
+        return output
     }
 }

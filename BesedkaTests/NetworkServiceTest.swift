@@ -13,12 +13,14 @@ class NetworkServiceTest: XCTestCase {
     var coreNetwork: MockCoreNetwork!
     var serviceNetwork: NetworkService!
     var cache: ImageCacheProtocol!
+    var storage: StorageProtocol!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         coreNetwork = MockCoreNetwork()
         cache = ImageCache()
         serviceNetwork = NetworkService(network: coreNetwork, cache: cache)
+        storage = Storage()
     }
     
     override func tearDownWithError() throws {
@@ -30,7 +32,7 @@ class NetworkServiceTest: XCTestCase {
     
     func testValidURLString() {
         // Arrange
-        let testUrlString = "https://pixabay.com/api/?key=21189137-e91aebb15d83ce97f04ecb4d6&q=yellow&image_type=photo&pretty=true&per_page=200"
+        let testUrlString = "https://pixabay.com/api/?key=\(storage.getPrivateData(byKey: "PIXABAY_TOKEN"))&q=yellow&image_type=photo&pretty=true&per_page=200"
         // Act
         let result = serviceNetwork.createUrl(withCode: "yellow")
         // Assert
@@ -50,7 +52,7 @@ class NetworkServiceTest: XCTestCase {
     
     func testForFindingAnImageInTheCache() throws {
         // Arrange
-        let testUrlString = "https://pixabay.com/api/?key=21189137-e91aebb15d83ce97f04ecb4d6&q=yellow&image_type=photo&pretty=true&per_page=200"
+        let testUrlString = "https://pixabay.com/testUrl"
         guard let testImage = UIImage(named: "emblem") else {
             XCTFail("Error init Image")
             return

@@ -144,6 +144,7 @@
 		B5D14D2326256AE6005BE9C4 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		B5DC348326089DC1004A1B86 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		B5DC3495260A4F41004A1B86 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
+		B5DC88A7264BD13B008FCE76 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B5E92D1C25FF86000094DCCC /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		B5F00709261479FF0090D31F /* Chat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Chat.xcdatamodel; sourceTree = "<group>"; };
 		B5F0073426147F0D0090D31F /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -286,6 +287,7 @@
 		B557FE3E25D84D1600BF0F06 = {
 			isa = PBXGroup;
 			children = (
+				B5DC88A7264BD13B008FCE76 /* Config.xcconfig */,
 				B557FE4925D84D1600BF0F06 /* Besedka */,
 				B545E2532642EF53005693D5 /* BesedkaUITests */,
 				B545E29C2643FB96005693D5 /* BesedkaTests */,
@@ -908,6 +910,7 @@
 		};
 		B557FE5925D84D1800BF0F06 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B5DC88A7264BD13B008FCE76 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -969,6 +972,7 @@
 		};
 		B557FE5A25D84D1800BF0F06 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B5DC88A7264BD13B008FCE76 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1045,7 +1049,7 @@
 		};
 		B557FE5D25D84D1800BF0F06 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 160978B7534E240220D09EC8 /* Pods-Besedka.release.xcconfig */;
+			baseConfigurationReference = B5DC88A7264BD13B008FCE76 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
