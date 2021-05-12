@@ -1049,7 +1049,7 @@
 		};
 		B557FE5D25D84D1800BF0F06 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B5DC88A7264BD13B008FCE76 /* Config.xcconfig */;
+			baseConfigurationReference = 160978B7534E240220D09EC8 /* Pods-Besedka.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
