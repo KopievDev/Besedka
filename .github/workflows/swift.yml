@@ -17,7 +17,7 @@ jobs:
         bundler-cache: true
   
     
-    - name: Build and Run
+    - name: Build and Run test
       run: |
         bundle exec fastlane ios build_and_test
     - name: Show succes notify 
