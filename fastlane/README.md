@@ -16,6 +16,11 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
+### ios swiftlint
+```
+fastlane ios swiftlint
+```
+Run SwiftLint
 ### ios build_for_testing
 ```
 fastlane ios build_for_testing

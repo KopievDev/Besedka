@@ -1,7 +1,7 @@
 platform :ios do
 
  desc("Run SwiftLint")
- lane: swiftlint do |options|
+ lane :swiftlint do |options|
     swiftlint(configFile: ".swiftlint.yml",
         strict: true,
         ignoreExitStatus: false,
@@ -19,7 +19,8 @@ platform :ios do
 	scan(
 	   derived_data_path: "my_folder",
 	   build_for_testing: true,
-	   clean: true
+	   clean: true,
+       xcargs: "CI=true"
 	)
   end
 
