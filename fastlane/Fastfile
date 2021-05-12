@@ -1,20 +1,15 @@
 platform :ios do
 
- desc("Run SwiftLint")
- lane :swiftlint do |options|
-    swiftlint(configFile: ".swiftlint.yml",
-        strict: true,
-        ignoreExitStatus: false,
-        raiseIfSwiftlintError: true,
-        executable: "Pods/SwiftLint/swiftlint"
-    )
- end
- 
- desc "Build project to folder"
-  lane :build_for_testing do
+  desc("Run SwiftLint")
+  lane :swiftlint_run do |options|
     swiftlint
+  end
+ 
+  desc "Build project to folder"
+  lane :build_for_testing do
+    swiftlint_run
     cocoapods(
-	try_repo_update_on_error: true
+        try_repo_update_on_error: true
 	)
 	scan(
 	   derived_data_path: "my_folder",
