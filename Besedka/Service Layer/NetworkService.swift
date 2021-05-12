@@ -10,7 +10,7 @@ import UIKit
 protocol NetworkServiceProtocol {
     func getImagesUrls(withCode code: String, _ completion: @escaping ([String]) -> Void)
     func getImage(fromUrlString url: String, _ completion: @escaping (UIImage) -> Void)
-    func createUrlWithCode(_ code: String) -> String
+    func createUrl(withCode code: String) -> String
 }
 
 class NetworkService: NetworkServiceProtocol {
@@ -25,7 +25,7 @@ class NetworkService: NetworkServiceProtocol {
 
     func getImagesUrls(withCode code: String, _ completion: @escaping ([String]) -> Void) {
         var urls = [String]()
-        network.getCodableData(fromUrlString: createUrlWithCode(code), Response.self) { data in
+        network.getCodableData(fromUrlString: createUrl(withCode: code), Response.self) { data in
             data.hits?.forEach { avatar in
                 guard let url = avatar.imageURL else {return}
                 urls.append(url)
@@ -54,7 +54,7 @@ class NetworkService: NetworkServiceProtocol {
         }
     }
     
-    func createUrlWithCode(_ code: String) -> String {
+    func createUrl(withCode code: String) -> String {
         var component = URLComponents()
         component.scheme = "https"
         component.host = "pixabay.com"

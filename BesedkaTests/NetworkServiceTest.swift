@@ -32,7 +32,7 @@ class NetworkServiceTest: XCTestCase {
         // Arrange
         let testUrlString = "https://pixabay.com/api/?key=21189137-e91aebb15d83ce97f04ecb4d6&q=yellow&image_type=photo&pretty=true&per_page=200"
         // Act
-        let result = serviceNetwork.createUrlWithCode("yellow")
+        let result = serviceNetwork.createUrl(withCode: "yellow")
         // Assert
         XCTAssertEqual(result, testUrlString)
     }
