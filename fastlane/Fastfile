@@ -34,6 +34,9 @@ platform :ios do
 
   desc "Build and test"
   lane :build_and_test do |options|
+	cocoapods(
+	try_repo_update_on_error: true
+	)
 	build_for_testing
 	test_run
   end
