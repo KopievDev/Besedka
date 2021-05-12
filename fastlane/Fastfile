@@ -33,7 +33,7 @@ platform :ios do
   end
 
   desc "Build and test"
-  lane :build_and_test do
+  lane :build_and_test do |options|
 	build_for_testing
 	test_run
   end

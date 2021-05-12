@@ -19,7 +19,7 @@ jobs:
     
     - name: Build and Run
       run: |
-        bundle exec fastlane build_and_test
+        bundle exec fastlane ios build_and_test
     - name: Show succes notify 
       uses: sarisia/actions-status-discord@v1
       if: success()
