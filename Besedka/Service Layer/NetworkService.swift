@@ -59,14 +59,13 @@ class NetworkService: NetworkServiceProtocol {
         component.scheme = "https"
         component.host = "pixabay.com"
         component.path = "/api/"
-        let queryKey = URLQueryItem(name: "key", value: "21189137-e91aebb15d83ce97f04ecb4d6")
-        let queryCodeforSearch = URLQueryItem(name: "q", value: code)
-        let queryTypeImage = URLQueryItem(name: "image_type", value: "photo")
-        let queryParameters = URLQueryItem(name: "pretty", value: "true")
-        let queryCount = URLQueryItem(name: "per_page", value: "200")
-        component.queryItems = [queryKey, queryCodeforSearch, queryTypeImage, queryParameters, queryCount]
+        component.queryItems = [
+            URLQueryItem(name: "key", value: "21189137-e91aebb15d83ce97f04ecb4d6"),
+            URLQueryItem(name: "q", value: code),
+            URLQueryItem(name: "image_type", value: "photo"),
+            URLQueryItem(name: "pretty", value: "true"),
+            URLQueryItem(name: "per_page", value: "200")]
         guard let urlString = component.url?.absoluteString else {return "nil"}
-        print(urlString)
         return urlString
     }
     
