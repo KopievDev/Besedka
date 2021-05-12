@@ -581,8 +581,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B557FE5B25D84D1800BF0F06 /* Build configuration list for PBXNativeTarget "Besedka" */;
 			buildPhases = (
-				B5DC347F26089580004A1B86 /* Run Script */,
 				6E083E4C4F9EBC1BB45A6F4D /* [CP] Check Pods Manifest.lock */,
+				B5DC347F26089580004A1B86 /* Run Script */,
 				B557FE4325D84D1600BF0F06 /* Sources */,
 				B557FE4425D84D1600BF0F06 /* Frameworks */,
 				B557FE4525D84D1600BF0F06 /* Resources */,

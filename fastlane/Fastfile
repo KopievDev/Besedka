@@ -17,6 +17,9 @@ platform :ios do
 
  desc "Build project to folder"
   lane :build_for_testing do
+	cocoapods(
+	try_repo_update_on_error: true
+	)
 	scan(
 	   derived_data_path: "my_folder",
 	   build_for_testing: true,
@@ -34,9 +37,6 @@ platform :ios do
 
   desc "Build and test"
   lane :build_and_test do |options|
-	cocoapods(
-	try_repo_update_on_error: true
-	)
 	build_for_testing
 	test_run
   end
