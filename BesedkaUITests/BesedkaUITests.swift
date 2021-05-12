@@ -9,10 +9,15 @@ import XCTest
 
 class BesedkaUITests: XCTestCase {
 
+    let app = XCUIApplication()
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        app.launch()
+    }
+
     func testProfileVCHasTwoTextfileds() throws {
 
-         let app = XCUIApplication()
-         app.launch()
          app.navigationBars["Tinckoff Chat"].otherElements.children(matching: .image).element.tap()
 
          let editButton = app.buttons["Edit"]
