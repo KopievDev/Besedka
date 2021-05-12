@@ -2,7 +2,9 @@ platform :ios do
 
   desc("Run SwiftLint")
   lane :swiftlint_run do |options|
-    swiftlint
+    swiftlint(
+    ignore_exit_status: true
+    )
   end
  
   desc "Build project to folder"
