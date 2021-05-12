@@ -17,7 +17,6 @@ platform :ios do
 
  desc "Build project to folder"
   lane :build_for_testing do
-	send
 	scan(
 	   derived_data_path: "my_folder",
 	   build_for_testing: true,
