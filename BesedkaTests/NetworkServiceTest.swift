@@ -31,8 +31,8 @@ class NetworkServiceTest: XCTestCase {
     }
     
     func testValidURLString() {
-        // Arrange
-        let testUrlString = "https://pixabay.com/api/?key=\(storage.getPrivateData(byKey: "PIXABAY_TOKEN"))&q=yellow&image_type=photo&pretty=true&per_page=200"
+        // Arßrange
+        let testUrlString = "https://pixabay.com/api/?key=\(storage.getPrivateData(byKey: "PIXABAY_TOKEN") ?? "")&q=yellow&image_type=photo&pretty=true&per_page=200"
         // Act
         let result = serviceNetwork.createUrl(withCode: "yellow")
         // Assert

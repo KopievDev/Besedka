@@ -12,7 +12,7 @@ protocol StorageProtocol {
     func stringPath() -> String
     func removeFile(atPath path: String)
     func contents(atPath path: String) -> Data?
-    func getPrivateData(byKey key: String) -> String 
+    func getPrivateData(byKey key: String) -> String?
 
 }
 
@@ -48,10 +48,15 @@ class Storage: StorageProtocol {
         return documentURL
     }
     
-    func getPrivateData(byKey key: String) -> String {
-        guard let path = Bundle.main.path(forResource: "Info", ofType: "plist") else {return "bundle error"}
-        let dictionary = NSDictionary(contentsOfFile: path)
-        guard let output = dictionary?[key] as? String else {return "key error"}
+    func getPrivateData(byKey key: String) -> String? {
+        guard let dictionary = Bundle.main.infoDictionary  else {
+            print("ERROR:  - failed to get path to InfoPlist")
+            return nil
+        }
+        guard let output = dictionary[key] as? String else {
+            print("ERROR:  - failed to get String value for key \(key)")
+            return nil
+        }
         return output
     }
 }
