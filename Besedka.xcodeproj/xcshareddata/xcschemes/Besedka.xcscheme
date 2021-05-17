@@ -45,6 +45,26 @@
          </AdditionalOption>
       </AdditionalOptions>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B545E2512642EF53005693D5"
+               BuildableName = "BesedkaUITests.xctest"
+               BlueprintName = "BesedkaUITests"
+               ReferencedContainer = "container:Besedka.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B545E2762642F805005693D5"
+               BuildableName = "BesedkaTests.xctest"
+               BlueprintName = "BesedkaTests"
+               ReferencedContainer = "container:Besedka.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

@@ -13,11 +13,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var coreDataService: CoreDataProtocol?
-    lazy var coreAssembly: CoreAssembly = CoreAssembly()
     // Сообщает делегату, что процесс запуска начался
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         FirebaseApp.configure()
-        coreDataService = CoreDataService(coreData: coreAssembly.coreData)
+        coreDataService = CoreDataService(coreData: CoreAssembly.shared.coreData)
         let fileOpener = ServiceAssembly.shared.fileManager
         fileOpener.getTheme { (theme) in
             guard let name = theme else {return}

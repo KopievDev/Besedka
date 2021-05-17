@@ -23,6 +23,7 @@
 		B54266AD25FA36BF009BBF2F /* ThemesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54266AC25FA36BF009BBF2F /* ThemesViewController.swift */; };
 		B54266B125FA375B009BBF2F /* LightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54266B025FA375B009BBF2F /* LightTheme.swift */; };
 		B54266B425FA3765009BBF2F /* DayTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54266B325FA3765009BBF2F /* DayTheme.swift */; };
+		B545E25F2642EF8D005693D5 /* BesedkaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B545E25E2642EF8D005693D5 /* BesedkaUITests.swift */; };
 		B557FE4B25D84D1600BF0F06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B557FE4A25D84D1600BF0F06 /* AppDelegate.swift */; };
 		B557FE5425D84D1800BF0F06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B557FE5325D84D1800BF0F06 /* Assets.xcassets */; };
 		B557FE5725D84D1800BF0F06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B557FE5525D84D1800BF0F06 /* LaunchScreen.storyboard */; };
@@ -30,6 +31,7 @@
 		B5623D7B25F9237E00BFD3D4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5623D7A25F9237E00BFD3D4 /* Theme.swift */; };
 		B5623D7E25F9255900BFD3D4 /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5623D7D25F9255900BFD3D4 /* DarkTheme.swift */; };
 		B5623D8125FA049500BFD3D4 /* SecondaryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */; };
+		B5A2E3502644534B005436D6 /* NetworkServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A2E34F2644534B005436D6 /* NetworkServiceTest.swift */; };
 		B5B267562639675200DA09DE /* AnimationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B267552639675200DA09DE /* AnimationService.swift */; };
 		B5B26760263A846000DA09DE /* ConversationsListViewTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B2675F263A846000DA09DE /* ConversationsListViewTransitionDelegate.swift */; };
 		B5B26763263A90D800DA09DE /* CircleTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B26762263A90D800DA09DE /* CircleTransitionAnimator.swift */; };
@@ -64,6 +66,23 @@
 		B5F0073F2614A2230090D31F /* ChannelDB+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F0073B2614A2230090D31F /* ChannelDB+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B545E2572642EF53005693D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B557FE3F25D84D1600BF0F06 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B557FE4625D84D1600BF0F06;
+			remoteInfo = Besedka;
+		};
+		B545E2A02643FB96005693D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B557FE3F25D84D1600BF0F06 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B557FE4625D84D1600BF0F06;
+			remoteInfo = Besedka;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		160978B7534E240220D09EC8 /* Pods-Besedka.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Besedka.release.xcconfig"; path = "Target Support Files/Pods-Besedka/Pods-Besedka.release.xcconfig"; sourceTree = "<group>"; };
 		5C43CAAD5D0C8E5105B2F26C /* Pods-Besedka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Besedka.debug.xcconfig"; path = "Target Support Files/Pods-Besedka/Pods-Besedka.debug.xcconfig"; sourceTree = "<group>"; };
@@ -83,6 +102,11 @@
 		B54266AC25FA36BF009BBF2F /* ThemesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesViewController.swift; sourceTree = "<group>"; };
 		B54266B025FA375B009BBF2F /* LightTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTheme.swift; sourceTree = "<group>"; };
 		B54266B325FA3765009BBF2F /* DayTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayTheme.swift; sourceTree = "<group>"; };
+		B545E2522642EF53005693D5 /* BesedkaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BesedkaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B545E25E2642EF8D005693D5 /* BesedkaUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BesedkaUITests.swift; sourceTree = "<group>"; };
+		B545E2622642EF9F005693D5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B545E29B2643FB96005693D5 /* BesedkaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BesedkaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B545E29F2643FB96005693D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B557FE4725D84D1600BF0F06 /* Besedka.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Besedka.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B557FE4A25D84D1600BF0F06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B557FE5325D84D1800BF0F06 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -92,6 +116,7 @@
 		B5623D7A25F9237E00BFD3D4 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		B5623D7D25F9255900BFD3D4 /* DarkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkTheme.swift; sourceTree = "<group>"; };
 		B5623D8025FA049500BFD3D4 /* SecondaryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryLabel.swift; sourceTree = "<group>"; };
+		B5A2E34F2644534B005436D6 /* NetworkServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTest.swift; sourceTree = "<group>"; };
 		B5B267552639675200DA09DE /* AnimationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationService.swift; sourceTree = "<group>"; };
 		B5B2675F263A846000DA09DE /* ConversationsListViewTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewTransitionDelegate.swift; sourceTree = "<group>"; };
 		B5B26762263A90D800DA09DE /* CircleTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleTransitionAnimator.swift; sourceTree = "<group>"; };
@@ -127,6 +152,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B545E24F2642EF53005693D5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B545E2982643FB96005693D5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B557FE4425D84D1600BF0F06 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -226,10 +265,30 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		B545E2532642EF53005693D5 /* BesedkaUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B545E25E2642EF8D005693D5 /* BesedkaUITests.swift */,
+				B545E2622642EF9F005693D5 /* Info.plist */,
+			);
+			path = BesedkaUITests;
+			sourceTree = "<group>";
+		};
+		B545E29C2643FB96005693D5 /* BesedkaTests */ = {
+			isa = PBXGroup;
+			children = (
+				B5A2E34F2644534B005436D6 /* NetworkServiceTest.swift */,
+				B545E29F2643FB96005693D5 /* Info.plist */,
+			);
+			path = BesedkaTests;
+			sourceTree = "<group>";
+		};
 		B557FE3E25D84D1600BF0F06 = {
 			isa = PBXGroup;
 			children = (
 				B557FE4925D84D1600BF0F06 /* Besedka */,
+				B545E2532642EF53005693D5 /* BesedkaUITests */,
+				B545E29C2643FB96005693D5 /* BesedkaTests */,
 				B557FE4825D84D1600BF0F06 /* Products */,
 				FC28D7A054040A15108C9C15 /* Pods */,
 				DE5FF6129337D993485E5D7C /* Frameworks */,
@@ -240,6 +299,8 @@
 			isa = PBXGroup;
 			children = (
 				B557FE4725D84D1600BF0F06 /* Besedka.app */,
+				B545E2522642EF53005693D5 /* BesedkaUITests.xctest */,
+				B545E29B2643FB96005693D5 /* BesedkaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -478,6 +539,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B545E2512642EF53005693D5 /* BesedkaUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B545E2592642EF53005693D5 /* Build configuration list for PBXNativeTarget "BesedkaUITests" */;
+			buildPhases = (
+				B545E24E2642EF53005693D5 /* Sources */,
+				B545E24F2642EF53005693D5 /* Frameworks */,
+				B545E2502642EF53005693D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B545E2582642EF53005693D5 /* PBXTargetDependency */,
+			);
+			name = BesedkaUITests;
+			productName = BesedkaUITests;
+			productReference = B545E2522642EF53005693D5 /* BesedkaUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		B545E29A2643FB96005693D5 /* BesedkaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B545E2A22643FB96005693D5 /* Build configuration list for PBXNativeTarget "BesedkaTests" */;
+			buildPhases = (
+				B545E2972643FB96005693D5 /* Sources */,
+				B545E2982643FB96005693D5 /* Frameworks */,
+				B545E2992643FB96005693D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B545E2A12643FB96005693D5 /* PBXTargetDependency */,
+			);
+			name = BesedkaTests;
+			productName = BesedkaTests;
+			productReference = B545E29B2643FB96005693D5 /* BesedkaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		B557FE4625D84D1600BF0F06 /* Besedka */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B557FE5B25D84D1800BF0F06 /* Build configuration list for PBXNativeTarget "Besedka" */;
@@ -507,6 +604,14 @@
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					B545E2512642EF53005693D5 = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = B557FE4625D84D1600BF0F06;
+					};
+					B545E29A2643FB96005693D5 = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = B557FE4625D84D1600BF0F06;
+					};
 					B557FE4625D84D1600BF0F06 = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -526,11 +631,27 @@
 			projectRoot = "";
 			targets = (
 				B557FE4625D84D1600BF0F06 /* Besedka */,
+				B545E2512642EF53005693D5 /* BesedkaUITests */,
+				B545E29A2643FB96005693D5 /* BesedkaTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B545E2502642EF53005693D5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B545E2992643FB96005693D5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B557FE4525D84D1600BF0F06 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -604,6 +725,22 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B545E24E2642EF53005693D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B545E25F2642EF8D005693D5 /* BesedkaUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B545E2972643FB96005693D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5A2E3502644534B005436D6 /* NetworkServiceTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B557FE4325D84D1600BF0F06 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -664,6 +801,19 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		B545E2582642EF53005693D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B557FE4625D84D1600BF0F06 /* Besedka */;
+			targetProxy = B545E2572642EF53005693D5 /* PBXContainerItemProxy */;
+		};
+		B545E2A12643FB96005693D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B557FE4625D84D1600BF0F06 /* Besedka */;
+			targetProxy = B545E2A02643FB96005693D5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		B557FE5525D84D1800BF0F06 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -676,6 +826,86 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		B545E25A2642EF53005693D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4DQD7HY3MS;
+				INFOPLIST_FILE = BesedkaUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ru.mustdev.BesedkaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Besedka;
+			};
+			name = Debug;
+		};
+		B545E25B2642EF53005693D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4DQD7HY3MS;
+				INFOPLIST_FILE = BesedkaUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ru.mustdev.BesedkaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Besedka;
+			};
+			name = Release;
+		};
+		B545E2A32643FB96005693D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4DQD7HY3MS;
+				HEADER_SEARCH_PATHS = "${SRCROOT}/Pods/Firebase/CoreOnly/Sources";
+				INFOPLIST_FILE = BesedkaTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ru.mustdev.BesedkaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Besedka.app/Besedka";
+			};
+			name = Debug;
+		};
+		B545E2A42643FB96005693D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4DQD7HY3MS;
+				HEADER_SEARCH_PATHS = "${SRCROOT}/Pods/Firebase/CoreOnly/Sources";
+				INFOPLIST_FILE = BesedkaTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ru.mustdev.BesedkaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Besedka.app/Besedka";
+			};
+			name = Release;
+		};
 		B557FE5925D84D1800BF0F06 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -837,6 +1067,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B545E2592642EF53005693D5 /* Build configuration list for PBXNativeTarget "BesedkaUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B545E25A2642EF53005693D5 /* Debug */,
+				B545E25B2642EF53005693D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B545E2A22643FB96005693D5 /* Build configuration list for PBXNativeTarget "BesedkaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B545E2A32643FB96005693D5 /* Debug */,
+				B545E2A42643FB96005693D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B557FE4225D84D1600BF0F06 /* Build configuration list for PBXProject "Besedka" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

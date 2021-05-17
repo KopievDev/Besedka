@@ -8,6 +8,8 @@
 import Foundation
 
 class CoreAssembly {
+    private init() {}
+    static let shared = CoreAssembly()
     lazy var parser: ParserProtocol = Parser()
     lazy var storage: StorageProtocol = Storage()
     lazy var coreData: CoreDataStackProtocol = CoreDataStack()

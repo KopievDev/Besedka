@@ -10,18 +10,22 @@ import UIKit
 protocol NetworkServiceProtocol {
     func getImagesUrls(withCode code: String, _ completion: @escaping ([String]) -> Void)
     func getImage(fromUrlString url: String, _ completion: @escaping (UIImage) -> Void)
+    func createUrl(withCode code: String) -> String
 }
 
 class NetworkService: NetworkServiceProtocol {
-    let coreAssembly: CoreAssembly = CoreAssembly()
-    lazy var network: NetworkProtocol = self.coreAssembly.network
-    lazy var cache = coreAssembly.cacheImage
+    
+    let network: NetworkProtocol
+    let cache: ImageCacheProtocol
+    
+    init(network: NetworkProtocol = CoreAssembly.shared.network, cache: ImageCacheProtocol = CoreAssembly.shared.cacheImage) {
+        self.network = network
+        self.cache = cache
+    }
 
     func getImagesUrls(withCode code: String, _ completion: @escaping ([String]) -> Void) {
-        let url = "https://pixabay.com/api/?key=21189137-e91aebb15d83ce97f04ecb4d6&q=\(code)&image_type=photo&pretty=true&per_page=200"
-        let network = coreAssembly.network
         var urls = [String]()
-        network.getCodableData(fromUrlString: url, Response.self) { data in
+        network.getCodableData(fromUrlString: createUrl(withCode: code), Response.self) { data in
             data.hits?.forEach { avatar in
                 guard let url = avatar.imageURL else {return}
                 urls.append(url)
@@ -35,11 +39,9 @@ class NetworkService: NetworkServiceProtocol {
             if let cachedImage = self.cache.getImage(forKey: urlString) {
                 DispatchQueue.main.async {
                     completion(cachedImage)
-                    print("getting image from cache")
                     return
                 }
             } else {
-                print("getting image from internet")
                 self.network.getDataFrom(fromUrlString: urlString) { data in
                     guard let image = UIImage(data: data) else {return}
                     self.cache.save(image: image, forKey: urlString)
@@ -50,6 +52,21 @@ class NetworkService: NetworkServiceProtocol {
                 }
             }
         }
+    }
+    
+    func createUrl(withCode code: String) -> String {
+        var component = URLComponents()
+        component.scheme = "https"
+        component.host = "pixabay.com"
+        component.path = "/api/"
+        component.queryItems = [
+            URLQueryItem(name: "key", value: "21189137-e91aebb15d83ce97f04ecb4d6"),
+            URLQueryItem(name: "q", value: code),
+            URLQueryItem(name: "image_type", value: "photo"),
+            URLQueryItem(name: "pretty", value: "true"),
+            URLQueryItem(name: "per_page", value: "200")]
+        guard let urlString = component.url?.absoluteString else {return "nil"}
+        return urlString
     }
     
 }
