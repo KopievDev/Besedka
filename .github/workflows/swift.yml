@@ -1,0 +1,45 @@
+name: CI test
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Build_and_test:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6
+        bundler-cache: true
+  
+    
+    - name: Build and Run test
+      run: |
+        bundle exec fastlane ios build_and_test
+    - name: Show succes notify 
+      uses: sarisia/actions-status-discord@v1
+      if: success()
+      with:
+          webhook: ${{ secrets.WEBHOOK_URL }} 
+          title: "Все ок, можно мёржить"
+          description: "Build and test"
+          color: 0x00ff00
+          username: Github Kopiev Ivan
+          avatar_url: ${{ secrets.AVATAR_URL }}
+          image: ${{ secrets.HARD_URL }}
+
+    - name: Show failed notify 
+      uses: sarisia/actions-status-discord@v1      
+      if: failure()
+      with:
+          webhook: ${{ secrets.WEBHOOK_URL }} 
+          title: "Что-то пошло не так... Иди чини!"
+          description: "Build and test"
+          color: 0xff0000
+          username: Github Kopiev Ivan
+          avatar_url: ${{ secrets.AVATAR_URL }}
+          image: ${{ secrets.FAIL_URL }}
+
+
